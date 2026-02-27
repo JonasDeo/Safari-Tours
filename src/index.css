@@ -1,0 +1,113 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=Source+Sans+3:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 30 25% 96%;
+    --foreground: 20 15% 15%;
+
+    --card: 30 20% 98%;
+    --card-foreground: 20 15% 15%;
+
+    --popover: 30 20% 98%;
+    --popover-foreground: 20 15% 15%;
+
+    --primary: 15 55% 42%;
+    --primary-foreground: 30 25% 96%;
+
+    --secondary: 85 20% 35%;
+    --secondary-foreground: 30 25% 96%;
+
+    --muted: 30 15% 90%;
+    --muted-foreground: 20 10% 45%;
+
+    --accent: 25 40% 50%;
+    --accent-foreground: 30 25% 96%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 30 15% 85%;
+    --input: 30 15% 85%;
+    --ring: 15 55% 42%;
+
+    --radius: 0.5rem;
+
+    /* Custom safari tokens */
+    --sand: 38 35% 88%;
+    --sand-dark: 35 25% 75%;
+    --earth: 20 30% 25%;
+    --olive: 85 20% 35%;
+    --olive-light: 85 15% 55%;
+    --terracotta: 15 55% 42%;
+    --terracotta-light: 15 45% 55%;
+    --warm-cream: 40 40% 95%;
+    --dark-overlay: 20 25% 12%;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+
+    --font-display: 'Playfair Display', serif;
+    --font-body: 'Source Sans 3', sans-serif;
+  }
+
+  .dark {
+    --background: 20 25% 10%;
+    --foreground: 30 25% 92%;
+    --card: 20 20% 14%;
+    --card-foreground: 30 25% 92%;
+    --popover: 20 20% 14%;
+    --popover-foreground: 30 25% 92%;
+    --primary: 15 55% 50%;
+    --primary-foreground: 20 25% 10%;
+    --secondary: 85 20% 40%;
+    --secondary-foreground: 30 25% 92%;
+    --muted: 20 15% 20%;
+    --muted-foreground: 30 10% 60%;
+    --accent: 25 40% 55%;
+    --accent-foreground: 20 25% 10%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 20 15% 22%;
+    --input: 20 15% 22%;
+    --ring: 15 55% 50%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-body);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+  }
+}
+
+@layer utilities {
+  .text-shadow-hero {
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+  }
+}
