@@ -1,0 +1,205 @@
+import { AnimatePresence, motion } from "framer-motion";
+
+import heroImg from "@/assets/tour-1.jpg";
+import QuoteSuccess from "@/components/QuoteSuccess";
+import StepAccommodation from "@/components/steps/StepAccommodation";
+import StepContact from "@/components/steps/StepContact";
+import StepDestinations from "@/components/steps/StepDestinations";
+import StepExperiences from "@/components/steps/StepExperiences";
+import StepGroupDate from "@/components/steps/StepGroupDate";
+import StepMessage from "@/components/steps/StepMessage";
+import StepOccasion from "@/components/steps/StepOccasion";
+import StepTripType from "@/components/steps/StepTripType";
+import WizardNav from "@/components/WizardNav";
+import WizardProgress from "@/components/WizardProgress";
+import { WIZARD_STEPS } from "@/constants/QuoteData";
+import useQuoteWizard from "@/hooks/use-quote-wizard";
+import PageLayout from "@/components/PageLayout";
+
+// Animation config
+const SLIDE_VARIANTS = {
+  enter:  (dir: number) => ({ x: dir > 0 ? 40 : -40, opacity: 0 }),
+  center:               ({ x: 0, opacity: 1 }),
+  exit:   (dir: number) => ({ x: dir > 0 ? -40 : 40, opacity: 0 }),
+};
+
+const SLIDE_TRANSITION = { duration: 0.35, ease: [0.32, 0.72, 0, 1] as const };
+
+const QuotePage = () => {
+  const {
+    step, totalSteps, next, back, goTo,
+    submitted, handleSubmit,
+    state,
+    setTripTypes, setDestinations, setExperiences,
+    setOccasions, setAccommodation, setFormField,
+  } = useQuoteWizard();
+
+  const direction     = 1;
+  const currentStep   = WIZARD_STEPS[step];
+
+  const renderStep = () => {
+    switch (step) {
+      case 0: return <StepTripType      selected={state.tripTypes}     onChange={setTripTypes}     />;
+      case 1: return <StepDestinations  selected={state.destinations}  onChange={setDestinations}  />;
+      case 2: return <StepExperiences   selected={state.experiences}   onChange={setExperiences}   />;
+      case 3: return <StepOccasion      selected={state.occasions}     onChange={setOccasions}     />;
+      case 4: return <StepAccommodation selected={state.accommodation} onChange={setAccommodation} />;
+      case 5: return <StepGroupDate     form={state.form}              onFieldChange={setFormField}/>;
+      case 6: return <StepContact       form={state.form}              onFieldChange={setFormField}/>;
+      case 7: return (
+        <StepMessage
+          message={state.form.message}
+          onChange={(v) => setFormField("message", v)}
+          state={state}
+        />
+      );
+      default: return null;
+    }
+  };
+
+
+  return (
+  <PageLayout>
+    <div>
+      <section className="relative h-[40vh] flex items-center justify-center overflow-hidden">
+        <img
+          src={heroImg}
+          alt="Safari landscape"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-dark-overlay/60" />
+
+        <div className="relative z-10 text-center px-4">
+          <h1 className="font-display text-4xl md:text-5xl font-bold text-sand mb-3 text-shadow-hero">
+            Request a Quote
+          </h1>
+          <p className="font-body text-sand/70 text-lg">
+            Tell us your dream — we'll craft your perfect African safari
+          </p>
+        </div>
+      </section>
+
+      {/* ── Wizard — split-panel below the hero ──────────────────────── */}
+      <section className="bg-background">
+        <div className="flex flex-col lg:flex-row min-h-[calc(100vh-40vh)]">
+
+          {/* Left sticky panel — context + headline */}
+          <aside
+            className="
+              w-full lg:w-[38%] xl:w-[34%]
+              bg-dark-overlay/70 border-b lg:border-b-0 lg:border-r border-sand/8
+              flex flex-col justify-between
+              px-6 py-8 sm:px-10 lg:px-12 lg:py-14
+              lg:sticky lg:top-0 lg:h-screen
+            "
+          >
+            <div>
+              {/* Step headline — animated per step */}
+              <AnimatePresence mode="wait">
+                {submitted ? (
+                  <motion.p
+                    key="done"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-xs tracking-[0.2em] uppercase text-primary font-body"
+                  >
+                    All done
+                  </motion.p>
+                ) : (
+                  <motion.div
+                    key={step}
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.35, ease: [0.32, 0.72, 0, 1] }}
+                  >
+                    <p className="text-xs tracking-[0.2em] uppercase text-primary font-body mb-3">
+                      Step {step + 1} of {totalSteps}
+                    </p>
+                    <h2 className="font-display text-2xl sm:text-3xl lg:text-4xl text-sand leading-tight mb-3">
+                      {currentStep.headline}
+                    </h2>
+                    <p className="text-sand/40 font-body text-sm leading-relaxed max-w-xs">
+                      {currentStep.sub}
+                    </p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            {/* Contact nudge — desktop only */}
+            <div className="hidden lg:block pt-10 mt-auto border-t border-sand/8">
+              <p className="text-xs text-sand/25 font-body mb-2">Need help planning?</p>
+              <a
+                href="tel:+255685808332"
+                className="text-sm text-sand/45 hover:text-primary transition-colors duration-200"
+              >
+                +255 685 808332
+              </a>
+              <span className="mx-2 text-sand/20">·</span>
+              <a
+                href="https://wa.me/255685808332"
+                target="_blank"
+                rel="noreferrer"
+                className="text-sm text-sand/45 hover:text-primary transition-colors duration-200"
+              >
+                WhatsApp
+              </a>
+            </div>
+          </aside>
+
+          {/* Right panel — progress bar + step content */}
+          <main className="flex-1 px-6 py-8 sm:px-10 lg:px-14 lg:py-14 max-w-none">
+
+            {/* Progress */}
+            {!submitted && (
+              <div className="mb-8 lg:mb-12 max-w-2xl">
+                <WizardProgress step={step} goTo={goTo} />
+              </div>
+            )}
+
+            {/* Animated step content */}
+            <AnimatePresence mode="wait" custom={direction}>
+              {submitted ? (
+                <motion.div
+                  key="success"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={SLIDE_TRANSITION}
+                  className="flex items-center justify-center py-20"
+                >
+                  <QuoteSuccess firstName={state.form.firstName} />
+                </motion.div>
+              ) : (
+                <motion.div
+                  key={step}
+                  custom={direction}
+                  variants={SLIDE_VARIANTS}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                  transition={SLIDE_TRANSITION}
+                  className="max-w-2xl"
+                >
+                  {renderStep()}
+
+                  <WizardNav
+                    step={step}
+                    totalSteps={totalSteps}
+                    onBack={back}
+                    onNext={next}
+                    onSubmit={handleSubmit}
+                  />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </main>
+        </div>
+      </section>
+    </div>
+  </PageLayout>
+);
+  
+};
+
+export default QuotePage;

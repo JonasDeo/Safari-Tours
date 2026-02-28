@@ -9,6 +9,9 @@ import Destinations from "./pages/Destinations";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
+import ScrollToTop from "./components/ScrollToTop";
+import QuotePage from "./pages/Quote";
+import BlogPage from "./pages/Blog";
 
 const queryClient = new QueryClient();
 
@@ -18,12 +21,15 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+          <ScrollToTop />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/tours" element={<Tours />} />
           <Route path="/destinations" element={<Destinations />} />
           <Route path="/about" element={<About />} />
+          <Route path="/blog" element={<BlogPage/>} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/quote" element={<QuotePage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
