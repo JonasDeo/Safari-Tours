@@ -1,6 +1,6 @@
 import { TRIP_TYPES } from "@/constants/QuoteData";
 import { toggleItem } from "@/hooks/use-quote-wizard";
-import MultiSelect from "../quote/MultiSelect";
+import MultiSelect from "../MultiSelect";
 
 
 interface StepTripTypeProps {

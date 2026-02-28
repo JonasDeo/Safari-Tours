@@ -1,6 +1,6 @@
 import type { ChangeEvent } from "react";
-import { QuoteFormFields } from "../quote/Quote";
-import InputField from "../quote/InputField";
+import { QuoteFormFields } from "../Quote";
+import InputField from "../InputField";
 
 interface StepContactProps {
   form:          QuoteFormFields;

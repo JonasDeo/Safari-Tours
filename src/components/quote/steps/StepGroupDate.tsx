@@ -1,6 +1,6 @@
 import type { ChangeEvent } from "react";
-import InputField from "../quote/InputField";
-import { QuoteFormFields } from "../quote/Quote";
+import InputField from "../InputField";
+import { QuoteFormFields } from "../Quote";
 
 interface StepGroupDateProps {
   form:         QuoteFormFields;

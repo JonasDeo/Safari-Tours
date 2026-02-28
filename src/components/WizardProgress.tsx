@@ -1,5 +1,5 @@
+import { WIZARD_STEPS } from "@/constants/QuoteData";
 import { motion } from "framer-motion";
-import { WIZARD_STEPS } from "../constants/quoteData";
 
 interface WizardProgressProps {
   step:   number;
@@ -17,17 +17,17 @@ const WizardProgress = ({ step, goTo }: WizardProgressProps) => {
           key={step}
           initial={{ opacity: 0, y: 4 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-xs tracking-[0.2em] uppercase text-primary font-body"
+          className="text-xs tracking-[0.2em] uppercase text-primary font-body font-semibold"
         >
           {WIZARD_STEPS[step].label}
         </motion.p>
-        <span className="text-xs font-mono text-sand/30">
+        <span className="text-xs font-mono text-muted-foreground">
           {String(step + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
         </span>
       </div>
 
       {/* Progress track */}
-      <div className="relative h-px bg-sand/10 w-full rounded-full overflow-hidden">
+      <div className="relative h-0.5 bg-border w-full rounded-full overflow-hidden">
         <motion.div
           className="absolute left-0 top-0 h-full bg-primary rounded-full"
           initial={false}
@@ -36,7 +36,7 @@ const WizardProgress = ({ step, goTo }: WizardProgressProps) => {
         />
       </div>
 
-      {/* Clickable dots for completed steps */}
+      {/* Clickable dots */}
       <div className="flex items-center gap-1.5 mt-3">
         {WIZARD_STEPS.map((s, i) => {
           const completed = i < step;
@@ -48,9 +48,9 @@ const WizardProgress = ({ step, goTo }: WizardProgressProps) => {
               disabled={!completed}
               aria-label={completed ? `Go back to ${s.label}` : s.label}
               className={`transition-all duration-300 rounded-full
-                ${current   ? "w-5 h-1.5 bg-primary"           : ""}
-                ${completed ? "w-1.5 h-1.5 bg-primary/50 hover:bg-primary/80 cursor-pointer" : ""}
-                ${!completed && !current ? "w-1.5 h-1.5 bg-sand/15" : ""}
+                ${current   ? "w-5 h-1.5 bg-primary" : ""}
+                ${completed ? "w-1.5 h-1.5 bg-primary/50 hover:bg-primary cursor-pointer" : ""}
+                ${!completed && !current ? "w-1.5 h-1.5 bg-border" : ""}
               `}
             />
           );

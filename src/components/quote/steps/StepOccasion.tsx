@@ -1,6 +1,6 @@
 import { OCCASIONS } from "@/constants/quoteData";
 import { toggleItem } from "@/hooks/use-quote-wizard";
-import MultiSelect from "../quote/MultiSelect";
+import MultiSelect from "../MultiSelect";
 
 
 interface StepOccasionProps {

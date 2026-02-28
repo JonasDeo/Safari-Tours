@@ -1,8 +1,6 @@
 import { Check } from "lucide-react";
 import { TripTypeOption } from "./Quote";
 
-// Option can be a plain string (destinations, experiences, occasions)
-// or a TripTypeOption with a LucideIcon
 type Option = string | TripTypeOption;
 
 interface MultiSelectProps {
@@ -12,7 +10,7 @@ interface MultiSelectProps {
 }
 
 const MultiSelect = ({ options, selected, onToggle }: MultiSelectProps) => (
-  <div className="flex flex-wrap gap-2.5">
+  <div className="flex flex-wrap gap-3">
     {options.map((opt) => {
       const id     = typeof opt === "string" ? opt : opt.id;
       const label  = typeof opt === "string" ? opt : opt.label;
@@ -28,19 +26,19 @@ const MultiSelect = ({ options, selected, onToggle }: MultiSelectProps) => (
             transition-all duration-200 font-body select-none
             ${active
               ? "bg-primary/15 border-primary text-primary shadow-sm shadow-primary/10"
-              : "bg-white/3 border-sand/15 text-sand/60 hover:border-sand/35 hover:text-sand/85 hover:bg-white/5"
+              : "bg-background border-border text-foreground/70 hover:border-primary/50 hover:text-foreground hover:bg-muted/60"
             }`}
         >
           {Icon && (
             <Icon
               className={`w-3.5 h-3.5 flex-shrink-0 transition-colors duration-200 ${
-                active ? "text-primary" : "text-sand/40 group-hover:text-sand/60"
+                active ? "text-primary" : "text-muted-foreground group-hover:text-foreground"
               }`}
             />
           )}
           {active
-            ? <Check className="w-3 h-3 flex-shrink-0" />
-            : <span className="w-3 h-3 flex-shrink-0 rounded-full border border-sand/20 group-hover:border-sand/40 transition-colors" />
+            ? <Check className="w-3 h-3 flex-shrink-0 text-primary" />
+            : <span className="w-3 h-3 flex-shrink-0 rounded-full border border-border group-hover:border-primary/40 transition-colors" />
           }
           {label}
         </button>

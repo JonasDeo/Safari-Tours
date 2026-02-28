@@ -12,6 +12,7 @@ import NotFound from "./pages/NotFound";
 import ScrollToTop from "./components/ScrollToTop";
 import QuotePage from "./pages/Quote";
 import BlogPage from "./pages/Blog";
+import BlogPostPage from "./pages/BlogPost";
 
 const queryClient = new QueryClient();
 
@@ -27,9 +28,10 @@ const App = () => (
           <Route path="/tours" element={<Tours />} />
           <Route path="/destinations" element={<Destinations />} />
           <Route path="/about" element={<About />} />
-          <Route path="/blog" element={<BlogPage/>} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/quote" element={<QuotePage />} />
+          <Route path="/blog" element={<BlogPage/>} />
+          <Route path="/blog/:slug" element={<BlogPostPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

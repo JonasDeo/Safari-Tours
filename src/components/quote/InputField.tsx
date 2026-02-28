@@ -22,7 +22,7 @@ const InputField = ({
   <div className="flex flex-col gap-2">
     <label
       htmlFor={name}
-      className="text-xs uppercase tracking-[0.15em] text-sand/40 font-body"
+      className="text-xs uppercase tracking-[0.15em] text-muted-foreground font-body"
     >
       {label}
       {required && <span className="text-primary ml-1" aria-hidden="true">*</span>}
@@ -36,9 +36,9 @@ const InputField = ({
       onChange={onChange}
       placeholder={placeholder}
       required={required}
-      className="w-full bg-white/3 border border-sand/12 rounded-xl px-4 py-3.5
-        text-sand/80 placeholder-sand/20 text-sm font-body
-        focus:outline-none focus:border-primary/60 focus:bg-primary/5
+      className="w-full bg-background border border-border rounded-xl px-4 py-3.5
+        text-foreground placeholder-muted-foreground/50 text-sm font-body
+        focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20
         transition-all duration-200"
     />
   </div>

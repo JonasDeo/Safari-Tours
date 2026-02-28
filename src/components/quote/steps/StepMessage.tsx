@@ -1,6 +1,6 @@
 import type { ChangeEvent } from "react";
 import { CheckCircle2 } from "lucide-react";
-import { QuoteState } from "../quote/Quote";
+import { QuoteState } from "../Quote";
 
 interface StepMessageProps {
   message:   string;
