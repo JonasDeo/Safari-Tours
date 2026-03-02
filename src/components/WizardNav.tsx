@@ -7,7 +7,7 @@ interface WizardNavProps {
   onBack:      () => void;
   onNext:      () => void;
   onSubmit:    () => void;
-  canAdvance?: boolean;   // optional — next is always enabled (steps are optional)
+  canAdvance?: boolean;   
 }
 
 const WizardNav = ({
@@ -22,7 +22,6 @@ const WizardNav = ({
 
   return (
     <div className="flex items-center justify-between mt-10 pt-8 border-t border-sand/8">
-      {/* Back */}
       <motion.button
         type="button"
         onClick={onBack}

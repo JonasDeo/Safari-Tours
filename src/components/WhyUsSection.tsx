@@ -22,13 +22,13 @@ const WhyUsSection = () => (
     <div className="container mx-auto px-6 lg:px-10 relative z-10">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 xl:gap-24 items-center">
 
-        {/* ── LEFT — Asymmetric image collage ──────────────────────── */}
+        {/* LEFT — Asymmetric image collage */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.7, ease: [0.32, 0.72, 0, 1] }}
-          className="relative order-2 lg:order-1 select-none"
+          className="relative order-1 lg:order-1 select-none"
           style={{ height: "520px" }}
         >
           {/* Large hero image — left, full height */}
@@ -94,10 +94,10 @@ const WhyUsSection = () => (
           </motion.div>
         </motion.div>
 
-        {/* ── RIGHT — Content with logo watermark ──────────────────── */}
-        <div className="order-1 lg:order-2 relative">
+        {/* RIGHT Content with logo watermark */}
+        <div className="order-2 lg:order-2 relative">
 
-          {/* Logo watermark — absolutely centered behind the content */}
+          {/* Logo watermark */}
           <img
             src={logoSrc}
             alt="" aria-hidden

@@ -7,7 +7,7 @@ const ScrollToTop: React.FC = () => {
   useEffect(() => {
     window.scrollTo({
       top: 0,
-      behavior: "smooth", // "auto" for no animation.
+      behavior: "smooth",
     });
   }, [pathname]);
 

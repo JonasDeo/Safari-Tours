@@ -1,6 +1,6 @@
 import { BlogCategory, BlogPost } from "@/components/blog/Blog";
 
-// ─── Categories ───────────────────────────────────────────────────────────────
+// Categories
 // Centralised so CategoryFilter and filtering logic share the same source
 
 export const CATEGORIES: BlogCategory[] = [
@@ -12,10 +12,7 @@ export const CATEGORIES: BlogCategory[] = [
   "Planning",
 ];
 
-// ─── Posts ────────────────────────────────────────────────────────────────────
-// Replace `image` values with real imports:  import img from "@/assets/..."
-// or use public URL strings.
-
+//  Posts 
 export const BLOG_POSTS: BlogPost[] = [
   {
     id:          "1",

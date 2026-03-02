@@ -79,7 +79,7 @@ const QuotePage = () => {
     <PageLayout>
     <div className="min-h-screen bg-background">
 
-      {/* ── Hero ─────────────────────────────────────────────────────── */}
+      {/* Hero */}
       <section className="relative h-[40vh] flex items-center justify-center overflow-hidden">
         <img
           src={heroImg}
@@ -97,12 +97,7 @@ const QuotePage = () => {
         </div>
       </section>
 
-      {/* ── Wizard ───────────────────────────────────────────────────── */}
-      {/*
-        ref={wizardRef} sits here so mobile scroll targets the TOP of
-        the wizard section — not the top of the page (which would show
-        the hero) and not the main panel (which would skip the left panel).
-      */}
+      {/* Wizard */}
       <div ref={wizardRef} className="flex flex-col lg:flex-row bg-background">
 
         {/* ── Left panel ───────────────────────────────────────────────
@@ -178,9 +173,7 @@ const QuotePage = () => {
           </div>
         </aside>
 
-        {/* ── Right panel ──────────────────────────────────────────────
-          Plain bg-background. Scrolls normally. No sticky behaviour.
-        ─────────────────────────────────────────────────────────────── */}
+        {/* Right panel */}
         <main className="flex-1 px-6 py-10 sm:px-10 lg:px-14 lg:py-14 min-h-[60vh]">
 
           {!submitted && (

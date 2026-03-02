@@ -9,6 +9,7 @@ const NAV_LINKS = [
   { label: "Home", href: "/" },
   {
     label: "Tours",
+    href:"/tours",
     dropdown: [
       { label: "Mountain Trek", href: "/tours?type=mountain" },
       { label: "Beach",         href: "/tours?type=beach" },
@@ -22,7 +23,6 @@ const NAV_LINKS = [
 ];
 
 // Hooks
-
 function useClickOutside(
   ref: React.RefObject<HTMLElement>,
   handler: () => void
@@ -307,7 +307,7 @@ useEffect(() => {
         </div>
       </div>
     
-      {/* Backdrop — closes menu when tapping outside */}
+      {/* Backdrop */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div

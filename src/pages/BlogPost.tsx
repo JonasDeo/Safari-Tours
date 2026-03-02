@@ -52,12 +52,12 @@ const BlogPostPage = () => {
       {/* Hero — full-bleed image fading into page */}
       <PostHero post={post} />
 
-      {/* ── Body layout: narrow prose + sticky sidebar ─────────────── */}
+      {/* Body layout: narrow prose + sticky sidebar */}
       <div className="bg-background">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_260px] xl:grid-cols-[1fr_300px] gap-12 xl:gap-16 max-w-6xl mx-auto">
 
-            {/* ── Main article column ──────────────────────────────── */}
+            {/* Main article column */}
             <article className="min-w-0 max-w-2xl">
               <PostBody blocks={post.body} />
 
@@ -71,7 +71,7 @@ const BlogPostPage = () => {
               <RelatedPosts posts={relatedPosts as any} />
             </article>
 
-            {/* ── Sticky sidebar ───────────────────────────────────── */}
+            {/* Sticky sidebar */}
             <aside className="hidden lg:block">
               <div className="sticky top-24 space-y-8">
                 <TableOfContents items={toc} />

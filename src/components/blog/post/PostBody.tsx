@@ -4,8 +4,6 @@ import { ContentBlock } from "./types/blogPost";
 import PullQuote from "./PullQuote";
 
 // Inline text formatter 
-// Converts **bold** and _italic_ markers in plain strings to React elements.
-
 const parseInline = (text: string): React.ReactNode => {
   const parts = text.split(/(\*\*[^*]+\*\*|_[^_]+_)/g);
   return parts.map((part, i) => {
