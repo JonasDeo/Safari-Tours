@@ -41,7 +41,7 @@ const HeroSection = () => {
           </Link>
 
           <Link
-            to="/contact"
+            to="/quote"
             className="font-body text-sm uppercase tracking-widest px-8 py-3.5 border border-sand/40 text-sand hover:bg-sand/10 transition-all rounded-sm"
           >
             Plan Your African Safari

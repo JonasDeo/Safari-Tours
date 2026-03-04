@@ -21,10 +21,10 @@ const FeaturedPost = ({ post }: FeaturedPostProps) => (
     transition={{ duration: 0.5, ease: [0.32, 0.72, 0, 1] }}
     className="group relative overflow-hidden rounded-2xl bg-card border border-border"
   >
-    <Link to={`/blog/${post.slug}`} className="grid lg:grid-cols-[1.2fr_1fr] min-h-[480px]">
+    <Link to={`/blog/${post.slug}`} className="grid lg:grid-cols-[1.2fr_1fr]">
 
       {/* Image */}
-      <div className="relative overflow-hidden order-1">
+      <div className="relative overflow-hidden order-1 h-64 sm:h-80 lg:h-auto lg:min-h-[480px]">
         <img
           src={post.image}
           alt={post.title}

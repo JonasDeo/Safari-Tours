@@ -1,4 +1,4 @@
-import type { FullBlogPost } from "../types/blogPost";
+import type { BlogPost, FullBlogPost } from "../types/blogPost";
 
 // Full posts (keyed by slug) 
 // Add one entry per slug that matches BLOG_POSTS in blogData.ts
@@ -132,7 +132,7 @@ export const getPostBySlug = (slug: string): FullBlogPost | undefined =>
 export const getRelatedPosts = (
   currentSlug: string,
   category: string,
-  allPosts: { slug: string; category: string; [key: string]: unknown }[],
+  allPosts: BlogPost[],
   n = 3,
 ) =>
   allPosts

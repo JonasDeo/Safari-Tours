@@ -2,8 +2,8 @@ import { WIZARD_STEPS } from "@/constants/QuoteData";
 import { motion } from "framer-motion";
 
 interface WizardProgressProps {
-  step:   number;
-  goTo:   (n: number) => void;
+  step: number;
+  goTo: (n: number) => void;
 }
 
 const WizardProgress = ({ step, goTo }: WizardProgressProps) => {
@@ -11,17 +11,17 @@ const WizardProgress = ({ step, goTo }: WizardProgressProps) => {
 
   return (
     <div className="w-full">
-      {/* Step label + counter */}
-      <div className="flex items-center justify-between mb-3">
+      {/* Label + counter */}
+      <div className="flex items-center justify-between mb-2.5">
         <motion.p
           key={step}
           initial={{ opacity: 0, y: 4 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-xs tracking-[0.2em] uppercase text-primary font-body font-semibold"
+          className="text-xs tracking-[0.2em] uppercase text-primary font-body font-semibold truncate pr-4"
         >
           {WIZARD_STEPS[step].label}
         </motion.p>
-        <span className="text-xs font-mono text-muted-foreground">
+        <span className="text-xs font-mono text-muted-foreground flex-shrink-0">
           {String(step + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
         </span>
       </div>
@@ -36,8 +36,8 @@ const WizardProgress = ({ step, goTo }: WizardProgressProps) => {
         />
       </div>
 
-      {/* Clickable dots */}
-      <div className="flex items-center gap-1.5 mt-3">
+      {/* Clickable step dots — scroll horizontally on very small screens */}
+      <div className="flex items-center gap-1.5 mt-3 overflow-x-auto pb-0.5 scrollbar-none">
         {WIZARD_STEPS.map((s, i) => {
           const completed = i < step;
           const current   = i === step;
@@ -47,7 +47,8 @@ const WizardProgress = ({ step, goTo }: WizardProgressProps) => {
               onClick={() => completed ? goTo(i) : undefined}
               disabled={!completed}
               aria-label={completed ? `Go back to ${s.label}` : s.label}
-              className={`transition-all duration-300 rounded-full
+              title={s.label}
+              className={`flex-shrink-0 rounded-full transition-all duration-300
                 ${current   ? "w-5 h-1.5 bg-primary" : ""}
                 ${completed ? "w-1.5 h-1.5 bg-primary/50 hover:bg-primary cursor-pointer" : ""}
                 ${!completed && !current ? "w-1.5 h-1.5 bg-border" : ""}

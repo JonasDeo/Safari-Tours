@@ -7,36 +7,36 @@ interface WizardNavProps {
   onBack:      () => void;
   onNext:      () => void;
   onSubmit:    () => void;
-  canAdvance?: boolean;   
+  canAdvance?: boolean;
 }
 
 const WizardNav = ({
-  step,
-  totalSteps,
-  onBack,
-  onNext,
-  onSubmit,
+  step, totalSteps, onBack, onNext, onSubmit, canAdvance = true,
 }: WizardNavProps) => {
-  const isFirst  = step === 0;
-  const isLast   = step === totalSteps - 1;
+  const isFirst = step === 0;
+  const isLast  = step === totalSteps - 1;
+  const blocked = !canAdvance;
 
   return (
-    <div className="flex items-center justify-between mt-10 pt-8 border-t border-sand/8">
+    <div className="flex items-center justify-between mt-10 pt-6
+      border-t border-border/60 gap-4">
+
+      {/* Back */}
       <motion.button
         type="button"
         onClick={onBack}
         disabled={isFirst}
         whileHover={!isFirst ? { x: -2 } : {}}
         whileTap={!isFirst ? { scale: 0.97 } : {}}
-        className={`flex items-center gap-2 px-5 py-3 rounded-full text-sm font-body
-          transition-all duration-200
+        className={`flex items-center gap-2 px-4 py-2.5 sm:px-5 sm:py-3
+          rounded-full text-xs sm:text-sm font-body transition-all duration-200
           ${isFirst
             ? "opacity-0 pointer-events-none"
-            : "text-sand/50 hover:text-sand/80 border border-sand/10 hover:border-sand/25"
+            : "text-foreground/50 hover:text-foreground/80 border border-border hover:border-foreground/20"
           }`}
       >
         <ArrowLeft className="w-3.5 h-3.5" />
-        Back
+        <span className="hidden xs:inline">Back</span>
       </motion.button>
 
       {/* Next / Submit */}
@@ -44,24 +44,35 @@ const WizardNav = ({
         <motion.button
           type="button"
           onClick={onSubmit}
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.97 }}
-          className="group flex items-center gap-2.5 px-7 py-3.5 bg-primary text-dark
-            text-sm font-semibold tracking-widest uppercase rounded-full
-            shadow-lg shadow-primary/25 hover:bg-primary/90 transition-all duration-200"
+          disabled={blocked}
+          whileHover={!blocked ? { scale: 1.02 } : {}}
+          whileTap={!blocked ? { scale: 0.97 } : {}}
+          className={`group flex items-center gap-2 px-5 py-2.5 sm:px-7 sm:py-3.5
+            text-xs sm:text-sm font-semibold tracking-widest uppercase rounded-full
+            transition-all duration-200
+            ${blocked
+              ? "bg-primary/35 text-dark/50 cursor-not-allowed shadow-none"
+              : "bg-primary text-dark shadow-lg shadow-primary/25 hover:bg-primary/90"
+            }`}
         >
           Send Request
-          <Send className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          <Send className="w-3.5 h-3.5 transition-transform duration-200
+            group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
         </motion.button>
       ) : (
         <motion.button
           type="button"
           onClick={onNext}
-          whileHover={{ x: 2 }}
-          whileTap={{ scale: 0.97 }}
-          className="group flex items-center gap-2 px-7 py-3.5 bg-primary text-dark
-            text-sm font-semibold tracking-widest uppercase rounded-full
-            shadow-lg shadow-primary/25 hover:bg-primary/90 transition-all duration-200"
+          disabled={blocked}
+          whileHover={!blocked ? { x: 2 } : {}}
+          whileTap={!blocked ? { scale: 0.97 } : {}}
+          className={`group flex items-center gap-2 px-5 py-2.5 sm:px-7 sm:py-3.5
+            text-xs sm:text-sm font-semibold tracking-widest uppercase rounded-full
+            transition-all duration-200
+            ${blocked
+              ? "bg-primary/35 text-dark/50 cursor-not-allowed shadow-none"
+              : "bg-primary text-dark shadow-lg shadow-primary/25 hover:bg-primary/90"
+            }`}
         >
           Continue
           <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-1" />

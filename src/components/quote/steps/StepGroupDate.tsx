@@ -3,17 +3,18 @@ import InputField from "../InputField";
 import { QuoteFormFields } from "../Quote";
 
 interface StepGroupDateProps {
-  form:         QuoteFormFields;
+  form:          QuoteFormFields;
   onFieldChange: (key: keyof QuoteFormFields, value: string) => void;
+  errors?:       Record<string, string>;
 }
 
-const StepGroupDate = ({ form, onFieldChange }: StepGroupDateProps) => {
+const StepGroupDate = ({ form, onFieldChange, errors = {} }: StepGroupDateProps) => {
   const handle = (e: ChangeEvent<HTMLInputElement>) =>
     onFieldChange(e.target.name as keyof QuoteFormFields, e.target.value);
 
   return (
-    <div className="space-y-6">
-      <div className="grid grid-cols-2 gap-4">
+    <div className="space-y-5">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4">
         <InputField
           label="Adults"
           type="number"
@@ -21,6 +22,7 @@ const StepGroupDate = ({ form, onFieldChange }: StepGroupDateProps) => {
           value={form.adults}
           onChange={handle}
           placeholder="2"
+          error={errors.groupSize}
         />
         <InputField
           label="Children (under 12)"
@@ -38,6 +40,7 @@ const StepGroupDate = ({ form, onFieldChange }: StepGroupDateProps) => {
         name="arrivalDate"
         value={form.arrivalDate}
         onChange={handle}
+        error={errors.startDate}
       />
     </div>
   );

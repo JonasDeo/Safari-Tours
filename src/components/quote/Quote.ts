@@ -56,3 +56,24 @@ export interface WizardControls {
   goTo:       (n: number) => void;
   canAdvance: boolean;
 }
+
+// ─── Validation ──────────────────────────────────────────────────────────────
+
+export type StepErrors = Partial<
+  Record<
+    | "tripTypes"
+    | "destinations"
+    | "experiences"
+    | "occasions"
+    | "accommodation"
+    | "adults"
+    | "children"
+    | "arrivalDate"
+    | "firstName"
+    | "lastName"
+    | "email"
+    | "phone"
+    | "message",
+    string
+  >
+>;
