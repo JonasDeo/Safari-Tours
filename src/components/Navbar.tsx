@@ -43,20 +43,42 @@ function useClickOutside(ref: React.RefObject<HTMLElement>, handler: () => void)
 const NavLogo = () => (
   <Link
     to="/"
-    className="flex items-center gap-2.5 hover:opacity-90 transition-opacity group flex-shrink-0"
+    className="flex items-center gap-3 hover:opacity-90 transition-opacity group flex-shrink-0"
     aria-label="Balbina Safaris — Home"
   >
     <img
       src={logoSrc}
       alt="Balbina Safaris"
-      className="w-9 h-9 object-contain flex-shrink-0
+      className="w-12 h-12 object-contain flex-shrink-0
         group-hover:scale-105 transition-transform duration-200"
       style={{ filter: "brightness(0) invert(1)" }}
     />
-    <span className="font-display text-xl font-bold tracking-wide leading-none">
-      <span className="text-sand">Balbina</span>
-      <span className="text-primary">Safaris</span>
-    </span>
+    <div className="leading-none flex flex-col gap-0.5">
+      <span
+        className="text-sand"
+        style={{
+          fontFamily: '"Yeseva One", serif',
+          fontSize: "1.45rem",
+          lineHeight: 1,
+          letterSpacing: "0.02em",
+        }}
+      >
+        Balbina
+      </span>
+      <span
+        className="text-primary"
+        style={{
+          fontFamily: '"Cormorant Garamond", serif',
+          fontStyle: "italic",
+          fontSize: "0.65rem",
+          letterSpacing: "0.28em",
+          lineHeight: 1,
+          textTransform: "uppercase",
+        }}
+      >
+        Safaris
+      </span>
+    </div>
   </Link>
 );
 
