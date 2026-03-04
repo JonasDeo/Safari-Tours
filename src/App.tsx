@@ -13,6 +13,7 @@ import ScrollToTop from "./components/ScrollToTop";
 import QuotePage from "./pages/Quote";
 import BlogPage from "./pages/Blog";
 import BlogPostPage from "./pages/BlogPost";
+import DestinationsPage from "./pages/Destinations";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +28,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/tours" element={<Tours />} />
           <Route path="/destinations" element={<Destinations />} />
+          <Route path="/destinations/:slug" element={<DestinationsPage/>}/>
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/quote" element={<QuotePage />} />
