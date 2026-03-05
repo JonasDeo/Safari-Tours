@@ -1,0 +1,181 @@
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { Save, Eye, EyeOff, User, Mail, Lock, CheckCircle } from "lucide-react";
+import { useAdminAuth } from "../AdminAuth";
+
+const iStyle = {
+  background: "hsl(var(--muted)/0.5)",
+  border:     "1px solid hsl(var(--border)/0.6)",
+  color:      "hsl(var(--foreground))",
+};
+const inputCls = "w-full px-4 py-3 rounded-xl text-sm font-body outline-none transition-all duration-200";
+const onF = (e: React.FocusEvent<any>) => e.currentTarget.style.borderColor = "hsl(var(--primary)/0.5)";
+const onB = (e: React.FocusEvent<any>) => e.currentTarget.style.borderColor = "hsl(var(--border)/0.6)";
+
+const SectionCard = ({ title, icon: Icon, children }: { title: string; icon: any; children: React.ReactNode }) => (
+  <div className="rounded-2xl p-6 space-y-5"
+    style={{ border: "1px solid hsl(var(--border)/0.6)", background: "hsl(var(--muted)/0.2)" }}>
+    <div className="flex items-center gap-2.5">
+      <div className="w-8 h-8 rounded-lg flex items-center justify-center"
+        style={{ background: "hsl(var(--primary)/0.1)" }}>
+        <Icon className="w-4 h-4" style={{ color: "hsl(var(--primary))" }} />
+      </div>
+      <p className="text-xs uppercase tracking-[0.2em] font-body text-muted-foreground">{title}</p>
+    </div>
+    {children}
+  </div>
+);
+
+const ProfilePage = () => {
+  const { adminName } = useAdminAuth();
+
+  const [profile, setProfile] = useState({ name: adminName, email: "admin@balbinasafaris.com" });
+  const [pw,      setPw]      = useState({ current: "", next: "", confirm: "" });
+  const [showPw,  setShowPw]  = useState({ current: false, next: false, confirm: false });
+  const [saving,  setSaving]  = useState<"profile" | "password" | null>(null);
+  const [success, setSuccess] = useState<"profile" | "password" | null>(null);
+  const [pwError, setPwError] = useState("");
+
+  const saveProfile = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSaving("profile");
+    // TODO: PATCH /api/admin/profile  { name, email }
+    await new Promise(r => setTimeout(r, 700));
+    setSaving(null); setSuccess("profile");
+    setTimeout(() => setSuccess(null), 2500);
+  };
+
+  const savePassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setPwError("");
+    if (pw.next !== pw.confirm) { setPwError("New passwords don't match."); return; }
+    if (pw.next.length < 8)     { setPwError("Password must be at least 8 characters."); return; }
+    setSaving("password");
+    // TODO: POST /api/admin/change-password  { current, newPassword }
+    await new Promise(r => setTimeout(r, 700));
+    setSaving(null); setSuccess("password");
+    setPw({ current: "", next: "", confirm: "" });
+    setTimeout(() => setSuccess(null), 2500);
+  };
+
+  const toggleShow = (k: keyof typeof showPw) =>
+    setShowPw(v => ({ ...v, [k]: !v[k] }));
+
+  const PwField = ({ label, field }: { label: string; field: keyof typeof pw }) => (
+    <div className="space-y-1.5">
+      <label className="text-xs uppercase tracking-[0.15em] font-body text-muted-foreground">{label}</label>
+      <div className="relative">
+        <input type={showPw[field] ? "text" : "password"} value={pw[field]}
+          onChange={e => setPw(v => ({ ...v, [field]: e.target.value }))} required
+          className={`${inputCls} pr-11`} style={iStyle} onFocus={onF} onBlur={onB} />
+        <button type="button" onClick={() => toggleShow(field)}
+          className="absolute right-3 top-1/2 -translate-y-1/2"
+          style={{ color: "hsl(var(--muted-foreground))" }}>
+          {showPw[field] ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+        </button>
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="max-w-2xl space-y-8">
+      <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
+        <h1 className="font-display text-2xl text-foreground mb-1">Profile</h1>
+        <p className="font-body text-sm text-muted-foreground">Manage your account details and password</p>
+      </motion.div>
+
+      {/* Avatar display */}
+      <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.08 }}
+        className="flex items-center gap-4 p-5 rounded-2xl"
+        style={{ border: "1px solid hsl(var(--border)/0.6)", background: "hsl(var(--muted)/0.2)" }}>
+        <div className="w-14 h-14 rounded-full flex items-center justify-center text-xl font-bold font-body"
+          style={{ background: "hsl(var(--primary)/0.15)", color: "hsl(var(--primary))" }}>
+          {profile.name.charAt(0)}
+        </div>
+        <div>
+          <p className="font-body font-semibold text-foreground">{profile.name}</p>
+          <p className="font-body text-sm text-muted-foreground">{profile.email}</p>
+          <p className="font-body text-xs text-muted-foreground mt-0.5">Administrator</p>
+        </div>
+      </motion.div>
+
+      {/* Profile form */}
+      <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.12 }}>
+        <SectionCard title="Account Info" icon={User}>
+          <form onSubmit={saveProfile} className="space-y-4">
+            <div className="space-y-1.5">
+              <label className="text-xs uppercase tracking-[0.15em] font-body text-muted-foreground">
+                Display Name
+              </label>
+              <input value={profile.name} onChange={e => setProfile(v => ({ ...v, name: e.target.value }))}
+                className={inputCls} style={iStyle} onFocus={onF} onBlur={onB} />
+            </div>
+            <div className="space-y-1.5">
+              <label className="text-xs uppercase tracking-[0.15em] font-body text-muted-foreground flex items-center gap-1.5">
+                <Mail className="w-3 h-3" /> Email
+              </label>
+              <input type="email" value={profile.email}
+                onChange={e => setProfile(v => ({ ...v, email: e.target.value }))}
+                className={inputCls} style={iStyle} onFocus={onF} onBlur={onB} />
+            </div>
+            <div className="flex items-center gap-3">
+              <motion.button type="submit" disabled={saving === "profile"}
+                whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.98 }}
+                className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-body
+                  font-semibold transition-all duration-200"
+                style={{ background: "hsl(var(--primary))", color: "hsl(var(--dark))" }}>
+                {saving === "profile"
+                  ? <span className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                  : <Save className="w-4 h-4" />}
+                Save Profile
+              </motion.button>
+              {success === "profile" && (
+                <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+                  className="flex items-center gap-1.5 text-sm font-body"
+                  style={{ color: "hsl(142 70% 50%)" }}>
+                  <CheckCircle className="w-4 h-4" /> Saved
+                </motion.span>
+              )}
+            </div>
+          </form>
+        </SectionCard>
+      </motion.div>
+
+      {/* Password form */}
+      <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.16 }}>
+        <SectionCard title="Change Password" icon={Lock}>
+          <form onSubmit={savePassword} className="space-y-4">
+            <PwField label="Current Password"  field="current" />
+            <PwField label="New Password"       field="next"    />
+            <PwField label="Confirm New Password" field="confirm" />
+            {pwError && (
+              <p className="text-xs font-body" style={{ color: "hsl(0 70% 65%)" }}>{pwError}</p>
+            )}
+            <div className="flex items-center gap-3">
+              <motion.button type="submit" disabled={saving === "password"}
+                whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.98 }}
+                className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-body
+                  font-semibold transition-all duration-200"
+                style={{ background: "hsl(var(--primary))", color: "hsl(var(--dark))" }}>
+                {saving === "password"
+                  ? <span className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                  : <Lock className="w-4 h-4" />}
+                Update Password
+              </motion.button>
+              {success === "password" && (
+                <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+                  className="flex items-center gap-1.5 text-sm font-body"
+                  style={{ color: "hsl(142 70% 50%)" }}>
+                  <CheckCircle className="w-4 h-4" /> Password updated
+                </motion.span>
+              )}
+            </div>
+          </form>
+        </SectionCard>
+      </motion.div>
+    </div>
+  );
+};
+
+export default ProfilePage;
