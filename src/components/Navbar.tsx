@@ -225,11 +225,12 @@ const Navbar = () => {
     location.pathname === href ||
     (href !== "/" && location.pathname.startsWith(href + "/"));
 
+  // ── KEY FIX: on mobile always use solid bg to eliminate the gap ──
   const mainNavBg = mobileOpen
     ? "bg-dark-overlay"
     : !isHome || scrolled
     ? "bg-dark-overlay/95 backdrop-blur-sm shadow-[0_1px_0_rgba(255,255,255,0.05)]"
-    : "bg-transparent";
+    : "bg-dark-overlay/95 lg:bg-transparent";   // solid on mobile, transparent on desktop home
 
   return (
     <>
