@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Search, Filter, ArrowRight, ChevronDown } from "lucide-react";
+import { Search, Filter, ArrowRight, ChevronDown, MessageSquare, Clock, CheckCircle, TrendingUp } from "lucide-react";
 
 // ── Mock data ─────────────────────────────────────────────────────────────────
 
@@ -25,6 +25,34 @@ const STATUS_STYLES: Record<string, { bg: string; color: string }> = {
 };
 
 const STATUSES = ["ALL", "PENDING", "REVIEWED", "RESPONDED", "CONVERTED", "CLOSED"];
+
+// ── Derived stats ─────────────────────────────────────────────────────────────
+const SUMMARY = [
+  {
+    label: "Total Quotes",
+    value: ALL_QUOTES.length,
+    icon: MessageSquare,
+    color: "hsl(210 80% 60%)",
+  },
+  {
+    label: "Pending Reply",
+    value: ALL_QUOTES.filter(q => q.status === "PENDING").length,
+    icon: Clock,
+    color: "hsl(38 90% 55%)",
+  },
+  {
+    label: "Responded",
+    value: ALL_QUOTES.filter(q => q.status === "RESPONDED" || q.status === "REVIEWED").length,
+    icon: CheckCircle,
+    color: "hsl(142 70% 50%)",
+  },
+  {
+    label: "Converted",
+    value: ALL_QUOTES.filter(q => q.status === "CONVERTED").length,
+    icon: TrendingUp,
+    color: "hsl(var(--primary))",
+  },
+];
 
 const StatusBadge = ({ status }: { status: string }) => {
   const s = STATUS_STYLES[status] ?? STATUS_STYLES.PENDING;
@@ -66,6 +94,30 @@ const QuotesPage = () => {
           </p>
         </div>
       </motion.div>
+
+      {/* Summary cards */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+        {SUMMARY.map((s, i) => (
+          <motion.div key={s.label}
+            initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.35, delay: i * 0.06 }}
+            className="rounded-xl p-4 flex items-center gap-3"
+            style={{ border: "1px solid hsl(var(--border)/0.5)", background: "hsl(var(--muted)/0.4)" }}>
+            <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
+              style={{ background: `${s.color}18`, border: `1px solid ${s.color}30` }}>
+              <s.icon className="w-4 h-4" style={{ color: s.color }} />
+            </div>
+            <div>
+              <p className="font-display text-2xl font-bold text-foreground leading-none mb-0.5">
+                {s.value}
+              </p>
+              <p className="font-body text-xs text-muted-foreground uppercase tracking-wider">
+                {s.label}
+              </p>
+            </div>
+          </motion.div>
+        ))}
+      </div>
 
       {/* Filters bar */}
       <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}

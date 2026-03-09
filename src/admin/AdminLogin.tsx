@@ -29,7 +29,8 @@ const AdminLogin = () => {
   };
 
   return (
-    <div className="min-h-screen flex overflow-hidden">
+    // ── Fixed full-screen, no scroll ──────────────────────────────────────────
+    <div className="fixed inset-0 flex overflow-hidden">
 
       {/* ── Left: safari image panel (desktop only) ── */}
       <div className="hidden lg:block lg:w-1/2 xl:w-3/5 relative flex-shrink-0">
@@ -55,30 +56,32 @@ const AdminLogin = () => {
         </div>
       </div>
 
-      {/* ── Right: form panel ── */}
-      <div className="flex-1 flex flex-col items-center justify-center px-6 py-12 relative"
+      {/* ── Right: form panel — flex-centered, no scroll ── */}
+      <div className="flex-1 flex items-center justify-center relative overflow-hidden"
         style={{ background: "#0e1117" }}>
 
-        {/* Mobile BG */}
+        {/* Mobile background image */}
         <div className="lg:hidden absolute inset-0 pointer-events-none">
           <img src={bgImg} alt="" aria-hidden className="w-full h-full object-cover opacity-15" />
           <div className="absolute inset-0"
             style={{ background: "linear-gradient(to bottom, rgba(14,17,23,0.7), #0e1117 60%)" }} />
         </div>
 
-        {/* Top accent */}
+        {/* Top accent line */}
         <div className="absolute top-0 left-0 right-0 h-[2px]"
           style={{ background: "linear-gradient(90deg, transparent, hsl(var(--primary)), transparent)" }} />
 
-        <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: [0.32, 0.72, 0, 1] }}
-          className="w-full max-w-sm relative z-10">
+          className="w-full max-w-sm px-6 relative z-10"
+        >
 
           {/* Logo */}
-          <div className="flex flex-col items-center mb-10">
-            <div className="w-14 h-14 mb-4 flex items-center justify-center rounded-2xl"
-              style={{ background: "hsl(var(--primary)/0.1)", border: "1px solid hsl(var(--primary)/0.2)" }}>
-              <img src={logoSrc} alt="Balbina" className="w-9 h-9 object-contain"
+          <div className="flex flex-col items-center mb-8">
+            <div className="w-20 h-20 mb-4 flex items-center justify-center">
+              <img src={logoSrc} alt="Balbina" className="w-20 h-20 object-contain"
                 style={{ filter: "brightness(0) invert(1)" }} />
             </div>
             <h2 className="text-2xl text-sand mb-1" style={{ fontFamily: '"Yeseva One", serif' }}>
@@ -89,8 +92,12 @@ const AdminLogin = () => {
           </div>
 
           {/* Card */}
-          <div className="rounded-2xl p-8 space-y-5"
-            style={{ background: "hsl(var(--sand)/0.04)", border: "1px solid hsl(var(--sand)/0.08)", backdropFilter: "blur(12px)" }}>
+          <div className="rounded-2xl p-7 space-y-5"
+            style={{
+              background: "hsl(var(--sand)/0.04)",
+              border: "1px solid hsl(var(--sand)/0.08)",
+              backdropFilter: "blur(12px)",
+            }}>
 
             <div>
               <h3 className="font-display text-lg text-sand">Sign in</h3>
@@ -108,6 +115,8 @@ const AdminLogin = () => {
             )}
 
             <form onSubmit={handleSubmit} className="space-y-4">
+
+              {/* Email */}
               <div className="space-y-1.5">
                 <label className="text-xs uppercase tracking-[0.15em] font-body"
                   style={{ color: "hsl(var(--sand)/0.4)" }}>Email</label>
@@ -119,6 +128,7 @@ const AdminLogin = () => {
                   onBlur={e  => e.currentTarget.style.borderColor = "hsl(var(--sand)/0.1)"} />
               </div>
 
+              {/* Password */}
               <div className="space-y-1.5">
                 <label className="text-xs uppercase tracking-[0.15em] font-body"
                   style={{ color: "hsl(var(--sand)/0.4)" }}>Password</label>
@@ -130,19 +140,24 @@ const AdminLogin = () => {
                     onFocus={e => e.currentTarget.style.borderColor = "hsl(var(--primary)/0.6)"}
                     onBlur={e  => e.currentTarget.style.borderColor = "hsl(var(--sand)/0.1)"} />
                   <button type="button" onClick={() => setShowPw(v => !v)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 transition-colors"
                     style={{ color: "hsl(var(--sand)/0.35)" }}>
                     {showPw ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
                 </div>
               </div>
 
+              {/* Submit */}
               <motion.button type="submit" disabled={loading}
                 whileHover={!loading ? { scale: 1.01 } : {}}
                 whileTap={!loading ? { scale: 0.98 } : {}}
                 className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl
                   text-xs font-semibold tracking-widest uppercase font-body transition-all duration-200 mt-2"
-                style={{ background: loading ? "hsl(var(--primary)/0.4)" : "hsl(var(--primary))", color: "hsl(var(--dark))", cursor: loading ? "not-allowed" : "pointer" }}>
+                style={{
+                  background: loading ? "hsl(var(--primary)/0.4)" : "hsl(var(--primary))",
+                  color: "hsl(var(--dark))",
+                  cursor: loading ? "not-allowed" : "pointer",
+                }}>
                 {loading
                   ? <span className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
                   : <><LogIn className="w-3.5 h-3.5" /> Sign In</>}
@@ -150,9 +165,10 @@ const AdminLogin = () => {
             </form>
           </div>
 
-          <p className="text-center text-xs font-body mt-6" style={{ color: "hsl(var(--sand)/0.2)" }}>
+          <p className="text-center text-xs font-body mt-5" style={{ color: "hsl(var(--sand)/0.2)" }}>
             © {new Date().getFullYear()} Balbina Safaris · Admin Only
           </p>
+
         </motion.div>
       </div>
     </div>

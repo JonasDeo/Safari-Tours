@@ -104,9 +104,8 @@ const SidebarContent = ({
       {/* Logo */}
       <div className="px-4 py-5 flex items-center gap-3 flex-shrink-0"
         style={{ borderBottom: "1px solid hsl(var(--sand)/0.07)" }}>
-        <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
-          style={{ background: "hsl(var(--primary)/0.15)", border: "1px solid hsl(var(--primary)/0.25)" }}>
-          <img src={logoSrc} alt="" className="w-5 h-5 object-contain"
+        <div className="w-10 h-10 flex items-center justify-center flex-shrink-0">
+          <img src={logoSrc} alt="" className="w-10 h-10 object-contain"
             style={{ filter: "brightness(0) invert(1)" }} />
         </div>
         <AnimatePresence>

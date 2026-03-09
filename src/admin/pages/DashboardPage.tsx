@@ -75,7 +75,7 @@ const DashboardPage = () => (
     <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}>
       <h1 className="font-display text-2xl text-foreground mb-1">
-        Good morning 👋
+        Good morning!
       </h1>
       <p className="font-body text-sm text-muted-foreground">
         Here's what's happening with Balbina Safaris today.
