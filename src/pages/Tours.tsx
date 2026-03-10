@@ -1,77 +1,331 @@
+import { useState, useEffect } from "react";
+import { Link, useSearchParams } from "react-router-dom";
+import { motion } from "framer-motion";
+import { MapPin, Clock, ArrowRight, SlidersHorizontal, X } from "lucide-react";
 import PageLayout from "@/components/PageLayout";
-import { Clock, MapPin } from "lucide-react";
-import { Link } from "react-router-dom";
-import tour1 from "@/assets/tour-1.jpg";
-import tour2 from "@/assets/tour-2.jpg";
-import tour3 from "@/assets/tour-3.jpg";
-import tour4 from "@/assets/tour-4.jpg";
-import selfDriveImg from "@/assets/self-drive.jpg";
-import guidedImg from "@/assets/guided-safari.jpg";
-import kiliImg from "@/assets/kilimanjaro.jpg";
-import beachImg from "@/assets/beach.jpg";
+import { publicApi } from "@/lib/api";
+import tour1  from "@/assets/tour-1.jpg";
+import tour3  from "@/assets/tour-3.jpg";
+import tour4  from "@/assets/tour-4.jpg";
+import beach  from "@/assets/beach.jpg";
 
-const allTours = [
-  { title: "10 Days Best of Tanzania – Safari & Zanzibar Beach Escape", image: tour1, duration: "10 Days 9 Nights", location: "Arusha", price: "$3,800", tags: ["Beach Holiday", "Wildlife Adventure"] },
-  { title: "7 Days Great Migration & Big Cats Safari – Serengeti & Ngorongoro", image: tour2, duration: "7 Days 6 Nights", location: "Arusha", price: "$3,200", tags: ["Wildlife Adventure"] },
-  { title: "6 Days Tanzania Big Five & Cultural Experience Safari", image: tour3, duration: "6 Days 5 Nights", location: "Arusha", price: "$2,900", tags: ["Wildlife Adventure"] },
-  { title: "8 Days Ultimate Wildebeest Migration & Big Five Safari", image: tour4, duration: "8 Days 7 Nights", location: "Arusha", price: "$3,800", tags: ["Wildlife Adventure"] },
-  { title: "7 Days Big Five Safari & Tarangire Baobab Experience", image: guidedImg, duration: "7 Days 6 Nights", location: "Arusha", price: "$3,500", tags: ["Wildlife Adventure"] },
-  { title: "6 Days Luxury Serengeti & Ngorongoro Fly-In Safari", image: selfDriveImg, duration: "6 Days 5 Nights", location: "Arusha", price: "$4,600", tags: ["Wildlife Adventure"] },
-  { title: "6-Days Mount Kilimanjaro Trek – Machame Route", image: kiliImg, duration: "6 Days 5 Nights", location: "Moshi/Arusha", price: "$1,980", tags: ["Mountain Climbing"], oldPrice: "$2,280" },
-  { title: "Beach Escape – Zanzibar Island Retreat", image: beachImg, duration: "5 Days 4 Nights", location: "Zanzibar", price: "$1,500", tags: ["Beach Holiday"] },
+const TYPE_LABELS: Record<string, string> = {
+  GUIDED:     "Guided Safari",
+  SELF_DRIVE: "Self-Drive",
+  MOUNTAIN:   "Mountain",
+  BEACH:      "Beach",
+};
+
+const TYPE_FILTERS = ["All", "GUIDED", "SELF_DRIVE", "MOUNTAIN", "BEACH"];
+const DEST_FILTERS = ["All", "Tanzania", "Kenya", "Uganda", "Zanzibar"];
+
+// ── Tour card ─────────────────────────────────────────────────────────────────
+
+interface Tour {
+  id: number; slug: string; title: string; destination: string;
+  type: string; duration_days: number; price: number; currency: string;
+  images: string[] | null; excerpt: string | null; tags: string[] | null;
+}
+
+const FALLBACK_IMAGES = [
+  "https://images.unsplash.com/photo-1516426122078-c23e76319801?w=800",
+  "https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=800",
+  "https://images.unsplash.com/photo-1504945005722-33670dcaf685?w=800",
+  "https://images.unsplash.com/photo-1523805009345-7448845a9e53?w=800",
 ];
 
+const TourCard = ({ tour, i }: { tour: Tour; i: number }) => (
+  <motion.article
+    initial={{ opacity: 0, y: 24 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true, margin: "-60px" }}
+    transition={{ duration: 0.5, delay: i * 0.07, ease: [0.32, 0.72, 0, 1] }}
+    className="group flex flex-col rounded-2xl overflow-hidden border transition-all duration-300
+      hover:shadow-xl hover:-translate-y-0.5"
+    style={{ borderColor: "hsl(var(--border)/0.6)", background: "hsl(var(--background))" }}
+  >
+    {/* Image */}
+    <div className="relative overflow-hidden h-52">
+      <img src={(tour.images && tour.images[0]) || FALLBACK_IMAGES[i % FALLBACK_IMAGES.length]} alt={tour.title} loading="lazy"
+        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+
+      {/* Type badge */}
+      <span className="absolute top-3 left-3 text-xs font-body px-2.5 py-1 rounded-full font-medium"
+        style={{ background: "hsl(var(--primary)/0.9)", color: "hsl(var(--dark))" }}>
+        {TYPE_LABELS[tour.type]}
+      </span>
+
+      {/* Duration */}
+      <div className="absolute bottom-3 right-3 flex items-center gap-1.5 text-xs font-body text-sand/90">
+        <Clock className="w-3 h-3" />
+        {tour.duration_days} days
+      </div>
+    </div>
+
+    {/* Content */}
+    <div className="flex flex-col flex-1 p-5 gap-3">
+      {/* Destination */}
+      <div className="flex items-center gap-1.5 text-xs font-body"
+        style={{ color: "hsl(var(--primary))" }}>
+        <MapPin className="w-3 h-3" />
+        {tour.destination}
+      </div>
+
+      <h3 className="font-display text-lg text-foreground leading-snug group-hover:text-primary
+        transition-colors duration-200">
+        {tour.title}
+      </h3>
+
+      <p className="font-body text-sm text-muted-foreground leading-relaxed flex-1">
+        {tour.excerpt}
+      </p>
+
+      {/* Tags */}
+      <div className="flex flex-wrap gap-1.5">
+        {tour.tags.map(tag => (
+          <span key={tag} className="text-xs font-body px-2.5 py-1 rounded-full"
+            style={{ background: "hsl(var(--muted))", color: "hsl(var(--muted-foreground))" }}>
+            {tag}
+          </span>
+        ))}
+      </div>
+
+      {/* Footer */}
+      <div className="flex items-center justify-between pt-3 mt-1"
+        style={{ borderTop: "1px solid hsl(var(--border)/0.5)" }}>
+        <div>
+          <p className="text-xs font-body text-muted-foreground">From</p>
+          <p className="font-display text-xl font-bold text-foreground">
+            {tour.currency} {tour.price.toLocaleString()}
+            <span className="text-xs font-body font-normal text-muted-foreground ml-1">/ person</span>
+          </p>
+        </div>
+        <Link to={`/quote?tour=${tour.slug}`}
+          className="flex items-center gap-1.5 px-4 py-2.5 rounded-full text-xs font-body
+            font-semibold tracking-widest uppercase transition-all duration-200 group/btn"
+          style={{ background: "hsl(var(--primary))", color: "hsl(var(--dark))" }}>
+          Book Now
+          <ArrowRight className="w-3 h-3 transition-transform group-hover/btn:translate-x-0.5 duration-200" />
+        </Link>
+      </div>
+    </div>
+  </motion.article>
+);
+
+// ── Page ──────────────────────────────────────────────────────────────────────
+
 const ToursPage = () => {
+  const [searchParams] = useSearchParams();
+  const [typeFilter,  setTypeFilter]  = useState(searchParams.get("type")?.toUpperCase() ?? "All");
+  const [destFilter,  setDestFilter]  = useState("All");
+  const [showFilters, setShowFilters] = useState(false);
+  const [tours,       setTours]       = useState<Tour[]>([]);
+  const [loading,     setLoading]     = useState(true);
+
+  useEffect(() => {
+    publicApi.getTours()
+      .then(data => setTours(data as Tour[]))
+      .catch(() => setTours([]))
+      .finally(() => setLoading(false));
+  }, []);
+
+  const filtered = tours.filter(t => {
+    const matchType = typeFilter === "All" || t.type === typeFilter;
+    const matchDest = destFilter === "All" || t.destination === destFilter;
+    return matchType && matchDest;
+  });
+
+  const hasActiveFilters = typeFilter !== "All" || destFilter !== "All";
+
   return (
     <PageLayout>
-      {/* Hero banner */}
-      <section className="relative h-[40vh] flex items-center justify-center overflow-hidden">
-        <img src={tour2} alt="Safari tours" className="absolute inset-0 w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-dark-overlay/60" />
-        <div className="relative z-10 text-center">
-          <h1 className="font-display text-4xl md:text-5xl font-bold text-sand mb-3 text-shadow-hero">Our Safari Experiences</h1>
-          <p className="font-body text-sand/70 text-lg">Self-tested itineraries crafted for unforgettable adventures</p>
+
+      {/* ── Hero ── */}
+      <section className="relative flex items-center justify-center overflow-hidden"
+        style={{ height: "clamp(220px, 38vh, 400px)", paddingTop: "var(--nav-total-h, 64px)" }}>
+        <img src={tour1} alt="Safari tours"
+          className="absolute inset-0 w-full h-full object-cover object-center" />
+        <div className="absolute inset-0 bg-dark-overlay/65" />
+        <div className="relative z-10 text-center px-4">
+          <motion.p initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
+            className="text-xs tracking-[0.28em] uppercase font-body mb-3"
+            style={{ color: "hsl(var(--primary))" }}>
+            East Africa · Handcrafted Journeys
+          </motion.p>
+          <motion.h1 initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="font-display text-4xl md:text-5xl font-bold text-sand mb-3"
+            style={{ fontFamily: '"Yeseva One", serif' }}>
+            Our Safari Tours
+          </motion.h1>
+          <motion.p initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.18 }}
+            className="font-body text-sand/65 text-base max-w-md mx-auto">
+            From the Serengeti to the shores of Zanzibar — every journey crafted to order
+          </motion.p>
         </div>
       </section>
 
-      {/* Tours grid */}
-      <section className="py-16 bg-background">
+      {/* ── Filters ── */}
+      <div className="sticky top-[var(--nav-total-h,64px)] z-30 bg-background/95 backdrop-blur-sm"
+        style={{ borderBottom: "1px solid hsl(var(--border)/0.5)" }}>
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between mb-10">
-            <p className="font-body text-muted-foreground">{allTours.length} experiences available</p>
-            <Link to="/contact" className="font-body text-sm text-primary hover:text-terracotta-light underline underline-offset-4 transition-colors">
-              Request a Custom Plan
-            </Link>
+          <div className="flex items-center gap-3 py-3 overflow-x-auto scrollbar-none">
+
+            {/* Mobile filter toggle */}
+            <button onClick={() => setShowFilters(v => !v)}
+              className="lg:hidden flex items-center gap-2 px-4 py-2 rounded-full text-xs
+                font-body font-semibold uppercase tracking-wider flex-shrink-0 transition-all duration-200"
+              style={{ background: "hsl(var(--muted))", color: "hsl(var(--foreground))" }}>
+              <SlidersHorizontal className="w-3.5 h-3.5" />
+              Filters
+              {hasActiveFilters && (
+                <span className="w-1.5 h-1.5 rounded-full" style={{ background: "hsl(var(--primary))" }} />
+              )}
+            </button>
+
+            {/* Type filters */}
+            <div className="hidden lg:flex items-center gap-2">
+              {TYPE_FILTERS.map(f => (
+                <button key={f} onClick={() => setTypeFilter(f)}
+                  className="px-4 py-2 rounded-full text-xs font-body font-semibold
+                    uppercase tracking-wider flex-shrink-0 transition-all duration-200"
+                  style={typeFilter === f
+                    ? { background: "hsl(var(--primary))", color: "hsl(var(--dark))" }
+                    : { background: "hsl(var(--muted))", color: "hsl(var(--muted-foreground))" }}>
+                  {f === "All" ? "All Types" : TYPE_LABELS[f]}
+                </button>
+              ))}
+            </div>
+
+            {/* Divider */}
+            <div className="hidden lg:block w-px h-5 flex-shrink-0"
+              style={{ background: "hsl(var(--border))" }} />
+
+            {/* Destination filters */}
+            <div className="hidden lg:flex items-center gap-2">
+              {DEST_FILTERS.map(d => (
+                <button key={d} onClick={() => setDestFilter(d)}
+                  className="px-4 py-2 rounded-full text-xs font-body font-semibold
+                    uppercase tracking-wider flex-shrink-0 transition-all duration-200"
+                  style={destFilter === d
+                    ? { background: "hsl(var(--foreground))", color: "hsl(var(--background))" }
+                    : { background: "hsl(var(--muted))", color: "hsl(var(--muted-foreground))" }}>
+                  {d === "All" ? "All Destinations" : d}
+                </button>
+              ))}
+            </div>
+
+            {/* Clear */}
+            {hasActiveFilters && (
+              <button onClick={() => { setTypeFilter("All"); setDestFilter("All"); }}
+                className="ml-auto flex items-center gap-1 text-xs font-body flex-shrink-0
+                  transition-colors duration-200"
+                style={{ color: "hsl(var(--muted-foreground))" }}>
+                <X className="w-3 h-3" /> Clear
+              </button>
+            )}
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {allTours.map((tour) => (
-              <div key={tour.title} className="group bg-card rounded-lg overflow-hidden border border-border hover:shadow-xl transition-all duration-300 cursor-pointer">
-                <div className="relative overflow-hidden aspect-[16/10]">
-                  <img src={tour.image} alt={tour.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
-                  <div className="absolute top-3 left-3 flex flex-wrap gap-1.5">
-                    {tour.tags.map((tag) => (
-                      <span key={tag} className="bg-primary/90 text-primary-foreground text-[10px] uppercase tracking-wider font-body px-2.5 py-1 rounded-sm">{tag}</span>
-                    ))}
-                  </div>
-                </div>
-                <div className="p-5">
-                  <h3 className="font-display text-base font-semibold text-foreground mb-3 line-clamp-2 group-hover:text-primary transition-colors">{tour.title}</h3>
-                  <div className="flex items-center gap-4 text-muted-foreground text-xs font-body mb-3">
-                    <span className="flex items-center gap-1"><Clock className="w-3.5 h-3.5" /> {tour.duration}</span>
-                    <span className="flex items-center gap-1"><MapPin className="w-3.5 h-3.5" /> {tour.location}</span>
-                  </div>
-                  <div className="border-t border-border pt-3 flex items-baseline gap-2">
-                    <span className="font-body text-xs text-muted-foreground">From</span>
-                    {tour.oldPrice && <span className="font-body text-sm text-muted-foreground line-through">{tour.oldPrice}</span>}
-                    <span className="font-display text-xl font-bold text-primary">{tour.price}</span>
-                  </div>
-                </div>
+          {/* Mobile expanded filters */}
+          {showFilters && (
+            <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              className="lg:hidden pb-4 space-y-3 overflow-hidden">
+              <div className="flex flex-wrap gap-2">
+                {TYPE_FILTERS.map(f => (
+                  <button key={f} onClick={() => setTypeFilter(f)}
+                    className="px-3 py-1.5 rounded-full text-xs font-body font-semibold
+                      uppercase tracking-wider transition-all duration-200"
+                    style={typeFilter === f
+                      ? { background: "hsl(var(--primary))", color: "hsl(var(--dark))" }
+                      : { background: "hsl(var(--muted))", color: "hsl(var(--muted-foreground))" }}>
+                    {f === "All" ? "All Types" : TYPE_LABELS[f]}
+                  </button>
+                ))}
               </div>
-            ))}
-          </div>
+              <div className="flex flex-wrap gap-2">
+                {DEST_FILTERS.map(d => (
+                  <button key={d} onClick={() => setDestFilter(d)}
+                    className="px-3 py-1.5 rounded-full text-xs font-body font-semibold
+                      uppercase tracking-wider transition-all duration-200"
+                    style={destFilter === d
+                      ? { background: "hsl(var(--foreground))", color: "hsl(var(--background))" }
+                      : { background: "hsl(var(--muted))", color: "hsl(var(--muted-foreground))" }}>
+                    {d === "All" ? "All Destinations" : d}
+                  </button>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </div>
+      </div>
+
+      {/* ── Tour grid ── */}
+      <section className="py-14 bg-background">
+        <div className="container mx-auto px-4">
+
+          {/* Result count */}
+          <p className="font-body text-sm text-muted-foreground mb-8">
+            Showing <strong className="text-foreground">{filtered.length}</strong> tour{filtered.length !== 1 ? "s" : ""}
+            {hasActiveFilters && " matching your filters"}
+          </p>
+
+          {loading ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <div key={i} className="rounded-2xl overflow-hidden animate-pulse"
+                  style={{ border: "1px solid hsl(var(--border)/0.5)" }}>
+                  <div className="h-52" style={{ background: "hsl(var(--muted)/0.7)" }} />
+                  <div className="p-5 space-y-3">
+                    <div className="h-3 rounded w-1/3" style={{ background: "hsl(var(--muted))" }} />
+                    <div className="h-5 rounded w-3/4" style={{ background: "hsl(var(--muted))" }} />
+                    <div className="h-3 rounded w-full" style={{ background: "hsl(var(--muted)/0.6)" }} />
+                    <div className="h-3 rounded w-2/3" style={{ background: "hsl(var(--muted)/0.6)" }} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : filtered.length === 0 ? (
+            <div className="text-center py-20">
+              <p className="font-display text-2xl text-foreground mb-3">No tours found</p>
+              <p className="font-body text-muted-foreground mb-6">Try adjusting your filters</p>
+              <button onClick={() => { setTypeFilter("All"); setDestFilter("All"); }}
+                className="px-6 py-3 rounded-full text-sm font-body font-semibold uppercase tracking-wider transition-all duration-200"
+                style={{ background: "hsl(var(--primary))", color: "hsl(var(--dark))" }}>
+                Clear Filters
+              </button>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+              {filtered.map((tour, i) => <TourCard key={tour.id} tour={tour} i={i} />)}
+            </div>
+          )}
         </div>
       </section>
+
+      {/* ── CTA banner ── */}
+      <section className="py-16 bg-muted/30 border-t border-border/40">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="font-display text-3xl text-foreground mb-4"
+            style={{ fontFamily: '"Yeseva One", serif' }}>
+            Can't find what you're looking for?
+          </h2>
+          <p className="font-body text-muted-foreground mb-8 max-w-md mx-auto">
+            Every Balbina safari is built from scratch. Tell us your dream trip and we'll make it happen.
+          </p>
+          <Link to="/quote"
+            className="inline-flex items-center gap-2 px-8 py-4 rounded-full text-sm font-body
+              font-semibold tracking-widest uppercase transition-all duration-200
+              shadow-lg shadow-primary/20"
+            style={{ background: "hsl(var(--primary))", color: "hsl(var(--dark))" }}>
+            Plan a Custom Safari <ArrowRight className="w-4 h-4" />
+          </Link>
+        </div>
+      </section>
+
     </PageLayout>
   );
 };

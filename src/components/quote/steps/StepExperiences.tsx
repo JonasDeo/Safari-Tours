@@ -1,6 +1,6 @@
 import { EXPERIENCES } from "@/constants/quoteData";
-import { toggleItem } from "@/hooks/use-quote-wizard";
 import MultiSelect from "../MultiSelect";
+import toggleItem from "@/lib/toggleItem";
 
 
 interface StepExperiencesProps {

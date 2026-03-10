@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Save, Eye, EyeOff, User, Mail, Lock, CheckCircle } from "lucide-react";
 import { useAdminAuth } from "../AdminAuth";
+import { authApi, ApiError } from "@/lib/api";
 
 const iStyle = {
   background: "hsl(var(--muted)/0.5)",
@@ -29,7 +30,13 @@ const SectionCard = ({ title, icon: Icon, children }: { title: string; icon: any
 const ProfilePage = () => {
   const { adminName } = useAdminAuth();
 
-  const [profile, setProfile] = useState({ name: adminName, email: "admin@balbinasafaris.com" });
+  const [profile, setProfile] = useState({ name: adminName, email: "" });
+
+  useEffect(() => {
+    authApi.me().then((data: any) => {
+      setProfile({ name: data.name, email: data.email });
+    }).catch(() => {});
+  }, []);
   const [pw,      setPw]      = useState({ current: "", next: "", confirm: "" });
   const [showPw,  setShowPw]  = useState({ current: false, next: false, confirm: false });
   const [saving,  setSaving]  = useState<"profile" | "password" | null>(null);
@@ -39,10 +46,15 @@ const ProfilePage = () => {
   const saveProfile = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving("profile");
-    // TODO: PATCH /api/admin/profile  { name, email }
-    await new Promise(r => setTimeout(r, 700));
-    setSaving(null); setSuccess("profile");
-    setTimeout(() => setSuccess(null), 2500);
+    try {
+      await authApi.updateMe({ name: profile.name, email: profile.email });
+      setSuccess("profile");
+      setTimeout(() => setSuccess(null), 2500);
+    } catch (err) {
+      alert(err instanceof ApiError ? err.message : "Failed to save profile.");
+    } finally {
+      setSaving(null);
+    }
   };
 
   const savePassword = async (e: React.FormEvent) => {
@@ -51,11 +63,16 @@ const ProfilePage = () => {
     if (pw.next !== pw.confirm) { setPwError("New passwords don't match."); return; }
     if (pw.next.length < 8)     { setPwError("Password must be at least 8 characters."); return; }
     setSaving("password");
-    // TODO: POST /api/admin/change-password  { current, newPassword }
-    await new Promise(r => setTimeout(r, 700));
-    setSaving(null); setSuccess("password");
-    setPw({ current: "", next: "", confirm: "" });
-    setTimeout(() => setSuccess(null), 2500);
+    try {
+      await authApi.updateMe({ password: pw.next, password_confirmation: pw.confirm });
+      setSuccess("password");
+      setPw({ current: "", next: "", confirm: "" });
+      setTimeout(() => setSuccess(null), 2500);
+    } catch (err) {
+      setPwError(err instanceof ApiError ? err.message : "Failed to update password.");
+    } finally {
+      setSaving(null);
+    }
   };
 
   const toggleShow = (k: keyof typeof showPw) =>

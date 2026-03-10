@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { adminApi, ApiError } from "@/lib/api";
 import { Save, CheckCircle, Phone, Mail, MapPin, Globe, Facebook, Instagram, Youtube, MessageCircle } from "lucide-react";
 
 const iStyle = {
@@ -54,12 +55,26 @@ const SettingsPage = () => {
   const [saving,  setSaving]  = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
+  useEffect(() => {
+    adminApi.getSettings().then((data: any) => {
+      if (data.contact) setContact(data.contact);
+      if (data.socials) setSocials(data.socials);
+      if (data.seo)     setSeo(data.seo);
+    }).catch(() => {}); // silently fall back to defaults
+  }, []);
+
   const save = async (section: string) => {
     setSaving(section);
-    // TODO: PATCH /api/admin/settings  { section, data }
-    await new Promise(r => setTimeout(r, 700));
-    setSaving(null); setSuccess(section);
-    setTimeout(() => setSuccess(null), 2500);
+    const payload = section === "contact" ? contact : section === "socials" ? socials : seo;
+    try {
+      await adminApi.updateSettings(section, payload);
+      setSuccess(section);
+      setTimeout(() => setSuccess(null), 2500);
+    } catch (err) {
+      alert(err instanceof ApiError ? err.message : "Failed to save settings.");
+    } finally {
+      setSaving(null);
+    }
   };
 
   const SaveBtn = ({ section }: { section: string }) => (

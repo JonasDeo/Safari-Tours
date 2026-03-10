@@ -1,42 +1,52 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from "react";
 import { Navigate, useLocation } from "react-router-dom";
+import { authApi, setToken, clearToken, getToken, ApiError } from "@/lib/api";
 
 interface AuthContextType {
   isAuthenticated: boolean;
-  adminName: string;
-  login: (email: string, password: string) => Promise<boolean>;
-  logout: () => void;
+  adminName:       string;
+  login:           (email: string, password: string) => Promise<boolean>;
+  logout:          () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AdminAuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [adminName, setAdminName] = useState("");
+  const [adminName,       setAdminName]       = useState("");
 
+  // Restore session from localStorage on mount
   useEffect(() => {
-    const token = localStorage.getItem("admin_token");
-    const name  = localStorage.getItem("admin_name");
-    if (token) { setIsAuthenticated(true); setAdminName(name ?? "Admin"); }
+    const token = getToken();
+    const name  = localStorage.getItem('admin_name');
+    if (token) {
+      setIsAuthenticated(true);
+      setAdminName(name ?? 'Admin');
+    }
   }, []);
 
-  // Replace this with a real API call in Phase 1 backend
   const login = async (email: string, password: string): Promise<boolean> => {
-    if (email === "admin@balbinasafaris.com" && password === "balbina2024") {
-      localStorage.setItem("admin_token", "mock_token_replace_with_jwt");
-      localStorage.setItem("admin_name", "Balbina Admin");
+    try {
+      const data = await authApi.login(email, password);
+      setToken(data.access_token, data.admin.name);
       setIsAuthenticated(true);
-      setAdminName("Balbina Admin");
+      setAdminName(data.admin.name);
       return true;
+    } catch (err) {
+      return false;
     }
-    return false;
   };
 
-  const logout = () => {
-    localStorage.removeItem("admin_token");
-    localStorage.removeItem("admin_name");
-    setIsAuthenticated(false);
-    setAdminName("");
+  const logout = async () => {
+    try {
+      await authApi.logout();
+    } catch {
+      // Token may already be expired — clear locally regardless
+    } finally {
+      clearToken();
+      setIsAuthenticated(false);
+      setAdminName('');
+    }
   };
 
   return (
@@ -48,7 +58,7 @@ export const AdminAuthProvider = ({ children }: { children: ReactNode }) => {
 
 export const useAdminAuth = () => {
   const ctx = useContext(AuthContext);
-  if (!ctx) throw new Error("useAdminAuth must be used inside AdminAuthProvider");
+  if (!ctx) throw new Error('useAdminAuth must be used inside AdminAuthProvider');
   return ctx;
 };
 

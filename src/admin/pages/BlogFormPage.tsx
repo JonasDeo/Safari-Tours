@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowLeft, Save, ImagePlus, Eye, EyeOff, X, Plus } from "lucide-react";
+import { adminApi, ApiError } from "@/lib/api";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 interface BlogForm {
@@ -21,17 +22,6 @@ const EMPTY: BlogForm = {
   content: "", coverImage: "", published: false, tagInput: "",
 };
 
-const MOCK_POST: BlogForm = {
-  title:      "The Best Time to Visit the Serengeti",
-  slug:       "best-time-serengeti",
-  category:   "Tanzania",
-  tags:       ["Migration", "Tips", "Serengeti"],
-  excerpt:    "Planning a Serengeti safari? The season you choose will transform the experience entirely. Here's what you need to know.",
-  content:    `# The Best Time to Visit the Serengeti\n\nThe Serengeti's wildlife is spectacular year-round, but timing your visit around the Great Migration transforms a great safari into an unforgettable one.\n\n## Dry Season: June – October\n\nThis is peak safari season. The grass is short, animals congregate around water sources, and the wildebeest river crossings in the northern Serengeti hit their dramatic peak in July and August.\n\n## Green Season: November – May\n\nThe landscape turns lush and beautiful. Calving season in January–February brings thousands of newborn wildebeest — and the predators that follow them.`,
-  coverImage: "",
-  published:  true,
-  tagInput:   "",
-};
 
 const CATEGORIES = ["Tanzania", "Kenya", "Uganda", "Zanzibar", "Tips", "Wildlife", "Culture", "Food"];
 
@@ -61,12 +51,32 @@ const BlogFormPage = () => {
   const navigate = useNavigate();
   const isEdit   = Boolean(id);
 
-  const [form,    setForm]    = useState<BlogForm>(EMPTY);
-  const [saving,  setSaving]  = useState(false);
-  const [saved,   setSaved]   = useState(false);
+  const [form,          setForm]          = useState<BlogForm>(EMPTY);
+  const [saving,        setSaving]        = useState(false);
+  const [saved,         setSaved]         = useState(false);
+  const [error,         setError]         = useState("");
+  const [savedId,       setSavedId]       = useState<string | null>(null);
+  const [uploadingCover,setUploadingCover]= useState(false);
+  const [uploadError,   setUploadError]   = useState("");
 
   useEffect(() => {
-    if (isEdit) setForm(MOCK_POST); // TODO: fetch(`/api/admin/blog/${id}`)
+    if (!isEdit || !id) return;
+    adminApi.getBlogPost(id)
+      .then(data => {
+        const p = data as any;
+        setForm({
+          title:      p.title       ?? "",
+          slug:       p.slug        ?? "",
+          category:   p.category    ?? "",
+          tags:       p.tags        ?? [],
+          excerpt:    p.excerpt     ?? "",
+          content:    p.content     ?? "",
+          coverImage: p.cover_image ?? "",
+          published:  p.published   ?? false,
+          tagInput:   "",
+        });
+      })
+      .catch(err => setError(err instanceof ApiError ? err.message : "Failed to load post."));
   }, [id, isEdit]);
 
   useEffect(() => {
@@ -92,11 +102,37 @@ const BlogFormPage = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
-    // TODO: POST /api/admin/blog  OR  PATCH /api/admin/blog/:id
-    await new Promise(r => setTimeout(r, 800));
-    setSaving(false);
-    setSaved(true);
-    setTimeout(() => { setSaved(false); navigate("/admin/blog"); }, 1200);
+    setError("");
+    const payload = {
+      title:       form.title,
+      slug:        form.slug || undefined,
+      category:    form.category,
+      tags:        form.tags,
+      excerpt:     form.excerpt,
+      content:     form.content,
+      cover_image: form.coverImage || undefined,
+      published:   form.published,
+    };
+    try {
+      let result: any;
+      if (isEdit && id) {
+        result = await adminApi.updateBlogPost(id, payload);
+      } else {
+        result = await adminApi.createBlogPost(payload);
+      }
+      setSaved(true);
+      if (!isEdit) {
+        const newId = (result as any)?.id;
+        if (newId) setSavedId(String(newId));
+        else setTimeout(() => { setSaved(false); navigate("/admin/blog"); }, 1200);
+      } else {
+        setTimeout(() => { setSaved(false); navigate("/admin/blog"); }, 1200);
+      }
+    } catch (err) {
+      setError(err instanceof ApiError ? err.message : "Save failed. Please try again.");
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
@@ -134,6 +170,13 @@ const BlogFormPage = () => {
           </button>
         </div>
       </motion.div>
+
+      {error && (
+        <div className="rounded-xl px-4 py-3 text-sm font-body"
+          style={{ background: "hsl(0 70% 50%/0.1)", color: "hsl(0 70% 65%)", border: "1px solid hsl(0 70% 50%/0.2)" }}>
+          {error}
+        </div>
+      )}
 
       {/* Form */}
       <motion.form onSubmit={handleSubmit} initial={{ opacity: 0, y: 16 }}
@@ -217,22 +260,66 @@ const BlogFormPage = () => {
 
         {/* Cover image */}
         <SectionCard title="Cover Image">
-          <div className="border-2 border-dashed rounded-xl p-8 flex flex-col items-center
-            justify-center gap-3 cursor-pointer transition-all duration-200 text-center"
-            style={{ borderColor: "hsl(var(--border)/0.5)" }}
-            onMouseEnter={e => e.currentTarget.style.borderColor = "hsl(var(--primary)/0.4)"}
-            onMouseLeave={e => e.currentTarget.style.borderColor = "hsl(var(--border)/0.5)"}>
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center"
-              style={{ background: "hsl(var(--primary)/0.08)" }}>
-              <ImagePlus className="w-5 h-5" style={{ color: "hsl(var(--primary))" }} />
+          {form.coverImage && (
+            <div className="relative group rounded-xl overflow-hidden mb-3 aspect-video max-h-48">
+              <img src={form.coverImage} alt="Cover" className="w-full h-full object-cover" />
+              <button type="button"
+                onClick={() => setForm(f => ({ ...f, coverImage: "" }))}
+                className="absolute top-2 right-2 w-7 h-7 rounded-full flex items-center justify-center
+                  opacity-0 group-hover:opacity-100 transition-opacity"
+                style={{ background: "hsl(0 70% 50%/0.9)" }}>
+                <X className="w-3.5 h-3.5 text-white" />
+              </button>
             </div>
-            <div>
-              <p className="font-body text-sm text-foreground font-medium">Upload cover image</p>
-              <p className="font-body text-xs text-muted-foreground mt-0.5">
-                Recommended: 1200 × 630px · PNG or JPG · Cloudinary in backend phase
-              </p>
-            </div>
-          </div>
+          )}
+          {uploadError && (
+            <p className="text-xs font-body mb-2" style={{ color: "hsl(0 70% 65%)" }}>{uploadError}</p>
+          )}
+          {(!isEdit && !savedId) ? (
+            <p className="text-xs font-body text-muted-foreground p-4 rounded-xl text-center"
+              style={{ background: "hsl(var(--muted)/0.4)", border: "1px dashed hsl(var(--border)/0.5)" }}>
+              Save the post first, then you can upload a cover image.
+            </p>
+          ) : (
+            <label className="border-2 border-dashed rounded-xl p-8 flex flex-col items-center
+              justify-center gap-3 cursor-pointer transition-all duration-200 text-center block"
+              style={{ borderColor: uploadingCover ? "hsl(var(--primary)/0.6)" : "hsl(var(--border)/0.5)" }}
+              onMouseEnter={e => (e.currentTarget as HTMLElement).style.borderColor = "hsl(var(--primary)/0.4)"}
+              onMouseLeave={e => (e.currentTarget as HTMLElement).style.borderColor = uploadingCover ? "hsl(var(--primary)/0.6)" : "hsl(var(--border)/0.5)"}>
+              <input type="file" accept="image/*" className="sr-only" disabled={uploadingCover}
+                onChange={async (e) => {
+                  const file = e.target.files?.[0];
+                  if (!file) return;
+                  const postId = savedId ?? id;
+                  if (!postId) return;
+                  setUploadingCover(true);
+                  setUploadError("");
+                  try {
+                    const res = await adminApi.uploadBlogCover(postId, file) as any;
+                    setForm(f => ({ ...f, coverImage: res.url }));
+                  } catch {
+                    setUploadError("Upload failed. Check file size (max 10MB) and try again.");
+                  } finally {
+                    setUploadingCover(false);
+                    e.target.value = "";
+                  }
+                }} />
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center"
+                style={{ background: "hsl(var(--primary)/0.08)" }}>
+                {uploadingCover
+                  ? <span className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+                  : <ImagePlus className="w-5 h-5" style={{ color: "hsl(var(--primary))" }} />}
+              </div>
+              <div>
+                <p className="font-body text-sm text-foreground font-medium">
+                  {uploadingCover ? "Uploading…" : "Click to upload cover image"}
+                </p>
+                <p className="font-body text-xs text-muted-foreground mt-0.5">
+                  Recommended: 1200 × 630px · PNG or JPG — uploads to Cloudinary
+                </p>
+              </div>
+            </label>
+          )}
         </SectionCard>
 
         {/* Content */}

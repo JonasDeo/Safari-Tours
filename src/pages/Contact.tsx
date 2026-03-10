@@ -1,125 +1,340 @@
-import PageLayout from "@/components/PageLayout";
-import { Phone, Mail, MapPin, Send } from "lucide-react";
 import { useState } from "react";
-import kiliImg from "@/assets/kilimanjaro.jpg";
+import { motion } from "framer-motion";
+import {
+  Phone, Mail, MapPin, Clock, Send, MessageCircle, CheckCircle,
+} from "lucide-react";
+import PageLayout from "@/components/PageLayout";
+import { publicApi, ApiError } from "@/lib/api";
+import tour1 from "@/assets/tour-1.jpg";
+
+// ── Data ──────────────────────────────────────────────────────────────────────
+
+const CONTACT_INFO = [
+  {
+    icon: Phone,
+    label: "Phone",
+    value: "+255 623 880844",
+    sub:   "Mon – Sat, 8am – 6pm EAT",
+    href:  "tel:+255623880844",
+  },
+  {
+    icon: MessageCircle,
+    label: "WhatsApp",
+    value: "+255 685 808332",
+    sub:   "Fastest response",
+    href:  "https://wa.me/255685808332",
+  },
+  {
+    icon: Mail,
+    label: "Email",
+    value: "info@balbinasafaris.com",
+    sub:   "Reply within 24 hours",
+    href:  "mailto:info@balbinasafaris.com",
+  },
+  {
+    icon: MapPin,
+    label: "Office",
+    value: "Arusha, Tanzania",
+    sub:   "Near the Arusha Clock Tower",
+    href:  "https://maps.google.com/?q=Arusha,Tanzania",
+  },
+];
+
+const SUBJECTS = [
+  "Plan a Safari",
+  "Quote Follow-up",
+  "Booking Question",
+  "Partnership Inquiry",
+  "Other",
+];
+
+const inputBase = `w-full px-4 py-3 rounded-xl text-sm font-body outline-none transition-all duration-200`;
+const inputStyle = {
+  background: "hsl(var(--muted)/0.5)",
+  border:     "1px solid hsl(var(--border)/0.6)",
+  color:      "hsl(var(--foreground))",
+};
+
+const fadeUp = (delay = 0) => ({
+  initial:    { opacity: 0, y: 20 },
+  whileInView:{ opacity: 1, y: 0  },
+  viewport:   { once: true, margin: "-40px" },
+  transition: { duration: 0.5, delay, ease: [0.32, 0.72, 0, 1] as const },
+});
+
+// ── Page ──────────────────────────────────────────────────────────────────────
 
 const ContactPage = () => {
+  const [form, setForm] = useState({
+    name: "", email: "", phone: "", subject: "", message: "",
+  });
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const set = (key: keyof typeof form) =>
+    (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) =>
+      setForm(f => ({ ...f, [key]: e.target.value }));
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    setSubmitting(true);
+    try {
+      await publicApi.submitQuote({ ...form, trip_types: ["Contact Form"] });
+      setSubmitted(true);
+    } catch (err) {
+      alert(err instanceof ApiError ? err.message : "Send failed. Please email us directly.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
     <PageLayout>
-      {/* Hero */}
-      <section className="relative h-[35vh] flex items-center justify-center overflow-hidden">
-        <img src={kiliImg} alt="Contact us" className="absolute inset-0 w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-dark-overlay/60" />
-        <div className="relative z-10 text-center">
-          <h1 className="font-display text-4xl md:text-5xl font-bold text-sand mb-3 text-shadow-hero">Contact Us</h1>
-          <p className="font-body text-sand/70 text-lg">Plan your dream African safari today</p>
+
+      {/* ── Hero ── */}
+      <section className="relative flex items-center overflow-hidden"
+        style={{ height: "clamp(200px, 35vh, 360px)", paddingTop: "var(--nav-total-h, 64px)" }}>
+        <img src={tour1} alt="Contact Balbina Safaris"
+          className="absolute inset-0 w-full h-full object-cover object-center" />
+        <div className="absolute inset-0 bg-dark-overlay/70" />
+        <div className="relative z-10 container mx-auto px-6">
+          <motion.p initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
+            className="text-xs tracking-[0.28em] uppercase font-body mb-3"
+            style={{ color: "hsl(var(--primary))" }}>
+            We're Here to Help
+          </motion.p>
+          <motion.h1 initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="font-display font-bold text-sand leading-tight"
+            style={{ fontFamily: '"Yeseva One", serif', fontSize: "clamp(2rem, 5vw, 3.5rem)" }}>
+            Get in Touch
+          </motion.h1>
         </div>
       </section>
 
+      {/* ── Main content ── */}
       <section className="py-16 bg-background">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            {/* Contact info */}
-            <div>
-              <h2 className="font-display text-3xl font-bold text-foreground mb-6">Get in Touch</h2>
-              <p className="font-body text-muted-foreground leading-relaxed mb-8">
-                Ready to start planning? Reach out to our team and we'll craft the perfect itinerary for your East African adventure.
-              </p>
-              <div className="space-y-5">
-                <a href="tel:+255685808332" className="flex items-center gap-4 font-body text-foreground hover:text-primary transition-colors">
-                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <Phone className="w-5 h-5 text-primary" />
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">Phone / WhatsApp</p>
-                    <p className="font-semibold">+255 685 808332</p>
-                  </div>
-                </a>
-                <a href="mailto:info@Balbinasafaris.com" className="flex items-center gap-4 font-body text-foreground hover:text-primary transition-colors">
-                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <Mail className="w-5 h-5 text-primary" />
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">Email</p>
-                    <p className="font-semibold">info@Balbinasafaris.com</p>
-                  </div>
-                </a>
-                <div className="flex items-center gap-4 font-body text-foreground">
-                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <MapPin className="w-5 h-5 text-primary" />
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">Office</p>
-                    <p className="font-semibold">Arusha, Tanzania</p>
-                  </div>
-                </div>
+        <div className="container mx-auto px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-16">
+
+            {/* ── Left: contact info ── */}
+            <div className="lg:col-span-2 space-y-8">
+              <motion.div {...fadeUp()}>
+                <p className="text-xs tracking-[0.2em] uppercase font-body text-primary mb-3">
+                  Contact Details
+                </p>
+                <h2 className="font-display text-2xl sm:text-3xl text-foreground mb-4"
+                  style={{ fontFamily: '"Yeseva One", serif' }}>
+                  Talk to a Safari Specialist
+                </h2>
+                <p className="font-body text-muted-foreground leading-relaxed text-sm">
+                  Our team is based in East Africa — not in a call centre. When you reach us,
+                  you're talking to someone who has actually been to the places you want to go.
+                </p>
+              </motion.div>
+
+              {/* Contact cards */}
+              <div className="space-y-3">
+                {CONTACT_INFO.map((c, i) => (
+                  <motion.a key={c.label} href={c.href}
+                    target={c.href.startsWith("http") ? "_blank" : undefined}
+                    rel={c.href.startsWith("http") ? "noreferrer" : undefined}
+                    {...fadeUp(0.08 + i * 0.06)}
+                    className="flex items-center gap-4 p-4 rounded-2xl transition-all duration-200 group"
+                    style={{ border: "1px solid hsl(var(--border)/0.6)", background: "hsl(var(--muted)/0.2)" }}
+                    onMouseEnter={e => {
+                      e.currentTarget.style.borderColor = "hsl(var(--primary)/0.35)";
+                      e.currentTarget.style.background  = "hsl(var(--primary)/0.04)";
+                    }}
+                    onMouseLeave={e => {
+                      e.currentTarget.style.borderColor = "hsl(var(--border)/0.6)";
+                      e.currentTarget.style.background  = "hsl(var(--muted)/0.2)";
+                    }}>
+                    <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0
+                      transition-all duration-200"
+                      style={{ background: "hsl(var(--primary)/0.1)", border: "1px solid hsl(var(--primary)/0.2)" }}>
+                      <c.icon className="w-4 h-4" style={{ color: "hsl(var(--primary))" }} />
+                    </div>
+                    <div>
+                      <p className="text-xs uppercase tracking-widest font-body text-muted-foreground mb-0.5">
+                        {c.label}
+                      </p>
+                      <p className="font-body text-sm font-semibold text-foreground group-hover:text-primary
+                        transition-colors duration-200">
+                        {c.value}
+                      </p>
+                      <p className="font-body text-xs text-muted-foreground">{c.sub}</p>
+                    </div>
+                  </motion.a>
+                ))}
               </div>
+
+              {/* Office hours */}
+              <motion.div {...fadeUp(0.35)}
+                className="p-5 rounded-2xl"
+                style={{ border: "1px solid hsl(var(--border)/0.5)", background: "hsl(var(--muted)/0.15)" }}>
+                <div className="flex items-center gap-2 mb-3">
+                  <Clock className="w-4 h-4" style={{ color: "hsl(var(--primary))" }} />
+                  <p className="text-xs uppercase tracking-widest font-body text-muted-foreground">
+                    Office Hours (EAT)
+                  </p>
+                </div>
+                <div className="space-y-1.5 font-body text-sm">
+                  {[
+                    { day: "Monday – Friday", hours: "8:00 AM – 6:00 PM" },
+                    { day: "Saturday",        hours: "9:00 AM – 3:00 PM" },
+                    { day: "Sunday",          hours: "WhatsApp only"      },
+                  ].map(row => (
+                    <div key={row.day} className="flex justify-between">
+                      <span className="text-muted-foreground">{row.day}</span>
+                      <span className="text-foreground">{row.hours}</span>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+
+              {/* WhatsApp CTA */}
+              <motion.a {...fadeUp(0.4)}
+                href="https://wa.me/255685808332"
+                target="_blank" rel="noreferrer"
+                className="flex items-center justify-center gap-2.5 w-full py-3.5 rounded-xl
+                  text-sm font-body font-semibold tracking-wide transition-all duration-200"
+                style={{
+                  background: "hsl(142 70% 42%)",
+                  color: "#fff",
+                  boxShadow: "0 4px 20px hsl(142 70% 42% / 0.3)",
+                }}>
+                <MessageCircle className="w-4 h-4" />
+                Chat on WhatsApp
+              </motion.a>
             </div>
 
-            {/* Form */}
-            <div className="bg-card border border-border rounded-lg p-8">
+            {/* ── Right: form ── */}
+            <motion.div {...fadeUp(0.1)} className="lg:col-span-3">
               {submitted ? (
-                <div className="text-center py-12">
-                  <div className="w-16 h-16 bg-secondary/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Send className="w-7 h-7 text-secondary" />
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
+                  className="h-full flex flex-col items-center justify-center text-center
+                    py-20 px-8 rounded-2xl"
+                  style={{ border: "1px solid hsl(var(--primary)/0.25)", background: "hsl(var(--primary)/0.04)" }}>
+                  <div className="w-16 h-16 rounded-full flex items-center justify-center mb-5"
+                    style={{ background: "hsl(var(--primary)/0.12)", border: "1px solid hsl(var(--primary)/0.3)" }}>
+                    <CheckCircle className="w-7 h-7" style={{ color: "hsl(var(--primary))" }} />
                   </div>
-                  <h3 className="font-display text-2xl font-bold text-foreground mb-2">Thank You!</h3>
-                  <p className="font-body text-muted-foreground">We'll get back to you within 24 hours.</p>
-                </div>
+                  <h3 className="font-display text-2xl text-foreground mb-3"
+                    style={{ fontFamily: '"Yeseva One", serif' }}>
+                    Message Sent!
+                  </h3>
+                  <p className="font-body text-muted-foreground max-w-sm leading-relaxed">
+                    Thank you for reaching out. One of our safari specialists will get back to you
+                    within 24 hours — usually much sooner.
+                  </p>
+                </motion.div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-5">
-                  <h3 className="font-display text-xl font-semibold text-foreground mb-2">Request a Safari Quote</h3>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="font-body text-sm text-muted-foreground block mb-1.5">Full Name *</label>
-                      <input type="text" required className="w-full px-4 py-3 rounded-md border border-border bg-background font-body text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30" />
-                    </div>
-                    <div>
-                      <label className="font-body text-sm text-muted-foreground block mb-1.5">Email *</label>
-                      <input type="email" required className="w-full px-4 py-3 rounded-md border border-border bg-background font-body text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30" />
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="font-body text-sm text-muted-foreground block mb-1.5">Travel Date</label>
-                      <input type="date" className="w-full px-4 py-3 rounded-md border border-border bg-background font-body text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30" />
-                    </div>
-                    <div>
-                      <label className="font-body text-sm text-muted-foreground block mb-1.5">Number of Travelers</label>
-                      <input type="number" min="1" className="w-full px-4 py-3 rounded-md border border-border bg-background font-body text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30" />
-                    </div>
-                  </div>
+                <form onSubmit={handleSubmit} className="space-y-5 p-8 rounded-2xl"
+                  style={{ border: "1px solid hsl(var(--border)/0.6)", background: "hsl(var(--muted)/0.15)" }}>
+
                   <div>
-                    <label className="font-body text-sm text-muted-foreground block mb-1.5">Safari Type</label>
-                    <select className="w-full px-4 py-3 rounded-md border border-border bg-background font-body text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30">
-                      <option value="">Select a type...</option>
-                      <option>Self-Drive Safari</option>
-                      <option>Balbina Guided Safari</option>
-                      <option>Mountain Climbing</option>
-                      <option>Beach Holiday</option>
-                      <option>Combined Package</option>
-                    </select>
+                    <h3 className="font-display text-xl text-foreground mb-1"
+                      style={{ fontFamily: '"Yeseva One", serif' }}>
+                      Send a Message
+                    </h3>
+                    <p className="font-body text-sm text-muted-foreground">
+                      Fill in the form and we'll be in touch shortly.
+                    </p>
                   </div>
-                  <div>
-                    <label className="font-body text-sm text-muted-foreground block mb-1.5">Message</label>
-                    <textarea rows={4} className="w-full px-4 py-3 rounded-md border border-border bg-background font-body text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 resize-none" placeholder="Tell us about your dream safari..." />
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {/* Name */}
+                    <div className="space-y-1.5">
+                      <label className="text-xs uppercase tracking-[0.15em] font-body text-muted-foreground">
+                        Full Name <span style={{ color: "hsl(var(--primary))" }}>*</span>
+                      </label>
+                      <input value={form.name} onChange={set("name")} required
+                        placeholder="Sarah Mitchell"
+                        className={inputBase} style={inputStyle}
+                        onFocus={e => e.currentTarget.style.borderColor = "hsl(var(--primary)/0.5)"}
+                        onBlur={e  => e.currentTarget.style.borderColor = "hsl(var(--border)/0.6)"} />
+                    </div>
+
+                    {/* Email */}
+                    <div className="space-y-1.5">
+                      <label className="text-xs uppercase tracking-[0.15em] font-body text-muted-foreground">
+                        Email <span style={{ color: "hsl(var(--primary))" }}>*</span>
+                      </label>
+                      <input type="email" value={form.email} onChange={set("email")} required
+                        placeholder="sarah@example.com"
+                        className={inputBase} style={inputStyle}
+                        onFocus={e => e.currentTarget.style.borderColor = "hsl(var(--primary)/0.5)"}
+                        onBlur={e  => e.currentTarget.style.borderColor = "hsl(var(--border)/0.6)"} />
+                    </div>
                   </div>
-                  <button type="submit" className="w-full font-body text-sm uppercase tracking-widest px-8 py-4 bg-primary text-primary-foreground hover:bg-terracotta-light transition-colors rounded-sm">
-                    Send Request
-                  </button>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {/* Phone */}
+                    <div className="space-y-1.5">
+                      <label className="text-xs uppercase tracking-[0.15em] font-body text-muted-foreground">
+                        Phone / WhatsApp
+                      </label>
+                      <input type="tel" value={form.phone} onChange={set("phone")}
+                        placeholder="+1 555 000 0000"
+                        className={inputBase} style={inputStyle}
+                        onFocus={e => e.currentTarget.style.borderColor = "hsl(var(--primary)/0.5)"}
+                        onBlur={e  => e.currentTarget.style.borderColor = "hsl(var(--border)/0.6)"} />
+                    </div>
+
+                    {/* Subject */}
+                    <div className="space-y-1.5">
+                      <label className="text-xs uppercase tracking-[0.15em] font-body text-muted-foreground">
+                        Subject <span style={{ color: "hsl(var(--primary))" }}>*</span>
+                      </label>
+                      <select value={form.subject} onChange={set("subject")} required
+                        className={`${inputBase} appearance-none cursor-pointer`} style={inputStyle}
+                        onFocus={e => e.currentTarget.style.borderColor = "hsl(var(--primary)/0.5)"}
+                        onBlur={e  => e.currentTarget.style.borderColor = "hsl(var(--border)/0.6)"}>
+                        <option value="">Select a subject…</option>
+                        {SUBJECTS.map(s => <option key={s} value={s}>{s}</option>)}
+                      </select>
+                    </div>
+                  </div>
+
+                  {/* Message */}
+                  <div className="space-y-1.5">
+                    <label className="text-xs uppercase tracking-[0.15em] font-body text-muted-foreground">
+                      Message <span style={{ color: "hsl(var(--primary))" }}>*</span>
+                    </label>
+                    <textarea value={form.message} onChange={set("message")} required rows={5}
+                      placeholder="Tell us about your travel plans, dates, group size, or any questions you have…"
+                      className={`${inputBase} resize-none`} style={inputStyle}
+                      onFocus={e => e.currentTarget.style.borderColor = "hsl(var(--primary)/0.5)"}
+                      onBlur={e  => e.currentTarget.style.borderColor = "hsl(var(--border)/0.6)"} />
+                  </div>
+
+                  {/* Submit */}
+                  <motion.button type="submit" disabled={submitting}
+                    whileHover={!submitting ? { scale: 1.01 } : {}}
+                    whileTap={!submitting ? { scale: 0.98 } : {}}
+                    className="w-full flex items-center justify-center gap-2.5 py-4 rounded-xl
+                      text-sm font-body font-semibold tracking-wide transition-all duration-200"
+                    style={{
+                      background: submitting ? "hsl(var(--primary)/0.5)" : "hsl(var(--primary))",
+                      color: "hsl(var(--dark))",
+                      cursor: submitting ? "not-allowed" : "pointer",
+                    }}>
+                    {submitting
+                      ? <span className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                      : <Send className="w-4 h-4" />}
+                    {submitting ? "Sending…" : "Send Message"}
+                  </motion.button>
                 </form>
               )}
-            </div>
+            </motion.div>
+
           </div>
         </div>
       </section>
+
     </PageLayout>
   );
 };

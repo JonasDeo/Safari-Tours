@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import {
   ArrowLeft, Save, ImagePlus, X, Eye, EyeOff, Plus, Trash2,
 } from "lucide-react";
+import { adminApi, ApiError } from "@/lib/api";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -29,21 +30,6 @@ const EMPTY_FORM: TourForm = {
   images: [], included: [""], excluded: [""],
 };
 
-// Mock existing tour for edit mode — replace with API fetch
-const MOCK_TOUR: TourForm = {
-  title:       "Serengeti Migration Safari",
-  slug:        "serengeti-migration-safari",
-  destination: "tanzania",
-  type:        "GUIDED",
-  duration:    "7",
-  price:       "3200",
-  currency:    "USD",
-  description: "Witness the greatest wildlife spectacle on earth. Seven days tracking the Great Migration across the endless Serengeti plains, with expert guides and luxury tented camp accommodation.",
-  published:   true,
-  images:      [],
-  included:    ["All park fees", "Professional guide", "Luxury tented accommodation", "All meals"],
-  excluded:    ["International flights", "Travel insurance", "Personal items"],
-};
 
 const DESTINATIONS = ["Tanzania", "Kenya", "Uganda", "Zanzibar"];
 const TOUR_TYPES   = [
@@ -146,16 +132,36 @@ const TourFormPage = () => {
   const navigate = useNavigate();
   const isEdit   = Boolean(id);
 
-  const [form,    setForm]    = useState<TourForm>(EMPTY_FORM);
-  const [saving,  setSaving]  = useState(false);
-  const [saved,   setSaved]   = useState(false);
+  const [form,           setForm]           = useState<TourForm>(EMPTY_FORM);
+  const [saving,         setSaving]         = useState(false);
+  const [saved,          setSaved]          = useState(false);
+  const [error,          setError]          = useState("");
+  const [savedId,        setSavedId]        = useState<string | null>(null);
+  const [uploadingImg,   setUploadingImg]   = useState(false);
+  const [uploadError,    setUploadError]    = useState("");
 
   // Load existing tour in edit mode
   useEffect(() => {
-    if (isEdit) {
-      // TODO: fetch(`/api/admin/tours/${id}`) then setForm(data)
-      setForm(MOCK_TOUR);
-    }
+    if (!isEdit || !id) return;
+    adminApi.getTour(id)
+      .then(data => {
+        const t = data as any;
+        setForm({
+          title:       t.title        ?? "",
+          slug:        t.slug         ?? "",
+          destination: t.destination  ?? "",
+          type:        t.type         ?? "GUIDED",
+          duration:    String(t.duration_days ?? ""),
+          price:       String(t.price         ?? ""),
+          currency:    t.currency     ?? "USD",
+          description: t.description  ?? "",
+          published:   t.published    ?? false,
+          images:      t.images       ?? [],
+          included:    t.included?.length ? t.included : [""],
+          excluded:    t.excluded?.length ? t.excluded : [""],
+        });
+      })
+      .catch(err => setError(err instanceof ApiError ? err.message : "Failed to load tour."));
   }, [id, isEdit]);
 
   // Auto-generate slug from title (only when creating)
@@ -170,11 +176,41 @@ const TourFormPage = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
-    // TODO: POST /api/admin/tours  OR  PATCH /api/admin/tours/:id
-    await new Promise(r => setTimeout(r, 800)); // mock delay
-    setSaving(false);
-    setSaved(true);
-    setTimeout(() => { setSaved(false); navigate("/admin/tours"); }, 1200);
+    setError("");
+    const payload = {
+      title:        form.title,
+      slug:         form.slug || undefined,
+      destination:  form.destination,
+      type:         form.type,
+      duration_days: Number(form.duration),
+      price:        Number(form.price),
+      currency:     form.currency,
+      description:  form.description,
+      published:    form.published,
+      included:     form.included.filter(Boolean),
+      excluded:     form.excluded.filter(Boolean),
+    };
+    try {
+      let result: any;
+      if (isEdit && id) {
+        result = await adminApi.updateTour(id, payload);
+      } else {
+        result = await adminApi.createTour(payload);
+      }
+      setSaved(true);
+      if (!isEdit) {
+        // After create, ID comes back — stay on page so images can be uploaded
+        const newId = (result as any)?.id;
+        if (newId) setSavedId(String(newId));
+        else setTimeout(() => { setSaved(false); navigate("/admin/tours"); }, 1200);
+      } else {
+        setTimeout(() => { setSaved(false); navigate("/admin/tours"); }, 1200);
+      }
+    } catch (err) {
+      setError(err instanceof ApiError ? err.message : "Save failed. Please try again.");
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
@@ -215,6 +251,13 @@ const TourFormPage = () => {
       </motion.div>
 
       {/* Form */}
+      {error && (
+        <div className="rounded-xl px-4 py-3 text-sm font-body"
+          style={{ background: "hsl(0 70% 50%/0.1)", color: "hsl(0 70% 65%)", border: "1px solid hsl(0 70% 50%/0.2)" }}>
+          {error}
+        </div>
+      )}
+
       <motion.form onSubmit={handleSubmit} initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
         className="space-y-6">
@@ -306,22 +349,73 @@ const TourFormPage = () => {
             Images
           </p>
 
-          <div className="border-2 border-dashed rounded-xl p-8 flex flex-col items-center
-            justify-center gap-3 cursor-pointer transition-all duration-200 text-center"
-            style={{ borderColor: "hsl(var(--border)/0.5)" }}
-            onMouseEnter={e => e.currentTarget.style.borderColor = "hsl(var(--primary)/0.4)"}
-            onMouseLeave={e => e.currentTarget.style.borderColor = "hsl(var(--border)/0.5)"}>
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center"
-              style={{ background: "hsl(var(--primary)/0.08)" }}>
-              <ImagePlus className="w-5 h-5" style={{ color: "hsl(var(--primary))" }} />
+          {/* Existing images */}
+          {form.images.length > 0 && (
+            <div className="grid grid-cols-3 gap-3 mb-3">
+              {form.images.map((url, idx) => (
+                <div key={idx} className="relative group rounded-xl overflow-hidden aspect-video">
+                  <img src={url} alt="" className="w-full h-full object-cover" />
+                  <button type="button"
+                    onClick={() => setForm(f => ({ ...f, images: f.images.filter((_, i) => i !== idx) }))}
+                    className="absolute top-1 right-1 w-6 h-6 rounded-full flex items-center justify-center
+                      opacity-0 group-hover:opacity-100 transition-opacity"
+                    style={{ background: "hsl(0 70% 50%/0.9)" }}>
+                    <X className="w-3 h-3 text-white" />
+                  </button>
+                </div>
+              ))}
             </div>
-            <div>
-              <p className="font-body text-sm text-foreground font-medium">Upload images</p>
-              <p className="font-body text-xs text-muted-foreground mt-0.5">
-                PNG, JPG up to 10MB · Cloudinary integration coming in backend phase
-              </p>
-            </div>
-          </div>
+          )}
+
+          {uploadError && (
+            <p className="text-xs font-body mb-2" style={{ color: "hsl(0 70% 65%)" }}>{uploadError}</p>
+          )}
+
+          {(!isEdit && !savedId) ? (
+            <p className="text-xs font-body text-muted-foreground p-4 rounded-xl text-center"
+              style={{ background: "hsl(var(--muted)/0.4)", border: "1px dashed hsl(var(--border)/0.5)" }}>
+              Save the tour first, then you can upload images.
+            </p>
+          ) : (
+            <label className="border-2 border-dashed rounded-xl p-8 flex flex-col items-center
+              justify-center gap-3 cursor-pointer transition-all duration-200 text-center block"
+              style={{ borderColor: uploadingImg ? "hsl(var(--primary)/0.6)" : "hsl(var(--border)/0.5)" }}
+              onMouseEnter={e => (e.currentTarget as HTMLElement).style.borderColor = "hsl(var(--primary)/0.4)"}
+              onMouseLeave={e => (e.currentTarget as HTMLElement).style.borderColor = uploadingImg ? "hsl(var(--primary)/0.6)" : "hsl(var(--border)/0.5)"}>
+              <input type="file" accept="image/*" className="sr-only" disabled={uploadingImg}
+                onChange={async (e) => {
+                  const file = e.target.files?.[0];
+                  if (!file) return;
+                  const tourId = savedId ?? id;
+                  if (!tourId) return;
+                  setUploadingImg(true);
+                  setUploadError("");
+                  try {
+                    const res = await adminApi.uploadTourImage(tourId, file) as any;
+                    setForm(f => ({ ...f, images: [...f.images, res.url] }));
+                  } catch {
+                    setUploadError("Upload failed. Check file size (max 10MB) and try again.");
+                  } finally {
+                    setUploadingImg(false);
+                    e.target.value = "";
+                  }
+                }} />
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center"
+                style={{ background: "hsl(var(--primary)/0.08)" }}>
+                {uploadingImg
+                  ? <span className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+                  : <ImagePlus className="w-5 h-5" style={{ color: "hsl(var(--primary))" }} />}
+              </div>
+              <div>
+                <p className="font-body text-sm text-foreground font-medium">
+                  {uploadingImg ? "Uploading…" : "Click to upload images"}
+                </p>
+                <p className="font-body text-xs text-muted-foreground mt-0.5">
+                  PNG, JPG up to 10MB — uploads to Cloudinary
+                </p>
+              </div>
+            </label>
+          )}
         </div>
 
         {/* ── Section: Included / Excluded ── */}
