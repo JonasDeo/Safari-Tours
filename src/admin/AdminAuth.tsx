@@ -4,6 +4,7 @@ import { authApi, setToken, clearToken, getToken, ApiError } from "@/lib/api";
 
 interface AuthContextType {
   isAuthenticated: boolean;
+  isLoading:       boolean;
   adminName:       string;
   login:           (email: string, password: string) => Promise<boolean>;
   logout:          () => Promise<void>;
@@ -14,8 +15,8 @@ const AuthContext = createContext<AuthContextType | null>(null);
 export const AdminAuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [adminName,       setAdminName]       = useState("");
+  const [isLoading,       setIsLoading]       = useState(true);
 
-  // Restore session from localStorage on mount
   useEffect(() => {
     const token = getToken();
     const name  = localStorage.getItem('admin_name');
@@ -23,6 +24,7 @@ export const AdminAuthProvider = ({ children }: { children: ReactNode }) => {
       setIsAuthenticated(true);
       setAdminName(name ?? 'Admin');
     }
+    setIsLoading(false);
   }, []);
 
   const login = async (email: string, password: string): Promise<boolean> => {
@@ -41,7 +43,6 @@ export const AdminAuthProvider = ({ children }: { children: ReactNode }) => {
     try {
       await authApi.logout();
     } catch {
-      // Token may already be expired — clear locally regardless
     } finally {
       clearToken();
       setIsAuthenticated(false);
@@ -50,7 +51,7 @@ export const AdminAuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, adminName, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, isLoading, adminName, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
@@ -63,8 +64,11 @@ export const useAdminAuth = () => {
 };
 
 export const ProtectedRoute = ({ children }: { children: ReactNode }) => {
-  const { isAuthenticated } = useAdminAuth();
+  const { isAuthenticated, isLoading } = useAdminAuth();
   const location = useLocation();
+
+  if (isLoading) return null;
+
   if (!isAuthenticated) return <Navigate to="/admin/login" state={{ from: location }} replace />;
   return <>{children}</>;
 };
