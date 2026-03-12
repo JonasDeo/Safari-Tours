@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { ArrowLeft, Mail, Phone, MapPin, Users, Calendar, Tag, Send, ChevronDown } from "lucide-react";
 import { adminApi, ApiError } from "@/lib/api";
 
-// ── Types ─────────────────────────────────────────────────────────────────────
+// ── Types  ──
 
 interface Quote {
   id: number; first_name: string; last_name: string;
@@ -52,7 +52,7 @@ const Skeleton = ({ className }: { className: string }) => (
   <div className={`rounded animate-pulse ${className}`} style={{ background: "hsl(var(--muted)/0.6)" }} />
 );
 
-// ── Page ──────────────────────────────────────────────────────────────────────
+// ── Page  ───
 
 const QuoteDetailPage = () => {
   const { id }   = useParams<{ id: string }>();

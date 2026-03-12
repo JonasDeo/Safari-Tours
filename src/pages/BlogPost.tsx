@@ -28,7 +28,7 @@ const extractTOC = (
       level: b.level  as 2 | 3,
     }));
 
-// ─── Page ─────────────────────────────────────────────────────────────────────
+// ─── Page  ──
 
 const BlogPostPage = () => {
   const { slug } = useParams<{ slug: string }>();

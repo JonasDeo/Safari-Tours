@@ -8,26 +8,43 @@ import { adminApi, ApiError } from "@/lib/api";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
+interface ItineraryDay {
+  day:   number;
+  title: string;
+  desc:  string;
+}
+
 interface TourForm {
-  title:       string;
-  slug:        string;
-  destination: string;
-  type:        string;
-  duration:    string;
-  price:       string;
-  currency:    string;
-  description: string;
-  published:   boolean;
-  images:      string[];
-  included:    string[];
-  excluded:    string[];
+  title:              string;
+  slug:               string;
+  destination:        string;
+  type:               string;
+  duration:           string;
+  price:              string;
+  currency:           string;
+  excerpt:            string;
+  description:        string;
+  departure_location: string;
+  return_location:    string;
+  published:          boolean;
+  images:             string[];
+  included:           string[];
+  excluded:           string[];
+  highlights:         string[];
+  itinerary:          ItineraryDay[];
+  tags:               string[];
 }
 
 const EMPTY_FORM: TourForm = {
   title: "", slug: "", destination: "", type: "GUIDED",
   duration: "", price: "", currency: "USD",
-  description: "", published: false,
+  excerpt: "", description: "",
+  departure_location: "", return_location: "",
+  published: false,
   images: [], included: [""], excluded: [""],
+  highlights: [""],
+  itinerary: [{ day: 1, title: "", desc: "" }],
+  tags: [""],
 };
 
 
@@ -147,18 +164,24 @@ const TourFormPage = () => {
       .then(data => {
         const t = data as any;
         setForm({
-          title:       t.title        ?? "",
-          slug:        t.slug         ?? "",
-          destination: t.destination  ?? "",
-          type:        t.type         ?? "GUIDED",
-          duration:    String(t.duration_days ?? ""),
-          price:       String(t.price         ?? ""),
-          currency:    t.currency     ?? "USD",
-          description: t.description  ?? "",
-          published:   t.published    ?? false,
-          images:      t.images       ?? [],
-          included:    t.included?.length ? t.included : [""],
-          excluded:    t.excluded?.length ? t.excluded : [""],
+          title:              t.title              ?? "",
+          slug:               t.slug               ?? "",
+          destination:        t.destination        ?? "",
+          type:               t.type               ?? "GUIDED",
+          duration:           String(t.duration_days ?? ""),
+          price:              String(t.price         ?? ""),
+          currency:           t.currency           ?? "USD",
+          excerpt:            t.excerpt            ?? "",
+          description:        t.description        ?? "",
+          departure_location: t.departure_location ?? "",
+          return_location:    t.return_location    ?? "",
+          published:          t.published          ?? false,
+          images:             t.images             ?? [],
+          included:           t.included?.length   ? t.included   : [""],
+          excluded:           t.excluded?.length   ? t.excluded   : [""],
+          highlights:         t.highlights?.length ? t.highlights : [""],
+          itinerary:          t.itinerary?.length  ? t.itinerary  : [{ day: 1, title: "", desc: "" }],
+          tags:               t.tags?.length       ? t.tags       : [""],
         });
       })
       .catch(err => setError(err instanceof ApiError ? err.message : "Failed to load tour."));
@@ -178,17 +201,23 @@ const TourFormPage = () => {
     setSaving(true);
     setError("");
     const payload = {
-      title:        form.title,
-      slug:         form.slug || undefined,
-      destination:  form.destination,
-      type:         form.type,
-      duration_days: Number(form.duration),
-      price:        Number(form.price),
-      currency:     form.currency,
-      description:  form.description,
-      published:    form.published,
-      included:     form.included.filter(Boolean),
-      excluded:     form.excluded.filter(Boolean),
+      title:              form.title,
+      slug:               form.slug || undefined,
+      destination:        form.destination,
+      type:               form.type,
+      duration_days:      Number(form.duration),
+      price:              Number(form.price),
+      currency:           form.currency,
+      excerpt:            form.excerpt || undefined,
+      description:        form.description,
+      departure_location: form.departure_location || undefined,
+      return_location:    form.return_location    || undefined,
+      published:          form.published,
+      included:           form.included.filter(Boolean),
+      excluded:           form.excluded.filter(Boolean),
+      highlights:         form.highlights.filter(Boolean),
+      itinerary:          form.itinerary.filter(d => d.title || d.desc),
+      tags:               form.tags.filter(Boolean),
     };
     try {
       let result: any;
@@ -326,13 +355,19 @@ const TourFormPage = () => {
             Description
           </p>
 
-          <Field label="Tour Description" required>
+          <Field label="Short Excerpt" hint="1–2 sentence summary shown on tour cards">
+            <TextInput
+              value={form.excerpt} onChange={set("excerpt")}
+              placeholder="A brief, enticing summary of the tour…" />
+          </Field>
+
+          <Field label="Full Description" required>
             <textarea
               value={form.description}
               onChange={set("description")}
               rows={5}
               required
-              placeholder="Describe the tour experience, highlights, and what makes it special…"
+              placeholder="Describe the tour experience in detail…"
               className="w-full px-4 py-3 rounded-xl text-sm font-body outline-none
                 transition-all duration-200 resize-none"
               style={inputStyle}
@@ -340,7 +375,85 @@ const TourFormPage = () => {
               onBlur={e  => Object.assign(e.currentTarget.style, blurStyle)}
             />
           </Field>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <Field label="Departure Location">
+              <TextInput value={form.departure_location} onChange={set("departure_location")}
+                placeholder="e.g. Arusha, Tanzania" />
+            </Field>
+            <Field label="Return Location">
+              <TextInput value={form.return_location} onChange={set("return_location")}
+                placeholder="Same as departure if same" />
+            </Field>
+          </div>
         </div>
+
+        {/* ── Section: Highlights ── */}
+        <div className="rounded-2xl p-6 space-y-4"
+          style={{ border: "1px solid hsl(var(--border)/0.6)", background: "hsl(var(--muted)/0.2)" }}>
+          <p className="text-xs uppercase tracking-[0.2em] font-body text-muted-foreground">
+            Highlights
+          </p>
+          {form.highlights.map((h, i) => (
+            <div key={i} className="flex gap-2">
+              <TextInput value={h}
+                onChange={e => setForm(f => { const a = [...f.highlights]; a[i] = e.target.value; return { ...f, highlights: a }; })}
+                placeholder={`Highlight ${i + 1}…`} />
+              {form.highlights.length > 1 && (
+                <button type="button"
+                  onClick={() => setForm(f => ({ ...f, highlights: f.highlights.filter((_, j) => j !== i) }))}
+                  className="px-2 rounded-lg text-xs font-body flex-shrink-0"
+                  style={{ background: "hsl(0 70% 50%/0.1)", color: "hsl(0 70% 60%)" }}>✕</button>
+              )}
+            </div>
+          ))}
+          <button type="button"
+            onClick={() => setForm(f => ({ ...f, highlights: [...f.highlights, ""] }))}
+            className="text-xs font-body px-3 py-1.5 rounded-lg"
+            style={{ background: "hsl(var(--muted)/0.5)", color: "hsl(var(--primary))" }}>
+            + Add Highlight
+          </button>
+        </div>
+
+        {/* ── Section: Itinerary ── */}
+        <div className="rounded-2xl p-6 space-y-4"
+          style={{ border: "1px solid hsl(var(--border)/0.6)", background: "hsl(var(--muted)/0.2)" }}>
+          <p className="text-xs uppercase tracking-[0.2em] font-body text-muted-foreground">
+            Itinerary
+          </p>
+          {form.itinerary.map((day, i) => (
+            <div key={i} className="rounded-xl p-4 space-y-3"
+              style={{ background: "hsl(var(--background))", border: "1px solid hsl(var(--border)/0.4)" }}>
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-body font-semibold text-foreground">Day {day.day}</span>
+                {form.itinerary.length > 1 && (
+                  <button type="button"
+                    onClick={() => setForm(f => ({ ...f, itinerary: f.itinerary.filter((_, j) => j !== i).map((d, k) => ({ ...d, day: k + 1 })) }))}
+                    className="text-xs font-body px-2 py-0.5 rounded"
+                    style={{ color: "hsl(0 70% 60%)" }}>Remove</button>
+                )}
+              </div>
+              <TextInput value={day.title}
+                onChange={e => setForm(f => { const a = [...f.itinerary]; a[i] = { ...a[i], title: e.target.value }; return { ...f, itinerary: a }; })}
+                placeholder="Day title e.g. Arrive Arusha, transfer to Serengeti" />
+              <textarea value={day.desc} rows={2}
+                onChange={e => setForm(f => { const a = [...f.itinerary]; a[i] = { ...a[i], desc: e.target.value }; return { ...f, itinerary: a }; })}
+                placeholder="What happens this day…"
+                className="w-full px-4 py-3 rounded-xl text-sm font-body outline-none resize-none transition-all"
+                style={inputStyle}
+                onFocus={e => Object.assign(e.currentTarget.style, focusStyle)}
+                onBlur={e  => Object.assign(e.currentTarget.style, blurStyle)} />
+            </div>
+          ))}
+          <button type="button"
+            onClick={() => setForm(f => ({ ...f, itinerary: [...f.itinerary, { day: f.itinerary.length + 1, title: "", desc: "" }] }))}
+            className="text-xs font-body px-3 py-1.5 rounded-lg"
+            style={{ background: "hsl(var(--muted)/0.5)", color: "hsl(var(--primary))" }}>
+            + Add Day
+          </button>
+        </div>
+
+        {/* ── Section: Includes & Excludes ── */}
 
         {/* ── Section: Images ── */}
         <div className="rounded-2xl p-6 space-y-4"
@@ -434,6 +547,36 @@ const TourFormPage = () => {
               items={form.excluded}
               onChange={items => setForm(f => ({ ...f, excluded: items }))} />
           </div>
+        </div>
+
+        {/* ── Section: Tags ── */}
+        <div className="rounded-2xl p-6 space-y-4"
+          style={{ border: "1px solid hsl(var(--border)/0.6)", background: "hsl(var(--muted)/0.2)" }}>
+          <p className="text-xs uppercase tracking-[0.2em] font-body text-muted-foreground">
+            Tags
+          </p>
+          <p className="text-xs font-body text-muted-foreground -mt-2">
+            Short labels shown on tour cards (e.g. "Wildlife", "Big Five", "Family")
+          </p>
+          {form.tags.map((tag, i) => (
+            <div key={i} className="flex gap-2">
+              <TextInput value={tag}
+                onChange={e => setForm(f => { const a = [...f.tags]; a[i] = e.target.value; return { ...f, tags: a }; })}
+                placeholder={`Tag ${i + 1}…`} />
+              {form.tags.length > 1 && (
+                <button type="button"
+                  onClick={() => setForm(f => ({ ...f, tags: f.tags.filter((_, j) => j !== i) }))}
+                  className="px-2 rounded-lg text-xs font-body flex-shrink-0"
+                  style={{ background: "hsl(0 70% 50%/0.1)", color: "hsl(0 70% 60%)" }}>✕</button>
+              )}
+            </div>
+          ))}
+          <button type="button"
+            onClick={() => setForm(f => ({ ...f, tags: [...f.tags, ""] }))}
+            className="text-xs font-body px-3 py-1.5 rounded-lg"
+            style={{ background: "hsl(var(--muted)/0.5)", color: "hsl(var(--primary))" }}>
+            + Add Tag
+          </button>
         </div>
 
         {/* ── Submit ── */}

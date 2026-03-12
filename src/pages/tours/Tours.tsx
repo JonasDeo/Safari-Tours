@@ -83,7 +83,7 @@ const TourCard = ({ tour, i }: { tour: Tour; i: number }) => (
 
       {/* Tags */}
       <div className="flex flex-wrap gap-1.5">
-        {tour.tags.map(tag => (
+        {(tour.tags ?? []).map(tag => (
           <span key={tag} className="text-xs font-body px-2.5 py-1 rounded-full"
             style={{ background: "hsl(var(--muted))", color: "hsl(var(--muted-foreground))" }}>
             {tag}
@@ -113,7 +113,7 @@ const TourCard = ({ tour, i }: { tour: Tour; i: number }) => (
   </motion.article>
 );
 
-// ── Page ──────────────────────────────────────────────────────────────────────
+// ── Page  ───
 
 const ToursPage = () => {
   const [searchParams] = useSearchParams();

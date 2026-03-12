@@ -21,38 +21,40 @@ const SOCIALS = [
   { Icon: TripAdvisorIcon, href: "https://tripadvisor.com",    label: "TripAdvisor" },
 ];
 
-// ── Shared brand lockup — identical style to Navbar ───────────────────────────
+const SAFARI_TYPES = [
+  { label: "Guided Safaris",  href: "/tours/guided"     },
+  { label: "Self-Drive",      href: "/tours/self-drive" },
+  { label: "Mountain Treks",  href: "/tours/mountain"   },
+  { label: "Beach Holidays",  href: "/tours/beach"      },
+  { label: "Car Rental",      href: "/tours/car-rental" },
+];
+
+const DESTINATIONS = [
+  { label: "Tanzania Safari", href: "/destinations" },
+  { label: "Kenya Safari",    href: "/destinations" },
+  { label: "Uganda Safari",   href: "/destinations" },
+  { label: "Rwanda Safari",   href: "/destinations" },
+  { label: "Zanzibar",        href: "/destinations" },
+];
+
+const QUICK_LINKS = [
+  { label: "About Us",      href: "/about"        },
+  { label: "Travel Guide",  href: "/blog"         },
+  { label: "Our Blog",      href: "/blog"         },
+  { label: "Contact Us",    href: "/contact"      },
+  { label: "Plan a Safari", href: "/quote"        },
+];
 
 const BrandLockup = () => (
   <div className="leading-none flex flex-col gap-0.5">
-    <span
-      className="text-sand"
-      style={{
-        fontFamily: '"Yeseva One", serif',
-        fontSize: "1.55rem",
-        lineHeight: 1,
-        letterSpacing: "0.02em",
-      }}
-    >
+    <span className="text-sand" style={{ fontFamily: '"Yeseva One", serif', fontSize: "1.55rem", lineHeight: 1, letterSpacing: "0.02em" }}>
       Balbina
     </span>
-    <span
-      className="text-primary"
-      style={{
-        fontFamily: '"Cormorant Garamond", serif',
-        fontStyle: "italic",
-        fontSize: "0.65rem",
-        letterSpacing: "0.28em",
-        lineHeight: 1,
-        textTransform: "uppercase",
-      }}
-    >
+    <span className="text-primary" style={{ fontFamily: '"Cormorant Garamond", serif', fontStyle: "italic", fontSize: "0.65rem", letterSpacing: "0.28em", lineHeight: 1, textTransform: "uppercase" }}>
       Safaris
     </span>
   </div>
 );
-
-// ── Footer ────────────────────────────────────────────────────────────────────
 
 const FooterSection = () => (
   <footer className="bg-earth text-sand border-t border-sand/8">
@@ -60,16 +62,12 @@ const FooterSection = () => (
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
 
-        {/* ── Brand ── */}
+        {/* Brand */}
         <div className="sm:col-span-2 lg:col-span-1">
           <Link to="/" className="flex items-center gap-3 mb-5 group w-fit">
-            <img
-              src={logoSrc}
-              alt="Balbina Safaris"
-              className="w-14 h-14 object-contain flex-shrink-0
-                group-hover:scale-105 transition-transform duration-200"
-              style={{ filter: "brightness(0) invert(1)" }}
-            />
+            <img src={logoSrc} alt="Balbina Safaris"
+              className="w-14 h-14 object-contain flex-shrink-0 group-hover:scale-105 transition-transform duration-200"
+              style={{ filter: "brightness(0) invert(1)" }} />
             <BrandLockup />
           </Link>
 
@@ -107,56 +105,59 @@ const FooterSection = () => (
           </div>
         </div>
 
-        {/* ── Safari Types ── */}
+        {/* Safari Types */}
         <div>
           <h4 className="font-body text-xs font-semibold tracking-[0.2em] uppercase text-primary mb-5">
             Safari Types
           </h4>
           <ul className="space-y-3 font-body text-sm text-sand/55">
-            {["Self-Drive Safari", "Balbina Guided Safaris", "Mountain Climbing", "Beach Holidays", "Car Rental"].map((label) => (
+            {SAFARI_TYPES.map(({ label, href }) => (
               <li key={label}>
-                <Link to="/tours" className="hover:text-sand transition-colors duration-200">{label}</Link>
+                <Link to={href} className="hover:text-sand transition-colors duration-200 flex items-center gap-1.5 group">
+                  <span className="w-0 group-hover:w-2 h-px bg-primary transition-all duration-200 overflow-hidden" />
+                  {label}
+                </Link>
               </li>
             ))}
           </ul>
         </div>
 
-        {/* ── Destinations ── */}
+        {/* Destinations */}
         <div>
           <h4 className="font-body text-xs font-semibold tracking-[0.2em] uppercase text-primary mb-5">
             Destinations
           </h4>
           <ul className="space-y-3 font-body text-sm text-sand/55">
-            {["Tanzania Safari", "Kenya Safari", "Uganda Safari", "Rwanda Safari"].map((label) => (
+            {DESTINATIONS.map(({ label, href }) => (
               <li key={label}>
-                <Link to="/destinations" className="hover:text-sand transition-colors duration-200">{label}</Link>
+                <Link to={href} className="hover:text-sand transition-colors duration-200 flex items-center gap-1.5 group">
+                  <span className="w-0 group-hover:w-2 h-px bg-primary transition-all duration-200 overflow-hidden" />
+                  {label}
+                </Link>
               </li>
             ))}
           </ul>
         </div>
 
-        {/* ── Quick Links ── */}
+        {/* Quick Links */}
         <div>
           <h4 className="font-body text-xs font-semibold tracking-[0.2em] uppercase text-primary mb-5">
             Quick Links
           </h4>
           <ul className="space-y-3 font-body text-sm text-sand/55">
-            {[
-              { label: "About Us",      href: "/about"        },
-              { label: "Travel Guide",  href: "/destinations" },
-              { label: "Our Blog",      href: "/blog"         },
-              { label: "Contact Us",    href: "/contact"      },
-              { label: "Plan a Safari", href: "/quote"        },
-            ].map(({ label, href }) => (
+            {QUICK_LINKS.map(({ label, href }) => (
               <li key={label}>
-                <Link to={href} className="hover:text-sand transition-colors duration-200">{label}</Link>
+                <Link to={href} className="hover:text-sand transition-colors duration-200 flex items-center gap-1.5 group">
+                  <span className="w-0 group-hover:w-2 h-px bg-primary transition-all duration-200 overflow-hidden" />
+                  {label}
+                </Link>
               </li>
             ))}
           </ul>
         </div>
       </div>
 
-      {/* ── Bottom bar ── */}
+      {/* Bottom bar */}
       <div className="border-t border-sand/8 mt-12 pt-8
         flex flex-col sm:flex-row items-center justify-between gap-5">
         <p className="font-body text-xs text-sand/35 order-2 sm:order-1">
@@ -164,7 +165,7 @@ const FooterSection = () => (
         </p>
         <div className="flex items-center gap-2 flex-wrap justify-center order-1 sm:order-2">
           <span className="font-body text-xs text-sand/30 mr-1">We accept</span>
-          <VisaIcon /><MastercardIcon /><PaypalIcon />
+          <VisaIcon /><MastercardIcon /><PaypalIcon /><MpesaIcon />
         </div>
       </div>
 

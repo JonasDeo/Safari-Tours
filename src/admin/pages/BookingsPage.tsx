@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Search, ChevronDown, DollarSign, CalendarCheck, Clock, XCircle } from "lucide-react";
 import { adminApi, ApiError } from "@/lib/api";
 
-// ── Types ─────────────────────────────────────────────────────────────────────
+// ── Types  ──
 
 interface Booking {
   id: number; client_name: string; client_email: string;
@@ -26,7 +26,7 @@ const Skeleton = ({ className }: { className: string }) => (
   <div className={`rounded animate-pulse ${className}`} style={{ background: "hsl(var(--muted)/0.6)" }} />
 );
 
-// ── Page ──────────────────────────────────────────────────────────────────────
+// ── Page  ───
 
 const BookingsPage = () => {
   const [result,       setResult]       = useState<Paginated | null>(null);

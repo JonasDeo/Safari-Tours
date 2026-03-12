@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { ArrowLeft, Save, ImagePlus, Eye, EyeOff, X, Plus } from "lucide-react";
 import { adminApi, ApiError } from "@/lib/api";
 
-// ── Types ─────────────────────────────────────────────────────────────────────
+// ── Types  ──
 interface BlogForm {
   title:     string;
   slug:      string;
@@ -45,7 +45,7 @@ const SectionCard = ({ title, children }: { title: string; children: React.React
   </div>
 );
 
-// ── Page ──────────────────────────────────────────────────────────────────────
+// ── Page  ───
 const BlogFormPage = () => {
   const { id }   = useParams<{ id?: string }>();
   const navigate = useNavigate();

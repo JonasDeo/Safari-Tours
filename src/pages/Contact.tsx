@@ -7,7 +7,7 @@ import PageLayout from "@/components/PageLayout";
 import { publicApi, ApiError } from "@/lib/api";
 import tour1 from "@/assets/tour-1.jpg";
 
-// ── Data ──────────────────────────────────────────────────────────────────────
+// ── Data  ───
 
 const CONTACT_INFO = [
   {
@@ -62,7 +62,7 @@ const fadeUp = (delay = 0) => ({
   transition: { duration: 0.5, delay, ease: [0.32, 0.72, 0, 1] as const },
 });
 
-// ── Page ──────────────────────────────────────────────────────────────────────
+// ── Page  ───
 
 const ContactPage = () => {
   const [form, setForm] = useState({
