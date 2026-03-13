@@ -251,7 +251,7 @@ const TourFormPage = () => {
           className="flex items-center gap-2 text-sm font-body mb-5 transition-colors group"
           style={{ color: "hsl(var(--muted-foreground))" }}>
           <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1 duration-200" />
-          Back to Tours
+          Back
         </button>
 
         <div className="flex items-center justify-between gap-4 flex-wrap">

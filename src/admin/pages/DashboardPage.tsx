@@ -495,16 +495,23 @@ const DashboardPage = () => {
           <ArrowRight className="w-4 h-4 text-primary transition-transform group-hover:translate-x-1 duration-200" />
         </Link>
 
-        <Link to="/admin/quotes/new"
-          className="flex items-center justify-between p-5 rounded-2xl transition-all duration-200 group"
-          style={{ background: "hsl(142 70% 50% / 0.08)", border: "1px solid hsl(142 70% 50% / 0.2)" }}>
-          <div>
-            <p className="font-body font-semibold text-sm text-foreground mb-0.5">Create Quote</p>
-            <p className="font-body text-xs text-muted-foreground">From WhatsApp, email or call</p>
-          </div>
-          <PlusCircle className="w-4 h-4 transition-transform group-hover:scale-110 duration-200"
-            style={{ color: "hsl(142 70% 50%)" }} />
-        </Link>
+        <Link
+            to="/quotes"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-between p-5 rounded-2xl transition-all duration-200 group"
+            style={{ background: "hsl(142 70% 50% / 0.08)", border: "1px solid hsl(142 70% 50% / 0.2)" }}
+          >
+            <div>
+              <p className="font-body font-semibold text-sm text-foreground mb-0.5">Create Quote</p>
+              <p className="font-body text-xs text-muted-foreground">From WhatsApp, email or call</p>
+            </div>
+
+            <PlusCircle
+              className="w-4 h-4 transition-transform group-hover:scale-110 duration-200"
+              style={{ color: "hsl(142 70% 50%)" }}
+            />
+          </Link>
 
         <Link to="/admin/quotes"
           className="flex items-center justify-between p-5 rounded-2xl transition-all duration-200 group"

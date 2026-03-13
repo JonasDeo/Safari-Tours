@@ -4,23 +4,31 @@ import { motion } from "framer-motion";
 import { ArrowLeft, Save, ImagePlus, Eye, EyeOff, X, Plus } from "lucide-react";
 import { adminApi, ApiError } from "@/lib/api";
 
-// ── Types  ──
+// ── Types ─────────────────────────────────────────────────────────────────────
 interface BlogForm {
-  title:     string;
-  slug:      string;
-  category:  string;
-  tags:      string[];
-  excerpt:   string;
-  content:   string;
-  coverImage:string;
-  published: boolean;
-  tagInput:  string;
+  title:      string;
+  slug:       string;
+  category:   string;
+  tags:       string[];
+  excerpt:    string;
+  content:    string;
+  coverImage: string;
+  published:  boolean;
+  tagInput:   string;
+  author:     string;
+  authorBio:  string;
+  readTime:   string;   // stored as string in input, sent as number
 }
 
 const EMPTY: BlogForm = {
   title: "", slug: "", category: "", tags: [], excerpt: "",
   content: "", coverImage: "", published: false, tagInput: "",
+  author: "", authorBio: "", readTime: "",
 };
+
+/** Auto-calculate reading time from word count (avg 200 wpm) */
+const calcReadTime = (text: string) =>
+  Math.max(1, Math.ceil(text.trim().split(/\s+/).filter(Boolean).length / 200));
 
 
 const CATEGORIES = ["Tanzania", "Kenya", "Uganda", "Zanzibar", "Tips", "Wildlife", "Culture", "Food"];
@@ -45,7 +53,7 @@ const SectionCard = ({ title, children }: { title: string; children: React.React
   </div>
 );
 
-// ── Page  ───
+// ── Page ──────────────────────────────────────────────────────────────────────
 const BlogFormPage = () => {
   const { id }   = useParams<{ id?: string }>();
   const navigate = useNavigate();
@@ -74,6 +82,9 @@ const BlogFormPage = () => {
           coverImage: p.cover_image ?? "",
           published:  p.published   ?? false,
           tagInput:   "",
+          author:     p.author      ?? "",
+          authorBio:  p.author_bio  ?? "",
+          readTime:   String(p.read_time ?? ""),
         });
       })
       .catch(err => setError(err instanceof ApiError ? err.message : "Failed to load post."));
@@ -105,13 +116,18 @@ const BlogFormPage = () => {
     setError("");
     const payload = {
       title:       form.title,
-      slug:        form.slug || undefined,
+      slug:        form.slug     || undefined,
       category:    form.category,
       tags:        form.tags,
       excerpt:     form.excerpt,
       content:     form.content,
       cover_image: form.coverImage || undefined,
       published:   form.published,
+      author:      form.author    || undefined,
+      author_bio:  form.authorBio || undefined,
+      read_time:   form.readTime
+        ? Number(form.readTime)
+        : calcReadTime(form.content),
     };
     try {
       let result: any;
@@ -322,6 +338,45 @@ const BlogFormPage = () => {
           )}
         </SectionCard>
 
+        {/* Author */}
+        <SectionCard title="Author">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="space-y-1.5">
+              <label className="text-xs uppercase tracking-[0.15em] font-body text-muted-foreground">
+                Author Name
+              </label>
+              <input value={form.author} onChange={set("author")}
+                placeholder="e.g. James Oloo, Balbina Safaris Team"
+                className={inputCls} style={iStyle} onFocus={onF} onBlur={onB} />
+            </div>
+            <div className="space-y-1.5">
+              <label className="text-xs uppercase tracking-[0.15em] font-body text-muted-foreground">
+                Reading Time (minutes)
+              </label>
+              <div className="relative">
+                <input
+                  type="number" min="1" max="60"
+                  value={form.readTime}
+                  onChange={set("readTime")}
+                  placeholder={String(calcReadTime(form.content))}
+                  className={inputCls} style={iStyle} onFocus={onF} onBlur={onB} />
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-body
+                  pointer-events-none" style={{ color: "hsl(var(--muted-foreground))" }}>
+                  auto: {calcReadTime(form.content)} min
+                </span>
+              </div>
+            </div>
+          </div>
+          <div className="space-y-1.5">
+            <label className="text-xs uppercase tracking-[0.15em] font-body text-muted-foreground">
+              Author Bio
+            </label>
+            <textarea value={form.authorBio} onChange={set("authorBio")} rows={2}
+              placeholder="A short bio about the author shown at the bottom of the post…"
+              className={`${inputCls} resize-none`} style={iStyle} onFocus={onF} onBlur={onB} />
+          </div>
+        </SectionCard>
+
         {/* Content */}
         <SectionCard title="Content (Markdown)">
           <div className="space-y-1.5">
@@ -337,6 +392,7 @@ const BlogFormPage = () => {
               style={{ ...iStyle, minHeight: "320px" }} onFocus={onF} onBlur={onB} />
             <p className="text-xs font-body text-muted-foreground">
               {form.content.trim().split(/\s+/).filter(Boolean).length} words
+              {" · "}est. {calcReadTime(form.content)} min read
             </p>
           </div>
         </SectionCard>
