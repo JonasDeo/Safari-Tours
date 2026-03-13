@@ -121,7 +121,7 @@ const AdminLogin = () => {
                 <label className="text-xs uppercase tracking-[0.15em] font-body"
                   style={{ color: "hsl(var(--sand)/0.4)" }}>Email</label>
                 <input type="email" value={email} onChange={e => setEmail(e.target.value)}
-                  placeholder="admin@balbinasafaris.com" required
+                  placeholder=" " required
                   className="w-full px-4 py-3 rounded-xl text-sm font-body outline-none transition-all duration-200"
                   style={{ background: "hsl(var(--sand)/0.05)", border: "1px solid hsl(var(--sand)/0.1)", color: "hsl(var(--sand)/0.9)" }}
                   onFocus={e => e.currentTarget.style.borderColor = "hsl(var(--primary)/0.6)"}
@@ -134,7 +134,7 @@ const AdminLogin = () => {
                   style={{ color: "hsl(var(--sand)/0.4)" }}>Password</label>
                 <div className="relative">
                   <input type={showPw ? "text" : "password"} value={password}
-                    onChange={e => setPassword(e.target.value)} placeholder="••••••••" required
+                    onChange={e => setPassword(e.target.value)} placeholder="" required
                     className="w-full px-4 py-3 pr-11 rounded-xl text-sm font-body outline-none transition-all duration-200"
                     style={{ background: "hsl(var(--sand)/0.05)", border: "1px solid hsl(var(--sand)/0.1)", color: "hsl(var(--sand)/0.9)" }}
                     onFocus={e => e.currentTarget.style.borderColor = "hsl(var(--primary)/0.6)"}

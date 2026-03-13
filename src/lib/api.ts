@@ -39,7 +39,9 @@ export class ApiError extends Error {
 async function request<T>(endpoint: string, opts: RequestOptions = {}): Promise<T> {
   const { method = 'GET', body, auth = false, isForm = false } = opts;
 
-  const headers: Record<string, string> = {};
+  const headers: Record<string, string> = {
+    'Accept': 'application/json',   // ← always set — tells Laravel to return JSON, never redirect
+  };
 
   if (auth) {
     const token = getToken();
@@ -48,7 +50,6 @@ async function request<T>(endpoint: string, opts: RequestOptions = {}): Promise<
 
   if (!isForm && body) {
     headers['Content-Type'] = 'application/json';
-    headers['Accept']       = 'application/json';
   }
 
   const res = await fetch(`${BASE_URL}/api${endpoint}`, {
@@ -113,7 +114,7 @@ export const authApi = {
     request<{ access_token: string }>('/admin/refresh', { method: 'POST', auth: true }),
 
   me: () =>
-    request('/admin/me', { auth: true }),
+    request<{ id: number; name: string; email: string }>('/admin/me', { auth: true }),
 
   updateMe: (data: unknown) =>
     request('/admin/me', { method: 'PUT', body: data, auth: true }),

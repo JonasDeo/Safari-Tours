@@ -34,86 +34,101 @@ const FALLBACK_IMAGES = [
   "https://images.unsplash.com/photo-1523805009345-7448845a9e53?w=800",
 ];
 
-const TourCard = ({ tour, i }: { tour: Tour; i: number }) => (
-  <motion.article
-    initial={{ opacity: 0, y: 24 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true, margin: "-60px" }}
-    transition={{ duration: 0.5, delay: i * 0.07, ease: [0.32, 0.72, 0, 1] }}
-    className="group flex flex-col rounded-2xl overflow-hidden border transition-all duration-300
-      hover:shadow-xl hover:-translate-y-0.5"
-    style={{ borderColor: "hsl(var(--border)/0.6)", background: "hsl(var(--background))" }}
-  >
-    {/* Image */}
-    <div className="relative overflow-hidden h-52">
-      <img src={(tour.images && tour.images[0]) || FALLBACK_IMAGES[i % FALLBACK_IMAGES.length]} alt={tour.title} loading="lazy"
-        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+const TourCard = ({ tour, i }: { tour: Tour; i: number }) => {
+  const imgUrl = (() => {
+    const first = tour.images?.[0];
+    if (!first) return FALLBACK_IMAGES[i % FALLBACK_IMAGES.length];
+    return typeof first === "string" ? first : (first as any)?.url ?? FALLBACK_IMAGES[i % FALLBACK_IMAGES.length];
+  })();
 
-      {/* Type badge */}
-      <span className="absolute top-3 left-3 text-xs font-body px-2.5 py-1 rounded-full font-medium"
-        style={{ background: "hsl(var(--primary)/0.9)", color: "hsl(var(--dark))" }}>
-        {TYPE_LABELS[tour.type]}
-      </span>
+  return (
+    <motion.article
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 0.5, delay: i * 0.07, ease: [0.32, 0.72, 0, 1] }}
+      className="group flex flex-col rounded-2xl overflow-hidden border transition-all duration-300
+        hover:shadow-xl hover:-translate-y-0.5 cursor-pointer"
+      style={{ borderColor: "hsl(var(--border)/0.6)", background: "hsl(var(--background))" }}
+    >
+      {/* Entire card is a link to the detail page */}
+      <Link to={`/tours/${tour.slug}`} className="flex flex-col flex-1">
 
-      {/* Duration */}
-      <div className="absolute bottom-3 right-3 flex items-center gap-1.5 text-xs font-body text-sand/90">
-        <Clock className="w-3 h-3" />
-        {tour.duration_days} days
-      </div>
-    </div>
+        {/* Image */}
+        <div className="relative overflow-hidden h-52 flex-shrink-0">
+          <img src={imgUrl} alt={tour.title} loading="lazy"
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
 
-    {/* Content */}
-    <div className="flex flex-col flex-1 p-5 gap-3">
-      {/* Destination */}
-      <div className="flex items-center gap-1.5 text-xs font-body"
-        style={{ color: "hsl(var(--primary))" }}>
-        <MapPin className="w-3 h-3" />
-        {tour.destination}
-      </div>
-
-      <h3 className="font-display text-lg text-foreground leading-snug group-hover:text-primary
-        transition-colors duration-200">
-        {tour.title}
-      </h3>
-
-      <p className="font-body text-sm text-muted-foreground leading-relaxed flex-1">
-        {tour.excerpt}
-      </p>
-
-      {/* Tags */}
-      <div className="flex flex-wrap gap-1.5">
-        {(tour.tags ?? []).map(tag => (
-          <span key={tag} className="text-xs font-body px-2.5 py-1 rounded-full"
-            style={{ background: "hsl(var(--muted))", color: "hsl(var(--muted-foreground))" }}>
-            {tag}
+          {/* Type badge */}
+          <span className="absolute top-3 left-3 text-xs font-body px-2.5 py-1 rounded-full font-medium"
+            style={{ background: "hsl(var(--primary)/0.9)", color: "hsl(var(--dark))" }}>
+            {TYPE_LABELS[tour.type]}
           </span>
-        ))}
-      </div>
 
-      {/* Footer */}
-      <div className="flex items-center justify-between pt-3 mt-1"
-        style={{ borderTop: "1px solid hsl(var(--border)/0.5)" }}>
-        <div>
-          <p className="text-xs font-body text-muted-foreground">From</p>
-          <p className="font-display text-xl font-bold text-foreground">
-            {tour.currency} {tour.price.toLocaleString()}
-            <span className="text-xs font-body font-normal text-muted-foreground ml-1">/ person</span>
-          </p>
+          {/* Duration */}
+          <div className="absolute bottom-3 right-3 flex items-center gap-1.5 text-xs font-body text-white/90">
+            <Clock className="w-3 h-3" />
+            {tour.duration_days} days
+          </div>
         </div>
-        <Link to={`/quote?tour=${tour.slug}`}
-          className="flex items-center gap-1.5 px-4 py-2.5 rounded-full text-xs font-body
-            font-semibold tracking-widest uppercase transition-all duration-200 group/btn"
-          style={{ background: "hsl(var(--primary))", color: "hsl(var(--dark))" }}>
-          Book Now
-          <ArrowRight className="w-3 h-3 transition-transform group-hover/btn:translate-x-0.5 duration-200" />
-        </Link>
-      </div>
-    </div>
-  </motion.article>
-);
 
-// ── Page  ───
+        {/* Content */}
+        <div className="flex flex-col flex-1 p-5 gap-3">
+          {/* Destination */}
+          <div className="flex items-center gap-1.5 text-xs font-body capitalize"
+            style={{ color: "hsl(var(--primary))" }}>
+            <MapPin className="w-3 h-3" />
+            {tour.destination}
+          </div>
+
+          <h3 className="font-display text-lg text-foreground leading-snug group-hover:underline
+            decoration-primary underline-offset-2 transition-colors duration-200">
+            {tour.title}
+          </h3>
+
+          {tour.excerpt && (
+            <p className="font-body text-sm text-muted-foreground leading-relaxed flex-1 line-clamp-3">
+              {tour.excerpt}
+            </p>
+          )}
+
+          {/* Tags */}
+          {(tour.tags ?? []).length > 0 && (
+            <div className="flex flex-wrap gap-1.5">
+              {(tour.tags ?? []).slice(0, 3).map(tag => (
+                <span key={tag} className="text-xs font-body px-2.5 py-1 rounded-full"
+                  style={{ background: "hsl(var(--muted))", color: "hsl(var(--muted-foreground))" }}>
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
+
+          {/* Footer */}
+          <div className="flex items-center justify-between pt-3 mt-1"
+            style={{ borderTop: "1px solid hsl(var(--border)/0.5)" }}>
+            <div>
+              <p className="text-xs font-body text-muted-foreground">From</p>
+              <p className="font-display text-xl font-bold text-foreground">
+                {tour.currency} {tour.price.toLocaleString()}
+                <span className="text-xs font-body font-normal text-muted-foreground ml-1">/ person</span>
+              </p>
+            </div>
+            <span className="flex items-center gap-1.5 text-xs font-body font-semibold"
+              style={{ color: "hsl(var(--primary))" }}>
+              View Tour <ArrowRight className="w-3 h-3" />
+            </span>
+          </div>
+        </div>
+      </Link>
+
+
+    </motion.article>
+  );
+};
+
+// ── Page   ───
 
 const ToursPage = () => {
   const [searchParams] = useSearchParams();
@@ -132,7 +147,8 @@ const ToursPage = () => {
 
   const filtered = tours.filter(t => {
     const matchType = typeFilter === "All" || t.type === typeFilter;
-    const matchDest = destFilter === "All" || t.destination === destFilter;
+    const matchDest = destFilter === "All" ||
+      t.destination.toLowerCase() === destFilter.toLowerCase();
     return matchType && matchDest;
   });
 
@@ -143,7 +159,7 @@ const ToursPage = () => {
 
       {/* ── Hero ── */}
       <section className="relative flex items-center justify-center overflow-hidden"
-        style={{ height: "clamp(220px, 38vh, 400px)", paddingTop: "var(--nav-total-h, 64px)" }}>
+        style={{ height: "clamp(320px, 50vh, 520px)", marginTop: "calc(-1 * var(--nav-total-h, 64px))", paddingTop: "var(--nav-total-h, 64px)" }}>
         <img src={tour1} alt="Safari tours"
           className="absolute inset-0 w-full h-full object-cover object-center" />
         <div className="absolute inset-0 bg-dark-overlay/65" />

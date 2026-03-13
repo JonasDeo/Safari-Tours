@@ -7,7 +7,7 @@ import {
 } from "lucide-react";
 import { adminApi, ApiError } from "@/lib/api";
 
-// ── Types ─────────────────────────────────────────────────────────────────────
+// ── Types   ──
 
 interface Quote {
   id: number; first_name: string; last_name: string;
@@ -33,7 +33,7 @@ const STATUS_CONFIG: Record<string, { bg: string; dot: string; label: string }> 
 };
 const STATUSES = ["ALL", ...Object.keys(STATUS_CONFIG)];
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
+// ── Helpers   
 
 const Sk = ({ w = "full", h = 3.5 }: { w?: string | number; h?: number }) => (
   <div className={`rounded animate-pulse w-${w}`}
@@ -51,7 +51,7 @@ const Badge = ({ status }: { status: string }) => {
   );
 };
 
-// ── Page ──────────────────────────────────────────────────────────────────────
+// ── Page   ───
 
 const QuotesPage = () => {
   const [result,       setResult]       = useState<ApiResult | null>(null);

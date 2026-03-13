@@ -6,7 +6,10 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 // ── Public pages ──────────────────────────────────────────────────────────────
 import Index           from "./pages/Index";
-import Tours           from "./pages/tours/Tours";
+import GuidedSafaris   from "./pages/tours/GuidedSafaris";
+import SelfDrive       from "./pages/tours/SelfDrive";
+import MountainTrekking from "./pages/tours/MountainTrekking";
+import BeachHolidays   from "./pages/tours/BeachHolidays";
 import Destinations    from "./pages/Destinations";
 import DestinationPage from "./pages/DestinationPage";
 import About           from "./pages/About";
@@ -17,7 +20,7 @@ import BlogPage        from "./pages/Blog";
 import BlogPostPage    from "./pages/BlogPost";
 import ScrollToTop     from "./components/ScrollToTop";
 
-// ── Admin  ──
+// ── Admin   ──
 import { AdminAuthProvider, ProtectedRoute } from "./admin/AdminAuth";
 import AdminLogin       from "./admin/AdminLogin";
 import AdminLayout      from "./admin/AdminLayout";
@@ -31,12 +34,8 @@ import BlogAdminPage    from "./admin/pages/BlogAdminPage";
 import BlogFormPage     from "./admin/pages/BlogFormPage";
 import ProfilePage      from "./admin/pages/ProfilePage";
 import SettingsPage     from "./admin/pages/SettingsPage";
-import TourCategoryPage from "./pages/tours/TourCategory";
-import BeachHolidays from "./pages/tours/BeachHolidays";
-import GuidedSafaris from "./pages/tours/GuidedSafaris";
-import MountainTrekking from "./pages/tours/MountainTrekking";
-import SelfDrive from "./pages/tours/SelfDrive";
 import TourDetail from "./pages/tours/TourDetail";
+import Tours from "./pages/tours/Tours";
 
 const queryClient = new QueryClient();
 
@@ -50,31 +49,29 @@ const App = () => (
           <ScrollToTop />
           <Routes>
 
-            {/*  Public  */}
-            <Route path="/"                   element={<Index />} />
+            {/* ── Public ───────────────────────────────────────────── */}
+            <Route path="/"                    element={<Index />} />
 
-            {/* Tours Routes */}
-            <Route path="/tours"              element={<Tours />} />  
-            <Route path="/tours/:slug" element={<TourDetail />} />         
-            <Route path="/tours/:category" element={<TourCategoryPage />} />
-            <Route path="/tours/guided"     element={<GuidedSafaris />} />
-            <Route path="/tours/self-drive" element={<SelfDrive />} />
-            <Route path="/tours/mountain"   element={<MountainTrekking />} />
-            <Route path="/tours/beach"      element={<BeachHolidays />} />
+            {/* Tours — specific static routes MUST come before /:slug */}
+            <Route path="/tours"               element={<Tours />} />
+            <Route path="/tours/guided"        element={<GuidedSafaris />} />
+            <Route path="/tours/self-drive"    element={<SelfDrive />} />
+            <Route path="/tours/mountain"      element={<MountainTrekking />} />
+            <Route path="/tours/beach"         element={<BeachHolidays />} />
+            <Route path="/tours/:slug"         element={<TourDetail />} />
 
-            <Route path="/destinations"       element={<Destinations />} />
-            <Route path="/destinations/:slug" element={<DestinationPage />} />
-            <Route path="/about"              element={<About />} />
-            <Route path="/contact"            element={<Contact />} />
-            <Route path="/quote"              element={<QuotePage />} />
-            <Route path="/blog"               element={<BlogPage />} />
-            <Route path="/blog/:slug"         element={<BlogPostPage />} />
-            
+            <Route path="/destinations"        element={<Destinations />} />
+            <Route path="/destinations/:slug"  element={<DestinationPage />} />
+            <Route path="/about"               element={<About />} />
+            <Route path="/contact"             element={<Contact />} />
+            <Route path="/quote"               element={<QuotePage />} />
+            <Route path="/blog"                element={<BlogPage />} />
+            <Route path="/blog/:slug"          element={<BlogPostPage />} />
 
-            {/*  Admin: login (public)  */}
+            {/* ── Admin: login (public) ─────────────────────────────── */}
             <Route path="/admin/login" element={<AdminLogin />} />
 
-            {/*  Admin: protected  */}
+            {/* ── Admin: protected ─────────────────────────────────── */}
             <Route path="/admin" element={
               <ProtectedRoute>
                 <AdminLayout />
@@ -107,6 +104,7 @@ const App = () => (
               <Route path="settings"         element={<SettingsPage />} />
             </Route>
 
+            {/* ── 404 ──────────────────────────────────────────────── */}
             <Route path="*" element={<NotFound />} />
 
           </Routes>

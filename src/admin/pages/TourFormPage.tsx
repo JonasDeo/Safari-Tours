@@ -6,7 +6,7 @@ import {
 } from "lucide-react";
 import { adminApi, ApiError } from "@/lib/api";
 
-// ── Types ─────────────────────────────────────────────────────────────────────
+// ── Types   ──
 
 interface ItineraryDay {
   day:   number;
@@ -57,7 +57,7 @@ const TOUR_TYPES   = [
 ];
 const CURRENCIES = ["USD", "EUR", "TZS"];
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
+// ── Helpers   
 
 const slugify = (str: string) =>
   str.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
@@ -142,7 +142,7 @@ const ListEditor = ({
   );
 };
 
-// ── Page ──────────────────────────────────────────────────────────────────────
+// ── Page   ───
 
 const TourFormPage = () => {
   const { id }   = useParams<{ id?: string }>();

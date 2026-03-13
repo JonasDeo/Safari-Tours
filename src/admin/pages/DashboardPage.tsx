@@ -90,7 +90,7 @@ const buildPipelineCards = (stats: Stats): PipelineCardDef[] => [
     label: "Quote Pipeline",
     value: stats.pipeline_value_usd != null
       ? `$${(stats.pipeline_value_usd / 1000).toFixed(1)}k`
-      : "No data yet",
+      : " -",
     sub:   stats.pipeline_value_usd != null
       ? `${stats.quotes.pending} pending quotes`
       : "No quotes received",
@@ -102,7 +102,7 @@ const buildPipelineCards = (stats: Stats): PipelineCardDef[] => [
     label: "Avg Response Time",
     value: stats.avg_response_minutes != null
       ? formatMinutes(stats.avg_response_minutes)
-      : "No data yet",
+      : " -",
     sub:   stats.avg_response_minutes != null ? "to first reply" : "No responses recorded",
     icon:  Timer,
     color: "hsl(142 70% 50%)",
@@ -110,7 +110,7 @@ const buildPipelineCards = (stats: Stats): PipelineCardDef[] => [
   },
   {
     label: "Top Destination",
-    value: stats.top_destination?.name ?? "No data yet",
+    value: stats.top_destination?.name ?? " -",
     sub:   stats.top_destination
       ? `${stats.top_destination.bookings} bookings`
       : "No bookings yet",
@@ -122,7 +122,7 @@ const buildPipelineCards = (stats: Stats): PipelineCardDef[] => [
     label: "Avg Booking Value",
     value: stats.avg_booking_value_usd != null
       ? `$${(stats.avg_booking_value_usd / 1000).toFixed(1)}k`
-      : "No data yet",
+      : " -",
     sub:   stats.avg_booking_value_usd != null ? "per confirmed tour" : "No bookings yet",
     icon:  BarChart2,
     color: "hsl(38 90% 55%)",
