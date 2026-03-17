@@ -37,13 +37,12 @@
 
     --radius: 0.5rem;
 
-    /* Custom tokens mapped to privateexplorers palette */
     --sand: 40 25% 90%;
     --sand-dark: 36 20% 75%;
     --earth: 210 33% 17%;             /* dark navy */
     --olive: 120 15% 30%;             /* muted green */
     --olive-light: 120 10% 50%;
-    --terracotta: 36 56% 50%;         /* gold replaces terracotta */
+    --terracotta: 36 56% 50%;        
     --terracotta-light: 36 45% 62%;
     --warm-cream: 0 0% 98%;
     --dark-overlay: 210 33% 10%;

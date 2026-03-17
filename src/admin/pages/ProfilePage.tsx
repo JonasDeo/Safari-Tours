@@ -64,12 +64,13 @@ const ProfilePage = () => {
     if (pw.next.length < 8)     { setPwError("Password must be at least 8 characters."); return; }
     setSaving("password");
     try {
-      await authApi.updateMe({ password: pw.next, password_confirmation: pw.confirm });
+      await authApi.updateMe({ current_password: pw.current, password: pw.next, password_confirmation: pw.confirm });
       setSuccess("password");
       setPw({ current: "", next: "", confirm: "" });
       setTimeout(() => setSuccess(null), 2500);
     } catch (err) {
-      setPwError(err instanceof ApiError ? err.message : "Failed to update password.");
+      const msg = err instanceof ApiError ? err.message : "Failed to update password.";
+      setPwError(msg);
     } finally {
       setSaving(null);
     }
