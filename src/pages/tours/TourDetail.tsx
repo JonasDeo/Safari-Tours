@@ -34,7 +34,7 @@ interface Tour {
   published: boolean;
 }
 
-// ─── Helpers ─────────────────────────────────────────────────────────────────
+// ─── Helpers  ─────────
 
 const getImgUrl = (img: any): string =>
   typeof img === "string" ? img : img?.url ?? "";
@@ -47,7 +47,7 @@ const TYPE_LABELS: Record<string, string> = {
   CAR_RENTAL: "Car Rental",
 };
 
-// ─── Sub-components ──────────────────────────────────────────────────────────
+// ─── Sub-components  ──
 
 // Sticky book bar that appears after scrolling past the hero
 const BookBar = ({ tour }: { tour: Tour }) => (

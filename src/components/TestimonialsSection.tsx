@@ -143,7 +143,7 @@ const TestimonialCard = ({
   );
 };
 
-// ── Section ───────────────────────────────────────────────────────────────────
+// ── Section  ───────────
 
 const TestimonialsSection = () => {
   const [[current, direction], setCurrent] = useState([0, 0]);

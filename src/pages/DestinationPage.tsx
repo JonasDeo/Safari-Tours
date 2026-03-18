@@ -12,7 +12,7 @@ import { motion } from "framer-motion";
 import PageLayout from "@/components/PageLayout";
 import { getDestination, DESTINATIONS } from "@/data/destinationData";
 
-// ── Icon resolver ─────────────────────────────────────────────────────────────
+// ── Icon resolver  ─────
 
 const ICON_MAP: Record<string, LucideIcon> = {
   Footprints, Mountain, TrendingUp, Trees,
@@ -26,7 +26,7 @@ const HighlightIcon = ({ name, className }: { name: string; className?: string }
   return <Icon className={className ?? "w-5 h-5"} />;
 };
 
-// ── Animations ────────────────────────────────────────────────────────────────
+// ── Animations  ────────
 
 const FADE_UP = {
   initial:    { opacity: 0, y: 24 },
@@ -47,7 +47,7 @@ const DestinationPage = () => {
   return (
     <PageLayout>
 
-      {/* ── Hero ──────────────────────────────────────────────────────── */}
+      {/* ── Hero   */}
       <section
         className="relative flex items-end overflow-hidden"
         style={{ height: "clamp(320px, 55vh, 600px)", paddingTop: "var(--nav-total-h, 64px)" }}

@@ -8,7 +8,7 @@ import { publicApi, ApiError } from "@/lib/api";
 import tour1 from "@/assets/tour-1.jpg";
 import { useSiteSettings } from "@/hooks/use-site-settings";
 
-// ── Data ──────────────────────────────────────────────────────────────────────
+// ── Data  ──────────────
 
 const SUBJECTS = [
   "Plan a Safari",
@@ -32,7 +32,7 @@ const fadeUp = (delay = 0) => ({
   transition: { duration: 0.5, delay, ease: [0.32, 0.72, 0, 1] as const },
 });
 
-// ── Page ──────────────────────────────────────────────────────────────────────
+// ── Page  ──────────────
 
 const ContactPage = () => {
   const { contact } = useSiteSettings();

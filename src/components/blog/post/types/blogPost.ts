@@ -1,7 +1,7 @@
 // Re-export base types so consumers only need one import path
 export type { BlogPost, BlogCategory } from "../../Blog";
 
-// ─── Content blocks ───────────────────────────────────────────────────────────
+// ─── Content blocks  ───
 // Structured content model — swap for a CMS (Sanity, Contentful, etc.) later.
 
 export interface ParagraphBlock {

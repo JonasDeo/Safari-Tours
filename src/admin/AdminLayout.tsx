@@ -9,7 +9,7 @@ import { useAdminAuth } from "./AdminAuth";
 import { adminApi } from "@/lib/api";
 import logoSrc from "@/assets/Balbina-logo.png";
 
-// ── Nav config ────────────────────────────────────────────────────────────────
+// ── Nav config  ────────
 
 const NAV_MAIN = [
   { label: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
@@ -24,7 +24,7 @@ const NAV_BOTTOM = [
   { label: "Profile",  href: "/admin/profile",  icon: User     },
 ];
 
-// ── Sidebar link ──────────────────────────────────────────────────────────────
+// ── Sidebar link  ──────
 
 const NavItem = ({
   item, collapsed, mobile, badge, onClick,
@@ -92,7 +92,7 @@ const NavItem = ({
   );
 };
 
-// ── Sidebar content ───────────────────────────────────────────────────────────
+// ── Sidebar content  ───
 
 const SidebarContent = ({
   collapsed, mobile, pendingQuotes, onClose,

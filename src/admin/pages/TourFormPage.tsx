@@ -62,7 +62,7 @@ const CURRENCIES = ["USD", "EUR", "TZS"];
 const slugify = (str: string) =>
   str.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 
-// ── Sub-components ─────────────────────────────────────────────────────────────
+// ── Sub-components  ─────
 
 const Field = ({
   label, required = false, hint, children,

@@ -42,7 +42,7 @@ type PipelineCardDef = {
   icon: React.ElementType; color: string; empty?: boolean;
 };
 
-// ── Constants ─────────────────────────────────────────────────────────────────
+// ── Constants  ─────────
 
 const STATUS_STYLES: Record<string, { bg: string; color: string; label: string }> = {
   PENDING:   { bg: "hsl(38 90% 55% / 0.12)",   color: "hsl(38 90% 55%)",    label: "Pending"   },
@@ -160,7 +160,7 @@ const formatAge = (created_at: string) => {
   return new Date(created_at).toLocaleDateString("en-GB", { day: "numeric", month: "short" });
 };
 
-// ── Shared components ─────────────────────────────────────────────────────────
+// ── Shared components  ─
 
 const Skeleton = ({ className }: { className: string }) => (
   <div className={`rounded-lg animate-pulse ${className}`}
@@ -208,7 +208,7 @@ const PipelineCard = ({ label, value, sub, icon: Icon, color, empty, delay }: Pi
   </motion.div>
 );
 
-// ── Section components ────────────────────────────────────────────────────────
+// ── Section components  
 
 const QuoteStatusBar = ({ stats }: { stats: Stats }) => {
   const total = stats.quotes.total || 1;

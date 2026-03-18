@@ -25,7 +25,7 @@ const mapPost = (p: any) => ({
   content:     p.content ?? "",
 });
 
-// ── Page ──────────────────────────────────────────────────────────────────────
+// ── Page  ──────────────
 
 const BlogPage = () => {
   const [posts,           setPosts]           = useState<any[]>([]);

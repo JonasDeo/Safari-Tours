@@ -1,6 +1,6 @@
 import type { LucideIcon } from "lucide-react";
 
-// ─── Option shapes ────────────────────────────────────────────────────────────
+// ─── Option shapes  ────
 
 export interface TripTypeOption {
   id:    string;
@@ -14,7 +14,7 @@ export interface AccommodationOption {
   sub:   string;
 }
 
-// ─── Form state ───────────────────────────────────────────────────────────────
+// ─── Form state  ───────
 
 export interface QuoteFormFields {
   adults:      string;
@@ -57,7 +57,7 @@ export interface WizardControls {
   canAdvance: boolean;
 }
 
-// ─── Validation ──────────────────────────────────────────────────────────────
+// ─── Validation  ──────
 
 export type StepErrors = Partial<
   Record<
