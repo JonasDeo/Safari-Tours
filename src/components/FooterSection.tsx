@@ -1,6 +1,7 @@
 import { Phone, Mail, MapPin } from "lucide-react";
 import { Link } from "react-router-dom";
 import logoSrc from "@/assets/Balbina-logo.png";
+import { useSiteSettings } from "@/hooks/use-site-settings";
 
 const FacebookIcon    = () => <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" /></svg>;
 const InstagramIcon   = () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4"><rect x="2" y="2" width="20" height="20" rx="5" ry="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none" /></svg>;
@@ -13,13 +14,7 @@ const MastercardIcon = () => <svg viewBox="0 0 48 48" className="h-5 w-auto" fil
 const PaypalIcon     = () => <svg viewBox="0 0 48 48" className="h-5 w-auto" fill="none"><rect width="48" height="48" rx="6" fill="#003087" /><text x="7" y="31" fontFamily="Arial" fontWeight="bold" fontSize="13" fill="#009CDE">Pay</text><text x="22" y="31" fontFamily="Arial" fontWeight="bold" fontSize="13" fill="white">Pal</text></svg>;
 const MpesaIcon      = () => <svg viewBox="0 0 48 48" className="h-5 w-auto" fill="none"><rect width="48" height="48" rx="6" fill="#4CAF50" /><text x="5" y="30" fontFamily="Arial" fontWeight="bold" fontSize="12" fill="white">M-PESA</text></svg>;
 
-const SOCIALS = [
-  { Icon: FacebookIcon,    href: "https://facebook.com",       label: "Facebook"    },
-  { Icon: InstagramIcon,   href: "https://instagram.com",      label: "Instagram"   },
-  { Icon: WhatsAppIcon,    href: "https://wa.me/255685808332", label: "WhatsApp"    },
-  { Icon: YoutubeIcon,     href: "https://youtube.com",        label: "YouTube"     },
-  { Icon: TripAdvisorIcon, href: "https://tripadvisor.com",    label: "TripAdvisor" },
-];
+// SOCIALS built dynamically in component from useSiteSettings
 
 const SAFARI_TYPES = [
   { label: "Guided Safaris",  href: "/tours/guided"     },
@@ -39,7 +34,7 @@ const DESTINATIONS = [
 
 const QUICK_LINKS = [
   { label: "About Us",      href: "/about"        },
-  { label: "Travel Guide",  href: "/blog"         },
+  { label: "FAQ",           href: "/faq"          },
   { label: "Our Blog",      href: "/blog"         },
   { label: "Contact Us",    href: "/contact"      },
   { label: "Plan a Safari", href: "/quote"        },
@@ -56,7 +51,18 @@ const BrandLockup = () => (
   </div>
 );
 
-const FooterSection = () => (
+const FooterSection = () => {
+  const { contact, socials } = useSiteSettings();
+
+  const SOCIALS = [
+    { Icon: FacebookIcon,    href: socials.facebook,                                 label: "Facebook"    },
+    { Icon: InstagramIcon,   href: socials.instagram,                                label: "Instagram"   },
+    { Icon: WhatsAppIcon,    href: `https://wa.me/${contact.whatsapp.replace(/\D/g,"")}`, label: "WhatsApp" },
+    { Icon: YoutubeIcon,     href: socials.youtube,                                  label: "YouTube"     },
+    { Icon: TripAdvisorIcon, href: socials.tripadvisor,                              label: "TripAdvisor" },
+  ];
+
+  return (
   <footer className="bg-earth text-sand border-t border-sand/8">
     <div className="container mx-auto px-6 py-16">
 
@@ -77,19 +83,19 @@ const FooterSection = () => (
           </p>
 
           <div className="flex flex-col gap-2.5 font-body text-sm text-sand/60 mb-6">
-            <a href="tel:+255685808332"
+            <a href={`tel:${contact.phone.replace(/\s/g,"")}`}
               className="flex items-center gap-2 hover:text-primary transition-colors w-fit group">
               <Phone className="w-3.5 h-3.5 flex-shrink-0 group-hover:text-primary transition-colors" />
-              +255 685 808332
+              {contact.phone}
             </a>
-            <a href="mailto:info@Balbinasafaris.com"
+            <a href={`mailto:${contact.email}`}
               className="flex items-center gap-2 hover:text-primary transition-colors w-fit group">
               <Mail className="w-3.5 h-3.5 flex-shrink-0 group-hover:text-primary transition-colors" />
-              info@Balbinasafaris.com
+              {contact.email}
             </a>
             <span className="flex items-center gap-2 text-sand/45">
               <MapPin className="w-3.5 h-3.5 flex-shrink-0 text-primary/50" />
-              Arusha, Tanzania
+              {contact.address}
             </span>
           </div>
 
@@ -171,6 +177,7 @@ const FooterSection = () => (
 
     </div>
   </footer>
-);
+  );
+};
 
 export default FooterSection;

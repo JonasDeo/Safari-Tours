@@ -96,6 +96,9 @@ export const publicApi = {
 
   getBlogPost: (slug: string) =>
     request(`/blog/${slug}`),
+
+  getSettings: () =>
+    request('/settings'),
 };
 
 // ── Admin Auth API ────────────────────────────────────────────────────────────
@@ -201,4 +204,19 @@ export const adminApi = {
     request(`/admin/bookings/${id}`, { method: 'PATCH', body: data, auth: true }),
   deleteBooking: (id: string) =>
     request(`/admin/bookings/${id}`, { method: 'DELETE', auth: true }),
+
+  // Testimonials
+  getTestimonials: () =>
+    request('/admin/testimonials', { auth: true }),
+  createTestimonial: (data: unknown) =>
+    request('/admin/testimonials', { method: 'POST', body: data, auth: true }),
+  updateTestimonial: (id: number, data: unknown) =>
+    request(`/admin/testimonials/${id}`, { method: 'PUT', body: data, auth: true }),
+  deleteTestimonial: (id: number) =>
+    request(`/admin/testimonials/${id}`, { method: 'DELETE', auth: true }),
+  uploadTestimonialAvatar: (id: number, file: File) => {
+    const fd = new FormData();
+    fd.append('image', file);
+    return request(`/admin/testimonials/${id}/avatar`, { method: 'POST', body: fd, auth: true, isForm: true });
+  },
 };

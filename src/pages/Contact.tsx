@@ -6,39 +6,9 @@ import {
 import PageLayout from "@/components/PageLayout";
 import { publicApi, ApiError } from "@/lib/api";
 import tour1 from "@/assets/tour-1.jpg";
+import { useSiteSettings } from "@/hooks/use-site-settings";
 
-// ── Data  ───
-
-const CONTACT_INFO = [
-  {
-    icon: Phone,
-    label: "Phone",
-    value: "+255 623 880844",
-    sub:   "Mon – Sat, 8am – 6pm EAT",
-    href:  "tel:+255623880844",
-  },
-  {
-    icon: MessageCircle,
-    label: "WhatsApp",
-    value: "+255 685 808332",
-    sub:   "Fastest response",
-    href:  "https://wa.me/255685808332",
-  },
-  {
-    icon: Mail,
-    label: "Email",
-    value: "info@balbinasafaris.com",
-    sub:   "Reply within 24 hours",
-    href:  "mailto:info@balbinasafaris.com",
-  },
-  {
-    icon: MapPin,
-    label: "Office",
-    value: "Arusha, Tanzania",
-    sub:   "Near the Arusha Clock Tower",
-    href:  "https://maps.google.com/?q=Arusha,Tanzania",
-  },
-];
+// ── Data ──────────────────────────────────────────────────────────────────────
 
 const SUBJECTS = [
   "Plan a Safari",
@@ -62,9 +32,41 @@ const fadeUp = (delay = 0) => ({
   transition: { duration: 0.5, delay, ease: [0.32, 0.72, 0, 1] as const },
 });
 
-// ── Page  ───
+// ── Page ──────────────────────────────────────────────────────────────────────
 
 const ContactPage = () => {
+  const { contact } = useSiteSettings();
+
+  const CONTACT_INFO = [
+    {
+      icon: Phone,
+      label: "Phone",
+      value: contact.phone,
+      sub:   "Mon – Sat, 8am – 6pm EAT",
+      href:  `tel:${contact.phone.replace(/\s/g,"")}`,
+    },
+    {
+      icon: MessageCircle,
+      label: "WhatsApp",
+      value: contact.whatsapp,
+      sub:   "Fastest response",
+      href:  `https://wa.me/${contact.whatsapp.replace(/\D/g,"")}`,
+    },
+    {
+      icon: Mail,
+      label: "Email",
+      value: contact.email,
+      sub:   "Reply within 24 hours",
+      href:  `mailto:${contact.email}`,
+    },
+    {
+      icon: MapPin,
+      label: "Office",
+      value: contact.address,
+      sub:   "Near the Arusha Clock Tower",
+      href:  "https://maps.google.com/?q=Arusha,Tanzania",
+    },
+  ];
   const [form, setForm] = useState({
     name: "", email: "", phone: "", subject: "", message: "",
   });
@@ -196,7 +198,7 @@ const ContactPage = () => {
 
               {/* WhatsApp CTA */}
               <motion.a {...fadeUp(0.4)}
-                href="https://wa.me/255685808332"
+                href={`https://wa.me/${contact.whatsapp.replace(/\D/g,"")}`}
                 target="_blank" rel="noreferrer"
                 className="flex items-center justify-center gap-2.5 w-full py-3.5 rounded-xl
                   text-sm font-body font-semibold tracking-wide transition-all duration-200"

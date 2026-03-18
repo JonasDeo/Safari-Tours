@@ -26,10 +26,10 @@ const PostHero = ({ post }: PostHeroProps) => (
       loading="eager"
     />
 
-    {/* Dark gradient — heavier at bottom to bleed into page bg */}
-    <div className="absolute inset-0 bg-gradient-to-b from-dark-overlay/30 via-dark-overlay/50 to-background" />
+    {/* Gradient — fades down, heavy at bottom for text legibility */}
+    <div className="absolute inset-0 bg-gradient-to-b from-dark-overlay/20 via-dark-overlay/45 to-dark-overlay/85" />
 
-    {/* Back link — top-left, sits above the image */}
+    {/* Back link */}
     <div className="absolute left-0 right-0 z-10" style={{ top: "var(--nav-total-h, 100px)" }}>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-4">
         <Link
@@ -43,7 +43,7 @@ const PostHero = ({ post }: PostHeroProps) => (
       </div>
     </div>
 
-    {/* Title block — sits at the bottom of the hero */}
+    {/* Title block */}
     <div className="relative z-10 w-full pb-10 md:pb-14">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
         <motion.div

@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
-import { Search, ChevronDown, DollarSign, CalendarCheck, Clock, XCircle } from "lucide-react";
+import { Search, ChevronDown, DollarSign, CalendarCheck, Clock, XCircle, Plus, X, Save } from "lucide-react";
+import { AnimatePresence } from "framer-motion";
 import { adminApi, ApiError } from "@/lib/api";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
@@ -35,6 +36,14 @@ const BookingsPage = () => {
   const [search,       setSearch]       = useState("");
   const [statusFilter, setStatusFilter] = useState("ALL");
   const [page,         setPage]         = useState(1);
+  const [showModal,    setShowModal]    = useState(false);
+  const [creating,     setCreating]     = useState(false);
+  const [newBooking,   setNewBooking]   = useState({
+    client_name: "", client_email: "", client_phone: "",
+    arrival_date: "", adults: "1", children: "0",
+    total_amount: "", currency: "USD", notes: "",
+  });
+
 
   const load = useCallback(() => {
     setLoading(true);
@@ -70,6 +79,31 @@ const BookingsPage = () => {
     } catch { alert("Failed to mark as paid."); }
   };
 
+  const handleCreate = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setCreating(true);
+    try {
+      await adminApi.createBooking({
+        ...newBooking,
+        adults:       Number(newBooking.adults),
+        children:     Number(newBooking.children),
+        total_amount: Number(newBooking.total_amount),
+      });
+      setShowModal(false);
+      setNewBooking({ client_name:"",client_email:"",client_phone:"",arrival_date:"",adults:"1",children:"0",total_amount:"",currency:"USD",notes:"" });
+      load();
+    } catch { alert("Failed to create booking."); }
+    finally { setCreating(false); }
+  };
+
+  const nb = (k: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
+    setNewBooking(v => ({ ...v, [k]: e.target.value }));
+
+  const iStyle = { background:"hsl(var(--muted)/0.5)", border:"1px solid hsl(var(--border)/0.6)", color:"hsl(var(--foreground))" };
+  const iCls = "w-full px-3 py-2.5 rounded-xl text-sm font-body outline-none transition-all duration-200";
+  const onF = (e: React.FocusEvent<any>) => e.currentTarget.style.borderColor = "hsl(var(--primary)/0.5)";
+  const onB = (e: React.FocusEvent<any>) => e.currentTarget.style.borderColor = "hsl(var(--border)/0.6)";
+
   const bookings = result?.data ?? [];
   const totalRevenue = bookings.filter(b => b.paid).reduce((acc, b) => acc + b.total_amount, 0);
   const confirmed    = bookings.filter(b => b.status === "CONFIRMED").length;
@@ -80,12 +114,93 @@ const BookingsPage = () => {
     <div className="space-y-6 max-w-6xl">
 
       {/* Header */}
-      <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
-        <h1 className="font-display text-2xl text-foreground mb-1">Bookings</h1>
-        <p className="font-body text-sm text-muted-foreground">
-          {loading ? '…' : `${result?.total ?? 0} total · $${totalRevenue.toLocaleString()} collected`}
-        </p>
+      <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
+        className="flex items-center justify-between gap-4 flex-wrap">
+        <div>
+          <h1 className="font-display text-2xl text-foreground mb-1">Bookings</h1>
+          <p className="font-body text-sm text-muted-foreground">
+            {loading ? '…' : `${result?.total ?? 0} total · $${totalRevenue.toLocaleString()} collected`}
+          </p>
+        </div>
+        <button onClick={() => setShowModal(true)}
+          className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-body font-semibold"
+          style={{ background: "hsl(var(--primary))", color: "hsl(var(--dark))" }}>
+          <Plus className="w-4 h-4" /> New Booking
+        </button>
       </motion.div>
+
+      {/* ── Create Booking Modal ── */}
+      <AnimatePresence>
+        {showModal && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4"
+            style={{ background: "rgba(0,0,0,0.5)" }}
+            onClick={e => { if (e.target === e.currentTarget) setShowModal(false); }}>
+            <motion.div initial={{ opacity: 0, y: 16, scale: 0.97 }} animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 16 }}
+              className="w-full max-w-lg rounded-2xl p-6 shadow-2xl max-h-[90vh] overflow-y-auto"
+              style={{ background: "hsl(var(--background))", border: "1px solid hsl(var(--border)/0.6)" }}>
+              <div className="flex items-center justify-between mb-5">
+                <p className="text-xs uppercase tracking-[0.2em] font-body text-muted-foreground">New Booking</p>
+                <button onClick={() => setShowModal(false)}><X className="w-4 h-4 text-muted-foreground" /></button>
+              </div>
+              <form onSubmit={handleCreate} className="space-y-4">
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="col-span-2 space-y-1.5">
+                    <label className="text-xs uppercase tracking-widest font-body text-muted-foreground">Client Name *</label>
+                    <input value={newBooking.client_name} onChange={nb("client_name")} required className={iCls} style={iStyle} onFocus={onF} onBlur={onB} />
+                  </div>
+                  <div className="space-y-1.5">
+                    <label className="text-xs uppercase tracking-widest font-body text-muted-foreground">Email *</label>
+                    <input type="email" value={newBooking.client_email} onChange={nb("client_email")} required className={iCls} style={iStyle} onFocus={onF} onBlur={onB} />
+                  </div>
+                  <div className="space-y-1.5">
+                    <label className="text-xs uppercase tracking-widest font-body text-muted-foreground">Phone</label>
+                    <input value={newBooking.client_phone} onChange={nb("client_phone")} className={iCls} style={iStyle} onFocus={onF} onBlur={onB} />
+                  </div>
+                  <div className="space-y-1.5">
+                    <label className="text-xs uppercase tracking-widest font-body text-muted-foreground">Arrival Date</label>
+                    <input type="date" value={newBooking.arrival_date} onChange={nb("arrival_date")} className={iCls} style={iStyle} onFocus={onF} onBlur={onB} />
+                  </div>
+                  <div className="space-y-1.5">
+                    <label className="text-xs uppercase tracking-widest font-body text-muted-foreground">Currency</label>
+                    <select value={newBooking.currency} onChange={nb("currency")} className={`${iCls} appearance-none`} style={iStyle} onFocus={onF} onBlur={onB}>
+                      {["USD","EUR","GBP","TZS"].map(c => <option key={c}>{c}</option>)}
+                    </select>
+                  </div>
+                  <div className="space-y-1.5">
+                    <label className="text-xs uppercase tracking-widest font-body text-muted-foreground">Total Amount *</label>
+                    <input type="number" min="0" value={newBooking.total_amount} onChange={nb("total_amount")} required className={iCls} style={iStyle} onFocus={onF} onBlur={onB} />
+                  </div>
+                  <div className="space-y-1.5">
+                    <label className="text-xs uppercase tracking-widest font-body text-muted-foreground">Adults *</label>
+                    <input type="number" min="1" value={newBooking.adults} onChange={nb("adults")} required className={iCls} style={iStyle} onFocus={onF} onBlur={onB} />
+                  </div>
+                  <div className="space-y-1.5">
+                    <label className="text-xs uppercase tracking-widest font-body text-muted-foreground">Children</label>
+                    <input type="number" min="0" value={newBooking.children} onChange={nb("children")} className={iCls} style={iStyle} onFocus={onF} onBlur={onB} />
+                  </div>
+                  <div className="col-span-2 space-y-1.5">
+                    <label className="text-xs uppercase tracking-widest font-body text-muted-foreground">Notes</label>
+                    <textarea value={newBooking.notes} onChange={nb("notes")} rows={2}
+                      className={`${iCls} resize-none`} style={iStyle} onFocus={onF} onBlur={onB} />
+                  </div>
+                </div>
+                <div className="flex justify-end gap-3 pt-2">
+                  <button type="button" onClick={() => setShowModal(false)}
+                    className="px-4 py-2.5 rounded-xl text-sm font-body text-muted-foreground">Cancel</button>
+                  <button type="submit" disabled={creating}
+                    className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-body font-semibold"
+                    style={{ background: creating ? "hsl(var(--primary)/0.5)" : "hsl(var(--primary))", color: "hsl(var(--dark))", cursor: creating ? "not-allowed" : "pointer" }}>
+                    {creating ? <span className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" /> : <Save className="w-4 h-4" />}
+                    {creating ? "Creating…" : "Create Booking"}
+                  </button>
+                </div>
+              </form>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {error && (
         <div className="rounded-xl px-4 py-3 text-sm font-body"

@@ -20,7 +20,7 @@ import BlogPage        from "./pages/Blog";
 import BlogPostPage    from "./pages/BlogPost";
 import ScrollToTop     from "./components/ScrollToTop";
 
-// ── Admin   ──
+// ── Admin ─────────────────────────────────────────────────────────────────────
 import { AdminAuthProvider, ProtectedRoute } from "./admin/AdminAuth";
 import AdminLogin       from "./admin/AdminLogin";
 import AdminLayout      from "./admin/AdminLayout";
@@ -30,10 +30,11 @@ import QuoteDetailPage  from "./admin/pages/QuoteDetailPage";
 import ToursPage        from "./admin/pages/ToursPage";
 import TourFormPage     from "./admin/pages/TourFormPage";
 import BookingsPage     from "./admin/pages/BookingsPage";
-import BlogAdminPage    from "./admin/pages/BlogAdminPage";
+import BlogAdminPage      from "./admin/pages/BlogAdminPage";
 import BlogFormPage     from "./admin/pages/BlogFormPage";
 import ProfilePage      from "./admin/pages/ProfilePage";
 import SettingsPage     from "./admin/pages/SettingsPage";
+import FAQPage from "./pages/Faq";
 import TourDetail from "./pages/tours/TourDetail";
 import Tours from "./pages/tours/Tours";
 
@@ -67,6 +68,7 @@ const App = () => (
             <Route path="/quote"               element={<QuotePage />} />
             <Route path="/blog"                element={<BlogPage />} />
             <Route path="/blog/:slug"          element={<BlogPostPage />} />
+            <Route path="/faq"                  element={<FAQPage />} />
 
             {/* ── Admin: login (public) ─────────────────────────────── */}
             <Route path="/admin/login" element={<AdminLogin />} />
@@ -98,6 +100,9 @@ const App = () => (
               <Route path="blog"             element={<BlogAdminPage />} />
               <Route path="blog/new"         element={<BlogFormPage />} />
               <Route path="blog/:id/edit"    element={<BlogFormPage />} />
+
+              {/* Testimonials */}
+              {/* <Route path="testimonials"      element={<TestimonialsPage />} /> */}
 
               {/* Account */}
               <Route path="profile"          element={<ProfilePage />} />

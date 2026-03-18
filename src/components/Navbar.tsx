@@ -3,44 +3,16 @@ import { Menu, X, Phone, Mail, ChevronDown } from "lucide-react";
 import { Link, useLocation, useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import logoSrc from "@/assets/Balbina-logo.png";
+import { useSiteSettings } from "@/hooks/use-site-settings";
 
 const CURRENCIES = ["USD", "TZS", "EUR"];
 
 export const TOUR_CATEGORIES = [
-  {
-    slug: "guided",
-    label: "Guided Safaris",
-    path: "/tours/guided",           
-    subLinks: [
-      { label: "Safari Packages", path: "/tours/guided" },
-    ],
-  },
-  {
-    slug: "self-drive",
-    label: "Self-Drive",
-    path: "/tours/self-drive",       
-    subLinks: [
-      { label: "Car Rental",          path: "/tours/self-drive#rental" },
-      { label: "Self-Drive Packages", path: "/tours/self-drive#packages" },
-    ],
-  },
-  {
-    slug: "mountain",
-    label: "Mountain Trek",
-    path: "/tours/mountain",         
-    subLinks: [
-      { label: "Kilimanjaro Trek Price",    path: "/tours/mountain#prices" },
-      { label: "Kilimanjaro Park Fees",     path: "/tours/mountain#park-fees" },
-      { label: "Trekking Preparations",     path: "/tours/mountain#preparations" },
-      { label: "Mountain Trekking Packages",path: "/tours/mountain#packages" },
-    ],
-  },
-  {
-    slug: "beach",
-    label: "Beach",
-    path: "/tours/beach",           
-    subLinks: [],
-  },
+  { slug: "guided",     label: "Guided Safaris",  type: "GUIDED"     },
+  { slug: "self-drive", label: "Self-Drive",       type: "SELF_DRIVE" },
+  { slug: "mountain",   label: "Mountain Treks",   type: "MOUNTAIN"   },
+  { slug: "beach",      label: "Beach Holidays",   type: "BEACH"      },
+  { slug: "car-rental", label: "Car Rental",        type: "CAR_RENTAL" },
 ];
 
 const NAV_LINKS = [
@@ -164,6 +136,7 @@ function ToursDropdown({ currentSlug }: { currentSlug?: string }) {
 }
 
 const Navbar = () => {
+  const { contact } = useSiteSettings();
   const [scrolled,           setScrolled]           = useState(false);
   const [mobileOpen,         setMobileOpen]         = useState(false);
   const [openMobileDropdown, setOpenMobileDropdown] = useState<string | null>(null);
@@ -219,9 +192,9 @@ const Navbar = () => {
         <div className="bg-dark-overlay/90 backdrop-blur-sm border-b border-sand/5">
           <div className="container mx-auto flex items-center justify-between px-4 py-2">
             <div className="flex items-center gap-5 text-xs text-sand/60">
-              <a href="tel:+255623880844"
+              <a href={`tel:${contact.phone.replace(/\s/g,"")}`}
                 className="flex items-center gap-1.5 hover:text-primary transition-colors duration-200">
-                <Phone className="w-3 h-3" /><span>+255 623 880844</span>
+                <Phone className="w-3 h-3" /><span>{contact.phone}</span>
               </a>
               <a href="mailto:info@Balbinasafaris.com"
                 className="hidden sm:flex items-center gap-1.5 hover:text-primary transition-colors duration-200">
