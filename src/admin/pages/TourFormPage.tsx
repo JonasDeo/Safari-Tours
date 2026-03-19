@@ -6,7 +6,7 @@ import {
 } from "lucide-react";
 import { adminApi, ApiError } from "@/lib/api";
 
-// ── Types   ──
+//   Types    
 
 interface ItineraryDay {
   day:   number;
@@ -57,12 +57,12 @@ const TOUR_TYPES   = [
 ];
 const CURRENCIES = ["USD", "EUR", "TZS"];
 
-// ── Helpers   
+//   Helpers   
 
 const slugify = (str: string) =>
   str.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 
-// ── Sub-components  ─────
+//   Sub-components    ─
 
 const Field = ({
   label, required = false, hint, children,
@@ -101,7 +101,7 @@ const SelectInput = (props: React.SelectHTMLAttributes<HTMLSelectElement> & { ch
   </select>
 );
 
-// ── List editor (included / excluded) ────────────────────────────────────────
+//   List editor (included / excluded)                     
 
 const ListEditor = ({
   label, items, onChange,
@@ -142,7 +142,7 @@ const ListEditor = ({
   );
 };
 
-// ── Page   ───
+//   Page    ─
 
 const TourFormPage = () => {
   const { id }   = useParams<{ id?: string }>();
@@ -291,7 +291,7 @@ const TourFormPage = () => {
         animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
         className="space-y-6">
 
-        {/* ── Section: Basic info ── */}
+        {/*   Section: Basic info   */}
         <div className="rounded-2xl p-6 space-y-5"
           style={{ border: "1px solid hsl(var(--border)/0.6)", background: "hsl(var(--muted)/0.2)" }}>
           <p className="text-xs uppercase tracking-[0.2em] font-body text-muted-foreground">
@@ -348,7 +348,7 @@ const TourFormPage = () => {
           </div>
         </div>
 
-        {/* ── Section: Description ── */}
+        {/*   Section: Description   */}
         <div className="rounded-2xl p-6 space-y-5"
           style={{ border: "1px solid hsl(var(--border)/0.6)", background: "hsl(var(--muted)/0.2)" }}>
           <p className="text-xs uppercase tracking-[0.2em] font-body text-muted-foreground">
@@ -388,7 +388,7 @@ const TourFormPage = () => {
           </div>
         </div>
 
-        {/* ── Section: Highlights ── */}
+        {/*   Section: Highlights   */}
         <div className="rounded-2xl p-6 space-y-4"
           style={{ border: "1px solid hsl(var(--border)/0.6)", background: "hsl(var(--muted)/0.2)" }}>
           <p className="text-xs uppercase tracking-[0.2em] font-body text-muted-foreground">
@@ -415,7 +415,7 @@ const TourFormPage = () => {
           </button>
         </div>
 
-        {/* ── Section: Itinerary ── */}
+        {/*   Section: Itinerary   */}
         <div className="rounded-2xl p-6 space-y-4"
           style={{ border: "1px solid hsl(var(--border)/0.6)", background: "hsl(var(--muted)/0.2)" }}>
           <p className="text-xs uppercase tracking-[0.2em] font-body text-muted-foreground">
@@ -453,9 +453,9 @@ const TourFormPage = () => {
           </button>
         </div>
 
-        {/* ── Section: Includes & Excludes ── */}
+        {/*   Section: Includes & Excludes   */}
 
-        {/* ── Section: Images ── */}
+        {/*   Section: Images   */}
         <div className="rounded-2xl p-6 space-y-4"
           style={{ border: "1px solid hsl(var(--border)/0.6)", background: "hsl(var(--muted)/0.2)" }}>
           <p className="text-xs uppercase tracking-[0.2em] font-body text-muted-foreground">
@@ -531,7 +531,7 @@ const TourFormPage = () => {
           )}
         </div>
 
-        {/* ── Section: Included / Excluded ── */}
+        {/*   Section: Included / Excluded   */}
         <div className="rounded-2xl p-6 space-y-6"
           style={{ border: "1px solid hsl(var(--border)/0.6)", background: "hsl(var(--muted)/0.2)" }}>
           <p className="text-xs uppercase tracking-[0.2em] font-body text-muted-foreground">
@@ -549,7 +549,7 @@ const TourFormPage = () => {
           </div>
         </div>
 
-        {/* ── Section: Tags ── */}
+        {/*   Section: Tags   */}
         <div className="rounded-2xl p-6 space-y-4"
           style={{ border: "1px solid hsl(var(--border)/0.6)", background: "hsl(var(--muted)/0.2)" }}>
           <p className="text-xs uppercase tracking-[0.2em] font-body text-muted-foreground">
@@ -579,7 +579,7 @@ const TourFormPage = () => {
           </button>
         </div>
 
-        {/* ── Submit ── */}
+        {/*   Submit   */}
         <div className="flex items-center justify-between pt-2">
           <button type="button" onClick={() => navigate(-1)}
             className="px-5 py-3 rounded-xl text-sm font-body transition-colors duration-200"

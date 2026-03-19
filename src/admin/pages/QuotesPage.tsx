@@ -81,7 +81,7 @@ const QuotePage = () => {
     <PageLayout>
       <div className="min-h-screen bg-background">
 
-        {/* ── Hero ── */}
+        {/*   Hero   */}
         <section className="relative overflow-hidden"
           style={{
             height: "clamp(220px, 40vh, 380px)",
@@ -170,7 +170,7 @@ const QuotePage = () => {
           </div>
         </section>
 
-        {/* ── Wizard ── */}
+        {/*   Wizard   */}
         <div className="flex flex-col lg:flex-row min-h-screen bg-background">
 
           {/* Left panel — desktop only */}

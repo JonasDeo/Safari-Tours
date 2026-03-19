@@ -12,7 +12,7 @@ import { motion } from "framer-motion";
 import PageLayout from "@/components/PageLayout";
 import { getDestination, DESTINATIONS } from "@/data/destinationData";
 
-// ── Icon resolver  ─────
+//   Icon resolver    ─
 
 const ICON_MAP: Record<string, LucideIcon> = {
   Footprints, Mountain, TrendingUp, Trees,
@@ -26,7 +26,7 @@ const HighlightIcon = ({ name, className }: { name: string; className?: string }
   return <Icon className={className ?? "w-5 h-5"} />;
 };
 
-// ── Animations  ────────
+//   Animations      
 
 const FADE_UP = {
   initial:    { opacity: 0, y: 24 },
@@ -34,7 +34,7 @@ const FADE_UP = {
   transition: { duration: 0.5, ease: [0.32, 0.72, 0, 1] as const },
 };
 
-// ── Page  ───
+//   Page   ─
 
 const DestinationPage = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -47,7 +47,7 @@ const DestinationPage = () => {
   return (
     <PageLayout>
 
-      {/* ── Hero   */}
+      {/*   Hero   */}
       <section
         className="relative flex items-end overflow-hidden"
         style={{ height: "clamp(320px, 55vh, 600px)", paddingTop: "var(--nav-total-h, 64px)" }}
@@ -88,7 +88,7 @@ const DestinationPage = () => {
         </div>
       </section>
 
-      {/* ── Quick facts bar ───────────────────────────────────────────── */}
+      {/*   Quick facts bar                       ─ */}
       <div className="bg-muted/60 border-b border-border/50">
         <div className="container mx-auto px-6">
           <div className="flex flex-wrap items-center gap-0 py-4">
@@ -115,7 +115,7 @@ const DestinationPage = () => {
         </div>
       </div>
 
-      {/* ── Main content ──────────────────────────────────────────────── */}
+      {/*   Main content                          */}
       <section className="py-16 bg-background">
         <div className="container mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-16">
@@ -241,7 +241,7 @@ const DestinationPage = () => {
         </div>
       </section>
 
-      {/* ── Also explore ─────────────────────────────────────────────── */}
+      {/*   Also explore                        ─ */}
       <section className="py-16 bg-muted/30 border-t border-border/40">
         <div className="container mx-auto px-6">
           <p className="text-xs tracking-[0.2em] uppercase font-body text-primary mb-2">
@@ -277,7 +277,7 @@ const DestinationPage = () => {
         </div>
       </section>
 
-      {/* ── Back link ─────────────────────────────────────────────────── */}
+      {/*   Back link                          ─ */}
       <div className="py-8 bg-background border-t border-border/40">
         <div className="container mx-auto px-6">
           <Link to="/destinations"

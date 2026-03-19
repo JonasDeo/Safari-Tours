@@ -17,7 +17,7 @@ const NotFound = () => {
 
   return (
     <PageLayout>
-      {/* ── Full-viewport hero section ─────────────────────────────── */}
+      {/*   Full-viewport hero section                ─ */}
       <section
         className="relative flex flex-col items-center justify-center overflow-hidden"
         style={{

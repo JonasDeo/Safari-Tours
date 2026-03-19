@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Plus, Search, Edit2, Trash2, Eye, EyeOff } from "lucide-react";
 import { adminApi, ApiError } from "@/lib/api";
 
-// ── Types  ──
+//   Types   
 
 interface Tour {
   id: number; title: string; destination: string;
@@ -20,7 +20,7 @@ const Skeleton = ({ className }: { className: string }) => (
   <div className={`rounded animate-pulse ${className}`} style={{ background: "hsl(var(--muted)/0.6)" }} />
 );
 
-// ── Page  ───
+//   Page   ─
 
 const ToursPage = () => {
   const [tours,   setTours]   = useState<Tour[]>([]);

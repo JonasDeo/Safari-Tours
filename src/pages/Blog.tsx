@@ -8,7 +8,7 @@ import PostGrid from "@/components/blog/Postgrid";
 import { publicApi } from "@/lib/api";
 import { BLOG_POSTS } from "@/constants/blogData"; // fallback if API empty
 
-// ── Map API response → BlogPost shape FeaturedPost/PostGrid expect ─────────────
+//   Map API response → BlogPost shape FeaturedPost/PostGrid expect       ─
 
 const mapPost = (p: any) => ({
   id:          String(p.id),
@@ -25,7 +25,7 @@ const mapPost = (p: any) => ({
   content:     p.content ?? "",
 });
 
-// ── Page  ──────────────
+//   Page         
 
 const BlogPage = () => {
   const [posts,           setPosts]           = useState<any[]>([]);

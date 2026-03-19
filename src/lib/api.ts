@@ -3,7 +3,7 @@
 
 const BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:8000';
 
-// ── Token helpers  ─────
+//   Token helpers    ─
 
 export const getToken = (): string | null => localStorage.getItem('admin_token');
 
@@ -17,7 +17,7 @@ export const clearToken = () => {
   localStorage.removeItem('admin_name');
 };
 
-// ── Core fetch wrapper  
+//   Core fetch wrapper  
 
 interface RequestOptions {
   method?:  'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
@@ -74,7 +74,7 @@ async function request<T>(endpoint: string, opts: RequestOptions = {}): Promise<
   return data as T;
 }
 
-// ── Public API  ────────
+//   Public API      
 
 export const publicApi = {
 
@@ -101,7 +101,7 @@ export const publicApi = {
     request('/settings'),
 };
 
-// ── Admin Auth API  ────
+//   Admin Auth API    
 
 export const authApi = {
 
@@ -123,7 +123,7 @@ export const authApi = {
     request('/admin/me', { method: 'PUT', body: data, auth: true }),
 };
 
-// ── Admin API  ─────────
+//   Admin API      ─
 
 export const adminApi = {
 

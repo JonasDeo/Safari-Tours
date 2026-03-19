@@ -4,7 +4,7 @@ import { Search, ChevronDown, DollarSign, CalendarCheck, Clock, XCircle, Plus, X
 import { AnimatePresence } from "framer-motion";
 import { adminApi, ApiError } from "@/lib/api";
 
-// ── Types  ─────────────
+//   Types        ─
 
 interface Booking {
   id: number; client_name: string; client_email: string;
@@ -27,7 +27,7 @@ const Skeleton = ({ className }: { className: string }) => (
   <div className={`rounded animate-pulse ${className}`} style={{ background: "hsl(var(--muted)/0.6)" }} />
 );
 
-// ── Page  ──────────────
+//   Page         
 
 const BookingsPage = () => {
   const [result,       setResult]       = useState<Paginated | null>(null);
@@ -129,7 +129,7 @@ const BookingsPage = () => {
         </button>
       </motion.div>
 
-      {/* ── Create Booking Modal ── */}
+      {/*   Create Booking Modal   */}
       <AnimatePresence>
         {showModal && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}

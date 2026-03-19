@@ -9,9 +9,9 @@ import {
 import PageLayout from "@/components/PageLayout";
 import { publicApi } from "@/lib/api";
 
-//  ──────────
+//       
 // TYPES
-//  ──────────
+//       
 
 interface Tour {
   id: number; slug: string; title: string; destination: string;
@@ -21,9 +21,9 @@ interface Tour {
 
 type TabId = string;
 
-//  ──────────
+//       
 // SHARED PRIMITIVES
-//  ──────────
+//       
 
 const SectionTitle = ({ eyebrow, title, subtitle }: { eyebrow?: string; title: string; subtitle?: string }) => (
   <div className="mb-10">
@@ -44,9 +44,9 @@ const Skeleton = ({ className }: { className: string }) => (
   <div className={`animate-pulse rounded-2xl ${className}`} style={{ background: "hsl(var(--muted)/0.6)" }} />
 );
 
-//  ──────────
+//       
 // TOUR CARD (shared)
-//  ──────────
+//       
 
 const TourCard = ({ tour, i, accent }: { tour: Tour; i: number; accent: string }) => {
   const imgUrl = (() => {
@@ -135,9 +135,9 @@ const ToursGrid = ({ tours, loading, accent, categoryTitle }: {
   </div>
 );
 
-//  ──────────
+//       
 // MOUNTAIN PAGE SECTIONS
-//  ──────────
+//       
 
 const KiliPriceTable = () => {
   const routes = [
@@ -330,9 +330,9 @@ const TrekkingPreparations = () => {
   );
 };
 
-//  ──────────
+//       
 // CAR RENTAL PAGE SECTIONS
-//  ──────────
+//       
 
 const FleetSection = () => {
   const vehicles = [
@@ -520,9 +520,9 @@ const RentalPricing = () => {
   );
 };
 
-//  ──────────
+//       
 // CATEGORY CONFIG
-//  ──────────
+//       
 
 interface TabDef { id: TabId; label: string; }
 
@@ -634,9 +634,9 @@ const CATEGORY_CONFIG: Record<string, CategoryConfig> = {
   },
 };
 
-//  ──────────
+//       
 // PAGE
-//  ──────────
+//       
 
 const TourCategoryPage = () => {
   const { category } = useParams<{ category: string }>();
@@ -685,7 +685,7 @@ const TourCategoryPage = () => {
   return (
     <PageLayout>
 
-      {/* ── Hero ── */}
+      {/*   Hero   */}
       <section className="relative flex items-end overflow-hidden"
         style={{ height: "clamp(320px, 52vh, 560px)", paddingTop: "var(--nav-total-h, 64px)" }}>
         <img src={config.heroImage} alt={config.heroAlt}
@@ -724,7 +724,7 @@ const TourCategoryPage = () => {
         </div>
       </section>
 
-      {/* ── Sub-nav tabs ── */}
+      {/*   Sub-nav tabs   */}
       {config.tabs.length > 1 && (
         <div ref={tabsRef} className="sticky z-30 bg-background/98 backdrop-blur-sm"
           style={{
@@ -751,7 +751,7 @@ const TourCategoryPage = () => {
         </div>
       )}
 
-      {/* ── Tab content ── */}
+      {/*   Tab content   */}
       <section className="py-14 bg-background">
         <div className="container mx-auto px-4">
 
@@ -785,7 +785,7 @@ const TourCategoryPage = () => {
         </div>
       </section>
 
-      {/* ── CTA ── */}
+      {/*   CTA   */}
       <section className="py-16 border-t"
         style={{ borderColor: "hsl(var(--border)/0.4)", background: "hsl(var(--muted)/0.2)" }}>
         <div className="container mx-auto px-4 text-center">

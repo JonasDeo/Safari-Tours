@@ -6,7 +6,7 @@ import { FAQ_SECTIONS } from "@/constants/faqData";
 import { useSiteSettings } from "@/hooks/use-site-settings";
 import { FAQAccordionGroup } from "./FaqAccordion";
 
-// ── Reveal wrapper  ────
+//   Reveal wrapper    
 
 const Reveal = ({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) => {
   const ref = useRef(null);
@@ -20,7 +20,7 @@ const Reveal = ({ children, delay = 0 }: { children: React.ReactNode; delay?: nu
   );
 };
 
-// ── Sticky sidebar nav 
+//  Sticky sidebar nav 
 
 const CategoryNav = ({ active, onSelect }: {
   active: string | null;
@@ -51,7 +51,7 @@ const CategoryNav = ({ active, onSelect }: {
   </aside>
 );
 
-// ── CTA block  ─────────
+//   CTA block      ─
 
 const StillHavingQuestions = () => {
   const { contact } = useSiteSettings();
@@ -85,7 +85,7 @@ const StillHavingQuestions = () => {
   );
 };
 
-// ── Main body  ─────────
+//   Main body      ─
 
 const FAQBody = () => {
   const [activeSection, setActiveSection] = useState<string | null>(null);

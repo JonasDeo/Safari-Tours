@@ -34,7 +34,7 @@ interface Tour {
   published: boolean;
 }
 
-// ─── Helpers  ─────────
+//  ─ Helpers      ─
 
 const getImgUrl = (img: any): string =>
   typeof img === "string" ? img : img?.url ?? "";
@@ -47,7 +47,7 @@ const TYPE_LABELS: Record<string, string> = {
   CAR_RENTAL: "Car Rental",
 };
 
-// ─── Sub-components  ──
+//  ─ Sub-components   
 
 // Sticky book bar that appears after scrolling past the hero
 const BookBar = ({ tour }: { tour: Tour }) => (
@@ -185,7 +185,7 @@ const Gallery = ({ images, title }: { images: any[]; title: string }) => {
   );
 };
 
-// ─── Page  ──
+//  ─ Page   
 
 const TourDetail = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -256,10 +256,10 @@ const TourDetail = () => {
           <span style={{ color: "hsl(var(--primary))" }}>{tour.title}</span>
         </div>
 
-        {/* ── Two-column layout ── */}
+        {/*   Two-column layout   */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
 
-          {/* ── Left: main content ── */}
+          {/*   Left: main content   */}
           <div className="lg:col-span-2 space-y-10">
 
             {/* Title + meta */}
@@ -406,7 +406,7 @@ const TourDetail = () => {
             )}
           </div>
 
-          {/* ── Right: sticky booking sidebar ── */}
+          {/*   Right: sticky booking sidebar   */}
           <div className="hidden lg:block">
             <div className="sticky top-24 rounded-2xl p-6 space-y-5"
               style={{ border: "1px solid hsl(var(--border)/0.6)", background: "hsl(var(--muted)/0.2)" }}>

@@ -8,7 +8,7 @@ import { publicApi, ApiError } from "@/lib/api";
 import tour1 from "@/assets/tour-1.jpg";
 import { useSiteSettings } from "@/hooks/use-site-settings";
 
-// ── Data  ──────────────
+//   Data         
 
 const SUBJECTS = [
   "Plan a Safari",
@@ -32,7 +32,7 @@ const fadeUp = (delay = 0) => ({
   transition: { duration: 0.5, delay, ease: [0.32, 0.72, 0, 1] as const },
 });
 
-// ── Page  ──────────────
+//   Page         
 
 const ContactPage = () => {
   const { contact } = useSiteSettings();
@@ -93,7 +93,7 @@ const ContactPage = () => {
   return (
     <PageLayout>
 
-      {/* ── Hero ── */}
+      {/*   Hero   */}
       <section className="relative flex items-center overflow-hidden"
         style={{ height: "clamp(200px, 35vh, 360px)", paddingTop: "var(--nav-total-h, 64px)" }}>
         <img src={tour1} alt="Contact Balbina Safaris"
@@ -115,12 +115,12 @@ const ContactPage = () => {
         </div>
       </section>
 
-      {/* ── Main content ── */}
+      {/*   Main content   */}
       <section className="py-16 bg-background">
         <div className="container mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-16">
 
-            {/* ── Left: contact info ── */}
+            {/*   Left: contact info   */}
             <div className="lg:col-span-2 space-y-8">
               <motion.div {...fadeUp()}>
                 <p className="text-xs tracking-[0.2em] uppercase font-body text-primary mb-3">
@@ -212,7 +212,7 @@ const ContactPage = () => {
               </motion.a>
             </div>
 
-            {/* ── Right: form ── */}
+            {/*   Right: form   */}
             <motion.div {...fadeUp(0.1)} className="lg:col-span-3">
               {submitted ? (
                 <motion.div

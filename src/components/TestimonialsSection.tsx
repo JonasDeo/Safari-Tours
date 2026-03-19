@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Star, Quote, ChevronLeft, ChevronRight } from "lucide-react";
 
-// ── Types  
+//   Types  
 
 interface Testimonial {
   id:       number;
@@ -14,7 +14,7 @@ interface Testimonial {
   rating:   number;
 }
 
-// ── Static data (swap for API call if you wire a /testimonials endpoint) ──────
+//   Static data (swap for API call if you wire a /testimonials endpoint)    
 
 const TESTIMONIALS: Testimonial[] = [
   {
@@ -66,7 +66,7 @@ const TESTIMONIALS: Testimonial[] = [
 
 const AUTO_PLAY_MS = 5000;
 
-// ── Stars 
+//   Stars 
 
 const Stars = ({ n }: { n: number }) => (
   <div className="flex gap-0.5">
@@ -79,7 +79,7 @@ const Stars = ({ n }: { n: number }) => (
   </div>
 );
 
-// ── Card  ─
+//   Card  ─
 
 const TestimonialCard = ({
   t, active, direction,
@@ -143,7 +143,7 @@ const TestimonialCard = ({
   );
 };
 
-// ── Section  ───────────
+//   Section       ─
 
 const TestimonialsSection = () => {
   const [[current, direction], setCurrent] = useState([0, 0]);

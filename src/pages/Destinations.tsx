@@ -7,7 +7,7 @@ import tour1 from "@/assets/tour-1.jpg";
 
 const DestinationsPage = () => (
   <PageLayout>
-    {/* ── Hero ── */}
+    {/*   Hero   */}
     <section
       className="relative flex items-center justify-center overflow-hidden"
       style={{ height: "clamp(220px, 40vh, 420px)", paddingTop: "var(--nav-total-h, 64px)" }}
@@ -25,7 +25,7 @@ const DestinationsPage = () => (
       </div>
     </section>
 
-    {/* ── Destination list ── */}
+    {/*   Destination list   */}
     <section className="py-16 bg-background">
       <div className="container mx-auto px-4 space-y-20">
         {DESTINATIONS.map((dest, i) => (

@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { ArrowLeft, Save, ImagePlus, Eye, EyeOff, X, Plus } from "lucide-react";
 import { adminApi, ApiError } from "@/lib/api";
 
-// ── Types  ─────────────
+//   Types        ─
 interface BlogForm {
   title:      string;
   slug:       string;
@@ -35,7 +35,7 @@ const CATEGORIES = ["Tanzania", "Kenya", "Uganda", "Zanzibar", "Tips", "Wildlife
 
 const slugify = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 
-// ── Shared input styles ───────────────────────────────────────────────────────
+//   Shared input styles                            ─
 const iStyle = {
   background: "hsl(var(--muted)/0.5)",
   border:     "1px solid hsl(var(--border)/0.6)",
@@ -53,7 +53,7 @@ const SectionCard = ({ title, children }: { title: string; children: React.React
   </div>
 );
 
-// ── Page  ──────────────
+//   Page         
 const BlogFormPage = () => {
   const { id }   = useParams<{ id?: string }>();
   const navigate = useNavigate();

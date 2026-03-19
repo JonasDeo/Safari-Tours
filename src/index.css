@@ -16,11 +16,11 @@
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 10%;
 
-    --primary: 36 56% 50%;            /* gold #c8973a */
+    --primary: 35 35% 45%;           /* gold #c8973a */
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 210 33% 17%;         /* dark navy #1c2b3a */
-    --secondary-foreground: 0 0% 98%;
+    --secondary: 0 0% 10%;         
+    --secondary-foreground: 0 0% 95%;
 
     --muted: 0 0% 93%;
     --muted-foreground: 0 0% 45%;
@@ -39,21 +39,21 @@
 
     --sand: 40 25% 90%;
     --sand-dark: 36 20% 75%;
-    --earth: 210 33% 17%;             /* dark navy */
+     --charcoal: 0 0% 8%;             /* dark navy */
     --olive: 120 15% 30%;             /* muted green */
     --olive-light: 120 10% 50%;
     --terracotta: 36 56% 50%;        
     --terracotta-light: 36 45% 62%;
     --warm-cream: 0 0% 98%;
-    --dark-overlay: 210 33% 10%;
+    --dark-overlay: 0 0% 10%;
 
-    --sidebar-background: 210 33% 17%;
+    --sidebar-background: 0 0% 9%;
     --sidebar-foreground: 0 0% 95%;
     --sidebar-primary: 36 56% 50%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 210 25% 25%;
+    --sidebar-accent: 0 0% 18%;
     --sidebar-accent-foreground: 0 0% 95%;
-    --sidebar-border: 210 25% 25%;
+    --sidebar-border: 0 0% 20%;
     --sidebar-ring: 36 56% 50%;
 
     --font-display: 'Playfair Display', serif;

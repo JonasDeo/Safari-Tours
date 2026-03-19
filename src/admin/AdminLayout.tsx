@@ -9,7 +9,7 @@ import { useAdminAuth } from "./AdminAuth";
 import { adminApi } from "@/lib/api";
 import logoSrc from "@/assets/Balbina-logo.png";
 
-// ── Nav config  ────────
+//   Nav config      
 
 const NAV_MAIN = [
   { label: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
@@ -24,7 +24,7 @@ const NAV_BOTTOM = [
   { label: "Profile",  href: "/admin/profile",  icon: User     },
 ];
 
-// ── Sidebar link  ──────
+//   Sidebar link     
 
 const NavItem = ({
   item, collapsed, mobile, badge, onClick,
@@ -92,7 +92,7 @@ const NavItem = ({
   );
 };
 
-// ── Sidebar content  ───
+//   Sidebar content   ─
 
 const SidebarContent = ({
   collapsed, mobile, pendingQuotes, onClose,
@@ -203,7 +203,7 @@ const SidebarContent = ({
   );
 };
 
-// ── Layout  ─
+//   Layout  ─
 
 const AdminLayout = () => {
   const [collapsed,     setCollapsed]     = useState(false);
@@ -226,7 +226,7 @@ const AdminLayout = () => {
     <div className="flex h-screen overflow-hidden"
       style={{ background: "hsl(var(--background))" }}>
 
-      {/* ── Desktop sidebar ── */}
+      {/*   Desktop sidebar   */}
       <motion.aside
         animate={{ width: collapsed ? 60 : 216 }}
         transition={{ duration: 0.25, ease: [0.32, 0.72, 0, 1] }}
@@ -243,7 +243,7 @@ const AdminLayout = () => {
         </button>
       </motion.aside>
 
-      {/* ── Mobile sidebar ── */}
+      {/*   Mobile sidebar   */}
       <AnimatePresence>
         {mobileOpen && (
           <>
@@ -262,7 +262,7 @@ const AdminLayout = () => {
         )}
       </AnimatePresence>
 
-      {/* ── Main ── */}
+      {/*   Main   */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
 
         {/* Topbar */}

@@ -4,7 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
-// ── Public pages  ──────
+//   Public pages     
 import Index           from "./pages/Index";
 import GuidedSafaris   from "./pages/tours/GuidedSafaris";
 import SelfDrive       from "./pages/tours/SelfDrive";
@@ -20,7 +20,7 @@ import BlogPage        from "./pages/Blog";
 import BlogPostPage    from "./pages/BlogPost";
 import ScrollToTop     from "./components/ScrollToTop";
 
-// ── Admin  ─────────────
+//   Admin        ─
 import { AdminAuthProvider, ProtectedRoute } from "./admin/AdminAuth";
 import AdminLogin       from "./admin/AdminLogin";
 import AdminLayout      from "./admin/AdminLayout";
@@ -50,7 +50,7 @@ const App = () => (
           <ScrollToTop />
           <Routes>
 
-            {/* ── Public ───────────────────────────────────────────── */}
+            {/*   Public                       ─ */}
             <Route path="/"                    element={<Index />} />
 
             {/* Tours — specific static routes MUST come before /:slug */}
@@ -70,10 +70,10 @@ const App = () => (
             <Route path="/blog/:slug"          element={<BlogPostPage />} />
             <Route path="/faq"                  element={<FAQPage />} />
 
-            {/* ── Admin: login (public) ─────────────────────────────── */}
+            {/*   Admin: login (public)                ─ */}
             <Route path="/admin/login" element={<AdminLogin />} />
 
-            {/* ── Admin: protected ─────────────────────────────────── */}
+            {/*   Admin: protected                  ─ */}
             <Route path="/admin" element={
               <ProtectedRoute>
                 <AdminLayout />
@@ -109,7 +109,7 @@ const App = () => (
               <Route path="settings"         element={<SettingsPage />} />
             </Route>
 
-            {/* ── 404 ──────────────────────────────────────────────── */}
+            {/*   404                          */}
             <Route path="*" element={<NotFound />} />
 
           </Routes>

@@ -29,10 +29,10 @@ const AdminLogin = () => {
   };
 
   return (
-    // ── Fixed full-screen, no scroll ──────────────────────────────────────────
+    //   Fixed full-screen, no scroll                      
     <div className="fixed inset-0 flex overflow-hidden">
 
-      {/* ── Left: safari image panel (desktop only) ── */}
+      {/*   Left: safari image panel (desktop only)   */}
       <div className="hidden lg:block lg:w-1/2 xl:w-3/5 relative flex-shrink-0">
         <img src={bgImg} alt="Safari landscape"
           className="absolute inset-0 w-full h-full object-cover object-center" />
@@ -56,7 +56,7 @@ const AdminLogin = () => {
         </div>
       </div>
 
-      {/* ── Right: form panel — flex-centered, no scroll ── */}
+      {/*   Right: form panel — flex-centered, no scroll   */}
       <div className="flex-1 flex items-center justify-center relative overflow-hidden"
         style={{ background: "#0e1117" }}>
 

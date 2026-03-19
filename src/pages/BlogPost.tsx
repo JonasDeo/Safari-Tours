@@ -14,7 +14,7 @@ import type { ContentBlock } from "@/components/blog/post/types/blogPost";
 import { BLOG_POSTS } from "@/constants/blogData";
 import { publicApi } from "@/lib/api";
 
-// ── Helpers  ───────────
+//   Helpers       ─
 
 const extractTOC = (
   body: { type: string; id?: string; level?: number; content?: string }[]
@@ -55,7 +55,7 @@ const mapApiPost = (p: any) => ({
     : contentToBlocks(p.content ?? ""),
 });
 
-// ── Comment types  ─────
+//   Comment types    ─
 
 interface Comment {
   id:        number;
@@ -64,7 +64,7 @@ interface Comment {
   created_at:string;
 }
 
-// ── Comments section  ──
+//   Comments section   
 
 const formatDate = (iso: string) =>
   new Date(iso).toLocaleDateString("en-US", { day: "numeric", month: "short", year: "numeric" });
@@ -241,7 +241,7 @@ const CommentsSection = ({ postSlug }: { postSlug: string }) => {
   );
 };
 
-// ── Related posts from API ────────────────────────────────────────────────────
+//   Related posts from API                           
 
 const RelatedPostsLive = ({ currentSlug, category }: { currentSlug: string; category: string }) => {
   const [posts, setPosts] = useState<any[]>([]);
@@ -304,7 +304,7 @@ const RelatedPostsLive = ({ currentSlug, category }: { currentSlug: string; cate
   );
 };
 
-// ── Page  ──────────────
+//   Page         
 
 const BlogPostPage = () => {
   const { slug } = useParams<{ slug: string }>();

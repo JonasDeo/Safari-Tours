@@ -17,7 +17,7 @@ const reasons = [
 const WhyUsSection = () => (
   <section
     className="relative py-14 lg:py-16 overflow-hidden"
-    style={{ background: "hsl(var(--earth))" }}
+    style={{ background: "hsl(var( --charcoal))" }}
   >
     <div className="container mx-auto px-6 lg:px-10 relative z-10">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 xl:gap-24 items-center">

@@ -1,7 +1,7 @@
 // Re-export base types so consumers only need one import path
 export type { BlogPost, BlogCategory } from "../../Blog";
 
-// ─── Content blocks  ───
+//  ─ Content blocks   ─
 // Structured content model — swap for a CMS (Sanity, Contentful, etc.) later.
 
 export interface ParagraphBlock {
@@ -49,7 +49,7 @@ export type ContentBlock =
   | ListBlock
   | TipBlock;
 
-// ─── Full post (list post + body) ────────────────────────────────────────────
+//  ─ Full post (list post + body)                       
 
 export interface FullBlogPost {
   id:          string;
@@ -66,7 +66,7 @@ export interface FullBlogPost {
   body:        ContentBlock[];
 }
 
-// ─── TOC item (derived from HeadingBlocks) ───────────────────────────────────
+//  ─ TOC item (derived from HeadingBlocks)                  ─
 
 export interface TOCItem {
   id:    string;

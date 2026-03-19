@@ -56,7 +56,7 @@ export default {
           DEFAULT: "hsl(var(--sand))",
           dark: "hsl(var(--sand-dark))",
         },
-        earth: "hsl(var(--earth))",
+        earth: "hsl(var( --charcoal))",
         olive: {
           DEFAULT: "hsl(var(--olive))",
           light: "hsl(var(--olive-light))",
