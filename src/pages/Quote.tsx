@@ -1,10 +1,10 @@
 import { useRef, useEffect } from "react";
 import PageLayout  from "@/components/PageLayout";
-import QuoteHero   from "@/pages/quote/QuoteHero";
-import QuoteSidebar from "@/pages/quote/QuoteSidebar";
-import QuoteWizard  from "@/pages/quote/QuoteWizard";
 import { WIZARD_STEPS } from "@/constants/quoteData"; // ← lowercase 'q' — match your actual filename
 import useQuoteWizard   from "@/hooks/use-quote-wizard";
+import QuoteHero from "@/components/quote/QuoteHero";
+import QuoteSidebar from "@/components/quote/QuoteSidebar";
+import QuoteWizard from "@/components/quote/QuoteWizard";
 
 const QuotePage = () => {
   const {
