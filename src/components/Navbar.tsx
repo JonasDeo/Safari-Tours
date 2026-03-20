@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Menu, X, Phone, Mail, ChevronDown } from "lucide-react";
 import { Link, useLocation, useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import logoSrc from "@/assets/Balbina-logo.png";
+import logoSrc from "@/assets/balbina-logo.png";
 import { useSiteSettings } from "@/hooks/use-site-settings";
 
 const CURRENCIES = ["USD", "TZS", "EUR"];

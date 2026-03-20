@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Eye, EyeOff, LogIn, AlertCircle } from "lucide-react";
 import { useAdminAuth } from "./AdminAuth";
-import logoSrc from "@/assets/Balbina-logo.png";
+import logoSrc from "@/assets/balbina-logo.png";
 import bgImg   from "@/assets/tour-3.jpg";
 
 const AdminLogin = () => {

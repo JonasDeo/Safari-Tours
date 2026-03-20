@@ -7,7 +7,7 @@ import {
 } from "lucide-react";
 import { useAdminAuth } from "./AdminAuth";
 import { adminApi } from "@/lib/api";
-import logoSrc from "@/assets/Balbina-logo.png";
+import logoSrc from "@/assets/balbina-logo.png";
 
 // ── Nav config  ───────
 
