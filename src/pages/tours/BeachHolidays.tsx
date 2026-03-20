@@ -35,7 +35,7 @@ const BeachHolidays = () => {
 
         {/* Hero image */}
         <img
-          src="https://images.unsplash.com/photo-1504945005722-33670dcaf685?w=1200"
+          src="https://images.unsplash.com/photo-1646668072507-b2215b873c70?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
           alt="Zanzibar beach at sunset"
           className="w-full rounded-xl object-cover mb-10"
           style={{ height: 380, objectPosition: "center 60%" }}

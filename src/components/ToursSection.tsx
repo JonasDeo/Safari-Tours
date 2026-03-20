@@ -23,7 +23,7 @@ interface Tour {
 
 // ── Fallback — shown while loading or if API fails ────────────────────────────
 
-import tour1 from "@/assets/guided-safari.jpg";
+import tour1 from "@/assets/guided-safari.jpeg";
 import tour2 from "@/assets/beach.jpg";
 
 const FALLBACK: Tour[] = [

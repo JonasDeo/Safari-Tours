@@ -1,6 +1,6 @@
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import heroImg from "@/assets/hero-safari.jpg";
+import heroImg from "@/assets/hero-safari.jpeg";
 
 const HeroSection = () => {
   return (

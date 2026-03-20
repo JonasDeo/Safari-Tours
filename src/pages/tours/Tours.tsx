@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { MapPin, Clock, ArrowRight, SlidersHorizontal, X } from "lucide-react";
 import PageLayout from "@/components/PageLayout";
 import { publicApi } from "@/lib/api";
-import tour1  from "@/assets/guided-safari.jpg";
+import tour1  from "@/assets/guided-safari.jpeg";
 import tour3  from "@/assets/tour-3.jpg";
 import tour4  from "@/assets/tour-4.jpg";
 import beach  from "@/assets/beach.jpg";

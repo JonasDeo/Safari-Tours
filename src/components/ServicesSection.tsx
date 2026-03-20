@@ -1,7 +1,7 @@
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import selfDriveImg from "@/assets/self-drive.jpg";
-import guidedImg    from "@/assets/guided-safari.jpg";
+import selfDriveImg from "@/assets/self-drive.png";
+import guidedImg    from "@/assets/guided-safari.jpeg";
 import kiliImg      from "@/assets/kilimanjaro.jpg";
 import beachImg     from "@/assets/beach.jpg";
 

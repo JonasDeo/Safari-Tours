@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
-import guidedImg from "@/assets/guided-safari.jpg";
+import guidedImg from "@/assets/guided-safari.jpeg";
 
 const Reveal = ({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) => {
   const ref = useRef(null);

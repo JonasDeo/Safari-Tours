@@ -1,4 +1,4 @@
-import selfDriveImg from "@/assets/self-drive.jpg";
+import selfDriveImg from "@/assets/self-drive.png";
 
 const SelfDriveSection = () => {
   return (

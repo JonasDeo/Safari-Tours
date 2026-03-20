@@ -2,8 +2,10 @@ import { BlogCategory, BlogPost } from "@/components/blog/Blog";
 
 // Import images
 import tour1Img from "@/assets/tour-1.jpg";
+import tour2Img from "@/assets/tour-2.jpg";
 import tour3Img from "@/assets/tour-3.jpg";
 import tour4Img from "@/assets/tour-4.jpg";
+import tour5Img from "@/assets/tour-5.jpeg";
 
 // Categories
 // Centralised so CategoryFilter and filtering logic share the same source
@@ -51,7 +53,7 @@ export const BLOG_POSTS: BlogPost[] = [
     author:      "Balbina Kiwia",
     date:        "2025-10-05",
     readingTime: 11,
-    image:       tour4Img,
+    image:       tour2Img,
   },
   {
     id:          "4",
