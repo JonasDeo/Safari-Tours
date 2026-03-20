@@ -1,110 +1,187 @@
-import { Clock, MapPin } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Clock, MapPin, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import tour1 from "@/assets/tour-1.jpg";
-import tour2 from "@/assets/tour-2.jpg";
-import tour3 from "@/assets/tour-3.jpg";
-import tour4 from "@/assets/tour-4.jpg";
+import { publicApi } from "@/lib/api";
 
-const tours = [
-  {
-    title: "10 Days Best of Tanzania – Safari & Zanzibar Beach Escape",
-    image: tour1,
-    duration: "10 Days 9 Nights",
-    location: "Arusha",
-    price: "$3,800",
-    tags: ["Beach Holiday", "Wildlife Adventure"],
-  },
-  {
-    title: "7 Days Great Migration & Big Cats Safari – Serengeti & Ngorongoro",
-    image: tour2,
-    duration: "7 Days 6 Nights",
-    location: "Arusha",
-    price: "$3,200",
-    tags: ["Wildlife Adventure"],
-  },
-  {
-    title: "6 Days Tanzania Big Five & Cultural Experience Safari",
-    image: tour3,
-    duration: "6 Days 5 Nights",
-    location: "Arusha",
-    price: "$2,900",
-    tags: ["Wildlife Adventure"],
-  },
-  {
-    title: "8 Days Ultimate Wildebeest Migration & Big Five Safari",
-    image: tour4,
-    duration: "8 Days 7 Nights",
-    location: "Arusha",
-    price: "$3,800",
-    tags: ["Wildlife Adventure"],
-  },
+// ── Types ─────────────────────────────────────────────────────────────────────
+
+interface Tour {
+  id:            number;
+  slug:          string;
+  title:         string;
+  images:        string[];
+  cover_image:   string | null;
+  duration_days: number | null;   // DB field
+  duration:      string | null;   // fallback string if present
+  destination:   string;
+  price:         number | null;   // DB field
+  price_from:    number | null;   // alias some APIs use
+  currency:      string;
+  type:          string;
+  tags:          string[];
+}
+
+// ── Fallback — shown while loading or if API fails ────────────────────────────
+
+import tour1 from "@/assets/guided-safari.jpg";
+import tour2 from "@/assets/beach.jpg";
+
+const FALLBACK: Tour[] = [
+  { id: 1, slug: "tanzania-safari-zanzibar",    title: "10 Days Best of Tanzania – Safari & Zanzibar Beach Escape",    images: [], cover_image: null, duration: "10 Days 9 Nights", duration_days: 10, destination: "Arusha", price: 3800, price_from: 3800, currency: "USD", type: "GUIDED", tags: ["Beach Holiday", "Wildlife Adventure"] },
+  { id: 2, slug: "great-migration-serengeti",   title: "7 Days Great Migration & Big Cats Safari",                      images: [], cover_image: null, duration: "7 Days 6 Nights",  duration_days: 7,  destination: "Arusha", price: 3200, price_from: 3200, currency: "USD", type: "GUIDED", tags: ["Wildlife Adventure"] },
+  { id: 3, slug: "big-five-cultural-safari",    title: "6 Days Tanzania Big Five & Cultural Experience Safari",         images: [], cover_image: null, duration: "6 Days 5 Nights",  duration_days: 6,  destination: "Arusha", price: 2900, price_from: 2900, currency: "USD", type: "GUIDED", tags: ["Wildlife Adventure"] },
+  { id: 4, slug: "wildebeest-migration-safari", title: "8 Days Ultimate Wildebeest Migration & Big Five Safari",        images: [], cover_image: null, duration: "8 Days 7 Nights",  duration_days: 8,  destination: "Arusha", price: 3800, price_from: 3800, currency: "USD", type: "GUIDED", tags: ["Wildlife Adventure"] },
 ];
 
+const FALLBACK_IMAGES: Record<number, string> = {
+  0: tour1,
+  1: tour2,
+  2: tour1,
+  3: tour2,
+};
+
+// ── Skeleton card ─────────────────────────────────────────────────────────────
+
+const SkeletonCard = () => (
+  <div className="rounded-lg overflow-hidden border border-border animate-pulse">
+    <div className="aspect-[16/10] bg-muted" />
+    <div className="p-5 space-y-3">
+      <div className="h-4 bg-muted rounded w-3/4" />
+      <div className="h-3 bg-muted rounded w-1/2" />
+      <div className="h-4 bg-muted rounded w-1/4 mt-4" />
+    </div>
+  </div>
+);
+
+// ── Tour card ─────────────────────────────────────────────────────────────────
+
+const TourCard = ({ tour, idx }: { tour: Tour; idx: number }) => {
+  const isValidUrl = (url: unknown): url is string =>
+    typeof url === "string" && (url.startsWith("http://") || url.startsWith("https://") || url.startsWith("/"));
+
+  const image = (isValidUrl(tour.cover_image) ? tour.cover_image : null)
+    ?? (isValidUrl(tour.images?.[0]) ? tour.images[0] : null)
+    ?? FALLBACK_IMAGES[idx % Object.keys(FALLBACK_IMAGES).length];
+
+  return (
+    <Link
+      to={`/tours/${tour.slug}`}
+      className="group bg-card rounded-lg overflow-hidden border border-border
+        hover:shadow-xl transition-all duration-300 block"
+    >
+      {/* Image */}
+      <div className="relative overflow-hidden aspect-[16/10]">
+        <img
+          src={image}
+          alt={tour.title}
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          loading="lazy"
+        />
+        {/* Tags */}
+        <div className="absolute top-3 left-3 flex flex-wrap gap-1.5">
+          {(tour.tags ?? []).slice(0, 2).map((tag) => (
+            <span key={tag}
+              className="bg-primary/90 text-primary-foreground text-[10px] uppercase
+                tracking-wider font-body px-2.5 py-1 rounded-sm">
+              {tag}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* Body */}
+      <div className="p-5">
+        <h3 className="font-display text-base font-semibold text-foreground mb-3
+          line-clamp-2 group-hover:text-primary transition-colors duration-200">
+          {tour.title}
+        </h3>
+
+        <div className="flex items-center gap-4 text-muted-foreground text-xs font-body mb-3">
+          {(tour.duration_days || tour.duration) && (
+            <span className="flex items-center gap-1">
+              <Clock className="w-3.5 h-3.5" />
+              {tour.duration_days
+                ? `${tour.duration_days} Day${tour.duration_days !== 1 ? "s" : ""} ${tour.duration_days - 1} Night${tour.duration_days - 1 !== 1 ? "s" : ""}`
+                : tour.duration}
+            </span>
+          )}
+          {tour.destination && (
+            <span className="flex items-center gap-1">
+              <MapPin className="w-3.5 h-3.5" /> {tour.destination}
+            </span>
+          )}
+        </div>
+
+        <div className="flex items-center justify-between border-t border-border pt-3">
+          <div>
+            <span className="font-body text-xs text-muted-foreground">From </span>
+            <span className="font-display text-xl font-bold text-primary">
+              {tour.currency ?? "USD"} {Number(tour.price ?? tour.price_from ?? 0).toLocaleString()}
+            </span>
+          </div>
+          <ArrowRight className="w-4 h-4 text-muted-foreground opacity-0 group-hover:opacity-100
+            group-hover:translate-x-0.5 transition-all duration-200" />
+        </div>
+      </div>
+    </Link>
+  );
+};
+
+// ── Section ───────────────────────────────────────────────────────────────────
+
 const ToursSection = () => {
+  const [tours,   setTours]   = useState<Tour[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    publicApi.getTours()
+      .then((data: any) => {
+        const list = Array.isArray(data) ? data : (data?.data ?? []);
+        setTours(list.length > 0 ? list.slice(0, 4) : FALLBACK);
+      })
+      .catch(() => setTours(FALLBACK))
+      .finally(() => setLoading(false));
+  }, []);
+
   return (
     <section id="tours" className="py-20 bg-background">
       <div className="container mx-auto px-4">
+
+        {/* Heading */}
         <div className="text-center mb-14">
-          <p className="font-body text-sm tracking-[0.2em] uppercase text-primary mb-3">
-            Self Tested Itineraries!
+          <p className="font-body text-xs tracking-[0.3em] uppercase text-primary mb-3">
+            Self Tested Itineraries
           </p>
           <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-4">
             Our Signature Safari Experiences
           </h2>
-          <a href="#" className="font-body text-sm text-primary hover:text-terracotta-light transition-colors underline underline-offset-4">
-            Request a Custom Plan
-          </a>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {tours.map((tour) => (
-            <div
-              key={tour.title}
-              className="group bg-card rounded-lg overflow-hidden border border-border hover:shadow-xl transition-all duration-300 cursor-pointer"
-            >
-              <div className="relative overflow-hidden aspect-[16/10]">
-                <img
-                  src={tour.image}
-                  alt={tour.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  loading="lazy"
-                />
-                <div className="absolute top-3 left-3 flex flex-wrap gap-1.5">
-                  {tour.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="bg-primary/90 text-primary-foreground text-[10px] uppercase tracking-wider font-body px-2.5 py-1 rounded-sm"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
-              <div className="p-5">
-                <h3 className="font-display text-base font-semibold text-foreground mb-3 line-clamp-2 group-hover:text-primary transition-colors">
-                  {tour.title}
-                </h3>
-                <div className="flex items-center gap-4 text-muted-foreground text-xs font-body mb-3">
-                  <span className="flex items-center gap-1"><Clock className="w-3.5 h-3.5" /> {tour.duration}</span>
-                  <span className="flex items-center gap-1"><MapPin className="w-3.5 h-3.5" /> {tour.location}</span>
-                </div>
-                <div className="border-t border-border pt-3">
-                  <span className="font-body text-xs text-muted-foreground">From</span>
-                  <span className="font-display text-xl font-bold text-primary ml-1">{tour.price}</span>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="text-center mt-12">
           <Link
-            to="/tours"
-            className="inline-block font-body text-sm uppercase tracking-widest px-10 py-4 bg-secondary text-secondary-foreground hover:bg-olive-light transition-colors rounded-sm"
-          >
-            View All Safari Experiences
+            to="/quote"
+            className="font-body text-sm text-muted-foreground hover:text-foreground
+              transition-colors underline underline-offset-4">
+            Request a Custom Plan
           </Link>
         </div>
+
+        {/* Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {loading
+            ? Array.from({ length: 4 }).map((_, i) => <SkeletonCard key={i} />)
+            : tours.map((tour, i) => <TourCard key={tour.id} tour={tour} idx={i} />)
+          }
+        </div>
+
+        {/* CTA */}
+        <div className="text-center mt-14">
+          <Link to="/tours"
+            className="group inline-flex items-center gap-3 font-body text-xs tracking-[0.2em]
+              uppercase font-semibold px-10 py-4 rounded-full border border-foreground
+              text-foreground hover:bg-foreground hover:text-background transition-all duration-300">
+            View All Safari Experiences
+            <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />
+          </Link>
+        </div>
+
       </div>
     </section>
   );

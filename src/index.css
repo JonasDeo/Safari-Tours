@@ -6,24 +6,28 @@
 
 @layer base {
   :root {
-    --background:          40 15% 96%;
-    --foreground:          0  0%  8%;
+    /* ── Page ───────────────────────────────────────────────────────────────── */
+    --background:          38 18% 96%;    /* warm cream  #f5f2ed              */
+    --foreground:          0  0%  8%;     /* near-black  #141414              */
 
+    /* ── Cards & surfaces — light greys, unchanged ──────────────────────────── */
     --card:                0  0%  100%;
     --card-foreground:     0  0%  8%;
 
     --popover:             0  0%  100%;
     --popover-foreground:  0  0%  8%;
 
-    /* Gold — darker, more muted. Reserve for CTAs + key labels only */
-    --primary:             36 42% 40%;   /* #8f6e2a — restrained gold */
+    /* ── Gold — dialed back ──────────────────────────────────────────────────── */
+    --primary:             36 42% 40%;    /* #8f6e2a                          */
     --primary-foreground:  0  0%  100%;
 
-    --secondary:           0  0%  9%;
-    --secondary-foreground:40 15% 94%;
+    /* ── Secondary ───────────────────────────────────────────────────────────── */
+    --secondary:           0  0%  92%;
+    --secondary-foreground:0  0%  8%;
 
-    --muted:               0  0%  91%;
-    --muted-foreground:    0  0%  38%;   /* slightly lighter — less harsh */
+    /* ── Muted — light, as before ────────────────────────────────────────────── */
+    --muted:               0  0%  92%;
+    --muted-foreground:    0  0%  42%;
 
     --accent:              36 42% 40%;
     --accent-foreground:   0  0%  100%;
@@ -31,31 +35,42 @@
     --destructive:         0  72%  45%;
     --destructive-foreground: 0 0% 98%;
 
-    --border:              0  0%  84%;
-    --input:               0  0%  84%;
+    --border:              0  0%  86%;
+    --input:               0  0%  86%;
     --ring:                36 42% 40%;
     --radius:              0.5rem;
 
-    --sand:                40 20% 88%;
+    /* ── Brand tokens ───────────────────────────────────────────────────────── */
+    --sand:                38 18% 88%;
     --sand-dark:           36 15% 65%;
-    --charcoal:            0  0%  9%;
-    --dark-overlay:        0  0%  9%;
+    --charcoal:            0  0%  8%;
+    --dark-overlay:        0  0%  8%;
     --earth:               0  0%  9%;
     --olive:               90 12% 28%;
     --olive-light:         90 8%  45%;
-    --warm-cream:          40 15% 96%;
+    --warm-cream:          38 18% 96%;
     --terracotta:          36 42% 40%;
     --terracotta-light:    36 35% 55%;
 
+    /* ── Navbar & Footer — dark ─────────────────────────────────────────────── */
+    --nav-background:      0  0%  7%;     /* #121212 near-black               */
+    --nav-foreground:      38 12% 88%;    /* warm off-white                   */
+    --nav-border:          0  0%  14%;    /* subtle separator                 */
+
+    --footer-background:   0  0%  5%;     /* #0d0d0d — slightly deeper        */
+    --footer-foreground:   38 12% 82%;
+
+    /* ── Admin sidebar ──────────────────────────────────────────────────────── */
     --sidebar-background:      0  0%  7%;
-    --sidebar-foreground:      40 12% 90%;
+    --sidebar-foreground:      38 12% 88%;
     --sidebar-primary:         36 42% 44%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent:          0  0%  14%;
-    --sidebar-accent-foreground: 40 12% 90%;
-    --sidebar-border:          0  0%  16%;
+    --sidebar-accent:          0  0%  13%;
+    --sidebar-accent-foreground: 38 12% 88%;
+    --sidebar-border:          0  0%  15%;
     --sidebar-ring:            36 42% 44%;
 
+    /* ── Typography ─────────────────────────────────────────────────────────── */
     --font-display: 'Playfair Display', serif;
     --font-body:    'Source Sans 3', sans-serif;
   }
@@ -83,6 +98,7 @@
 
 html, body, #root { height: 100%; }
 
+/* ── Scrollbars ──────────────────────────────────────────────────────────── */
 :root {
   scrollbar-width: thin;
   scrollbar-color: hsl(var(--border)) transparent;
@@ -90,7 +106,7 @@ html, body, #root { height: 100%; }
 ::-webkit-scrollbar        { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track  { background: transparent; }
 ::-webkit-scrollbar-thumb  { background: hsl(var(--border)); border-radius: 999px; }
-::-webkit-scrollbar-thumb:hover { background: hsl(0 0% 60%); }
+::-webkit-scrollbar-thumb:hover { background: hsl(0 0% 55%); }
 ::-webkit-scrollbar-corner { background: transparent; }
 
 .admin-scrollbar {
@@ -99,5 +115,8 @@ html, body, #root { height: 100%; }
 }
 .admin-scrollbar::-webkit-scrollbar       { width: 4px; }
 .admin-scrollbar::-webkit-scrollbar-track { background: transparent; }
-.admin-scrollbar::-webkit-scrollbar-thumb { background: hsl(var(--sidebar-border)); border-radius: 999px; }
+.admin-scrollbar::-webkit-scrollbar-thumb {
+  background: hsl(var(--sidebar-border));
+  border-radius: 999px;
+}
 .admin-scrollbar::-webkit-scrollbar-thumb:hover { background: hsl(0 0% 30%); }
