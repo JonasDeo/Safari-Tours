@@ -15,7 +15,7 @@ import StepTripType      from "@/components/quote/steps/StepTripType";
 import QuoteSuccess      from "@/components/QuoteSuccess";
 import WizardNav         from "@/components/WizardNav";
 import WizardProgress    from "@/components/WizardProgress";
-import { WIZARD_STEPS }  from "@/constants/QuoteData";
+import { WIZARD_STEPS }  from "@/constants/quoteData";
 import useQuoteWizard    from "@/hooks/use-quote-wizard";
 import PageLayout        from "@/components/PageLayout";
 import { useSiteSettings } from "@/hooks/use-site-settings";

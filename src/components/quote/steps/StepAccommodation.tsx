@@ -1,4 +1,4 @@
-import { ACCOMMODATION } from "@/constants/QuoteData";
+import { ACCOMMODATION } from "@/constants/quoteData";
 import RadioSelect from "../RadioSelect";
 
 interface StepAccommodationProps {

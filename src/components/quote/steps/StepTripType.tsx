@@ -1,4 +1,4 @@
-import { TRIP_TYPES } from "@/constants/QuoteData";
+import { TRIP_TYPES } from "@/constants/quoteData";
 import MultiSelect from "../MultiSelect";
 import { StepErrors } from "../Quote";
 import toggleItem from "@/lib/toggleItem";

@@ -1,4 +1,4 @@
-import { WIZARD_STEPS } from "@/constants/QuoteData";
+import { WIZARD_STEPS } from "@/constants/quoteData";
 import { motion } from "framer-motion";
 
 interface WizardProgressProps {
