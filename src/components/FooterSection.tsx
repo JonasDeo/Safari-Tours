@@ -12,7 +12,6 @@ const TripAdvisorIcon = () => <svg viewBox="0 0 24 24" fill="currentColor" class
 const VisaIcon       = () => <svg viewBox="0 0 48 48" className="h-5 w-auto" fill="none"><rect width="48" height="48" rx="6" fill="#1A1F71" /><text x="7" y="31" fontFamily="Arial" fontWeight="bold" fontSize="16" fill="white">VISA</text></svg>;
 const MastercardIcon = () => <svg viewBox="0 0 48 48" className="h-5 w-auto" fill="none"><rect width="48" height="48" rx="6" fill="#252525" /><circle cx="18" cy="24" r="10" fill="#EB001B" /><circle cx="30" cy="24" r="10" fill="#F79E1B" /><path d="M24 16.26a10 10 0 0 1 0 15.48 10 10 0 0 1 0-15.48z" fill="#FF5F00" /></svg>;
 const PaypalIcon     = () => <svg viewBox="0 0 48 48" className="h-5 w-auto" fill="none"><rect width="48" height="48" rx="6" fill="#003087" /><text x="7" y="31" fontFamily="Arial" fontWeight="bold" fontSize="13" fill="#009CDE">Pay</text><text x="22" y="31" fontFamily="Arial" fontWeight="bold" fontSize="13" fill="white">Pal</text></svg>;
-const MpesaIcon      = () => <svg viewBox="0 0 48 48" className="h-5 w-auto" fill="none"><rect width="48" height="48" rx="6" fill="#4CAF50" /><text x="5" y="30" fontFamily="Arial" fontWeight="bold" fontSize="12" fill="white">M-PESA</text></svg>;
 
 // SOCIALS built dynamically in component from useSiteSettings
 
@@ -171,7 +170,7 @@ const FooterSection = () => {
         </p>
         <div className="flex items-center gap-2 flex-wrap justify-center order-1 sm:order-2">
           <span className="font-body text-xs text-sand/30 mr-1">We accept</span>
-          <VisaIcon /><MastercardIcon /><PaypalIcon /><MpesaIcon />
+          <VisaIcon /><MastercardIcon /><PaypalIcon />
         </div>
       </div>
 

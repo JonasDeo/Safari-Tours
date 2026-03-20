@@ -4,7 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
-//   Public pages     
+//   Public pages  ─
 import Index           from "./pages/Index";
 import GuidedSafaris   from "./pages/tours/GuidedSafaris";
 import SelfDrive       from "./pages/tours/SelfDrive";
@@ -20,7 +20,7 @@ import BlogPage        from "./pages/Blog";
 import BlogPostPage    from "./pages/BlogPost";
 import ScrollToTop     from "./components/ScrollToTop";
 
-//   Admin        ─
+//   Admin      
 import { AdminAuthProvider, ProtectedRoute } from "./admin/AdminAuth";
 import AdminLogin       from "./admin/AdminLogin";
 import AdminLayout      from "./admin/AdminLayout";
@@ -31,6 +31,7 @@ import ToursPage        from "./admin/pages/ToursPage";
 import TourFormPage     from "./admin/pages/TourFormPage";
 import BookingsPage     from "./admin/pages/BookingsPage";
 import BlogAdminPage      from "./admin/pages/BlogAdminPage";
+import TestimonialsPage  from "./admin/pages/TestimonialsPage";
 import BlogFormPage     from "./admin/pages/BlogFormPage";
 import ProfilePage      from "./admin/pages/ProfilePage";
 import SettingsPage     from "./admin/pages/SettingsPage";
@@ -102,7 +103,7 @@ const App = () => (
               <Route path="blog/:id/edit"    element={<BlogFormPage />} />
 
               {/* Testimonials */}
-              {/* <Route path="testimonials"      element={<TestimonialsPage />} /> */}
+              <Route path="testimonials"      element={<TestimonialsPage />} />
 
               {/* Account */}
               <Route path="profile"          element={<ProfilePage />} />

@@ -3,13 +3,13 @@ import { Link, useLocation, useNavigate, Outlet } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   LayoutDashboard, MessageSquare, Map, CalendarCheck,
-  FileText, Settings, User, LogOut, Menu, ChevronRight, Bell,
+  FileText, Settings, User, LogOut, Menu, ChevronRight, Bell, Star,
 } from "lucide-react";
 import { useAdminAuth } from "./AdminAuth";
 import { adminApi } from "@/lib/api";
 import logoSrc from "@/assets/Balbina-logo.png";
 
-//   Nav config      
+//   Nav config   ─
 
 const NAV_MAIN = [
   { label: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
@@ -17,6 +17,7 @@ const NAV_MAIN = [
   { label: "Tours",     href: "/admin/tours",     icon: Map             },
   { label: "Bookings",  href: "/admin/bookings",  icon: CalendarCheck   },
   { label: "Blog",      href: "/admin/blog",      icon: FileText        },
+  { label: "Reviews",   href: "/admin/testimonials", icon: Star          },
 ];
 
 const NAV_BOTTOM = [
@@ -24,7 +25,7 @@ const NAV_BOTTOM = [
   { label: "Profile",  href: "/admin/profile",  icon: User     },
 ];
 
-//   Sidebar link     
+//   Sidebar link  ─
 
 const NavItem = ({
   item, collapsed, mobile, badge, onClick,
@@ -203,7 +204,7 @@ const SidebarContent = ({
   );
 };
 
-//   Layout  ─
+//   Layout     ─
 
 const AdminLayout = () => {
   const [collapsed,     setCollapsed]     = useState(false);
