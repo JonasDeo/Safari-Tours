@@ -1,6 +1,9 @@
+// src/lib/api.ts
+// Central API client — all requests go through here
+
 const BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:8000';
 
-//   Token helpers 
+// ── Token helpers ─────────────────────────────────────────────────────────────
 
 export const getToken = (): string | null => localStorage.getItem('admin_token');
 
@@ -14,7 +17,7 @@ export const clearToken = () => {
   localStorage.removeItem('admin_name');
 };
 
-//  Core fetch wrapper 
+// ── Core fetch wrapper ────────────────────────────────────────────────────────
 
 interface RequestOptions {
   method?:  'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
@@ -71,7 +74,7 @@ async function request<T>(endpoint: string, opts: RequestOptions = {}): Promise<
   return data as T;
 }
 
-//   Public API   ─
+// ── Public API ────────────────────────────────────────────────────────────────
 
 export const publicApi = {
 
@@ -98,7 +101,7 @@ export const publicApi = {
     request('/settings'),
 };
 
-//   Admin Auth API    
+// ── Admin Auth API ────────────────────────────────────────────────────────────
 
 export const authApi = {
 
@@ -120,7 +123,7 @@ export const authApi = {
     request('/admin/me', { method: 'PUT', body: data, auth: true }),
 };
 
-//   Admin API    
+// ── Admin API ─────────────────────────────────────────────────────────────────
 
 export const adminApi = {
 
@@ -160,6 +163,8 @@ export const adminApi = {
     fd.append('image', file);
     return request(`/admin/tours/${id}/images`, { method: 'POST', body: fd, auth: true, isForm: true });
   },
+  deleteTourImage: (id: string, publicId: string) =>
+    request(`/admin/tours/${id}/images`, { method: 'DELETE', body: { public_id: publicId }, auth: true }),
 
   // Blog
   getBlogPosts: (params?: Record<string, string>) => {

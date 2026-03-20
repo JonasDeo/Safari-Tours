@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { MapPin, Clock, ArrowRight, SlidersHorizontal, X } from "lucide-react";
 import PageLayout from "@/components/PageLayout";
 import { publicApi } from "@/lib/api";
-import tour1  from "@/assets/tour-1.jpg";
+import tour1  from "@/assets/guided-safari.jpg";
 import tour3  from "@/assets/tour-3.jpg";
 import tour4  from "@/assets/tour-4.jpg";
 import beach  from "@/assets/beach.jpg";
@@ -19,12 +19,12 @@ const TYPE_LABELS: Record<string, string> = {
 const TYPE_FILTERS = ["All", "GUIDED", "SELF_DRIVE", "MOUNTAIN", "BEACH"];
 const DEST_FILTERS = ["All", "Tanzania", "Kenya", "Uganda", "Zanzibar"];
 
-//   Tour card      ─
+// ── Tour card ─────────────────────────────────────────────────────────────────
 
 interface Tour {
   id: number; slug: string; title: string; destination: string;
   type: string; duration_days: number; price: number; currency: string;
-  images: string[] | null; excerpt: string | null; tags: string[] | null;
+  images: any[] | null; cover_image?: string | null; excerpt: string | null; tags: string[] | null;
 }
 
 const FALLBACK_IMAGES = [
@@ -36,6 +36,7 @@ const FALLBACK_IMAGES = [
 
 const TourCard = ({ tour, i }: { tour: Tour; i: number }) => {
   const imgUrl = (() => {
+    if (tour.cover_image) return tour.cover_image;
     const first = tour.images?.[0];
     if (!first) return FALLBACK_IMAGES[i % FALLBACK_IMAGES.length];
     return typeof first === "string" ? first : (first as any)?.url ?? FALLBACK_IMAGES[i % FALLBACK_IMAGES.length];
@@ -128,7 +129,7 @@ const TourCard = ({ tour, i }: { tour: Tour; i: number }) => {
   );
 };
 
-//   Page    ─
+// ── Page ──────────────────────────────────────────────────────────────────────
 
 const ToursPage = () => {
   const [searchParams] = useSearchParams();
@@ -157,7 +158,7 @@ const ToursPage = () => {
   return (
     <PageLayout>
 
-      {/*   Hero   */}
+      {/* ── Hero ── */}
       <section className="relative flex items-center justify-center overflow-hidden"
         style={{ height: "clamp(320px, 50vh, 520px)", marginTop: "calc(-1 * var(--nav-total-h, 64px))", paddingTop: "var(--nav-total-h, 64px)" }}>
         <img src={tour1} alt="Safari tours"
@@ -184,7 +185,7 @@ const ToursPage = () => {
         </div>
       </section>
 
-      {/*   Filters   */}
+      {/* ── Filters ── */}
       <div className="sticky top-[var(--nav-total-h,64px)] z-30 bg-background/95 backdrop-blur-sm"
         style={{ borderBottom: "1px solid hsl(var(--border)/0.5)" }}>
         <div className="container mx-auto px-4">
@@ -279,7 +280,7 @@ const ToursPage = () => {
         </div>
       </div>
 
-      {/*   Tour grid   */}
+      {/* ── Tour grid ── */}
       <section className="py-14 bg-background">
         <div className="container mx-auto px-4">
 
@@ -322,7 +323,7 @@ const ToursPage = () => {
         </div>
       </section>
 
-      {/*   CTA banner   */}
+      {/* ── CTA banner ── */}
       <section className="py-16 bg-muted/30 border-t border-border/40">
         <div className="container mx-auto px-4 text-center">
           <h2 className="font-display text-3xl text-foreground mb-4"

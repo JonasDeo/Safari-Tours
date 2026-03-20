@@ -1,3 +1,5 @@
+// src/pages/TourDetail.tsx
+// Route: /tours/:slug
 import { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
@@ -8,7 +10,7 @@ import {
 import PageLayout from "@/components/PageLayout";
 import { publicApi } from "@/lib/api";
 
-// Types 
+// ─── Types ───────────────────────────────────────────────────────────────────
 
 interface ItineraryDay { day: number; title: string; desc: string; }
 
@@ -30,11 +32,12 @@ interface Tour {
   excluded: string[] | null;
   itinerary: ItineraryDay[] | null;
   images: any[] | null;
+  cover_image: string | null;
   tags: string[] | null;
   published: boolean;
 }
 
-//  ─ Helpers      ─
+// ─── Helpers ─────────────────────────────────────────────────────────────────
 
 const getImgUrl = (img: any): string =>
   typeof img === "string" ? img : img?.url ?? "";
@@ -47,7 +50,7 @@ const TYPE_LABELS: Record<string, string> = {
   CAR_RENTAL: "Car Rental",
 };
 
-//  ─ Sub-components   
+// ─── Sub-components ──────────────────────────────────────────────────────────
 
 // Sticky book bar that appears after scrolling past the hero
 const BookBar = ({ tour }: { tour: Tour }) => (
@@ -185,7 +188,7 @@ const Gallery = ({ images, title }: { images: any[]; title: string }) => {
   );
 };
 
-//  ─ Page   
+// ─── Page ─────────────────────────────────────────────────────────────────────
 
 const TourDetail = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -236,7 +239,12 @@ const TourDetail = () => {
     );
   }
 
-  const images    = tour.images ?? [];
+  // Put cover image first, then remaining images
+  const rawImages = (tour.images ?? []).map(getImgUrl).filter(Boolean);
+  const coverUrl  = tour.cover_image ?? rawImages[0] ?? null;
+  const images    = coverUrl
+    ? [coverUrl, ...rawImages.filter(u => u !== coverUrl)]
+    : rawImages;
   const highlights = (tour.highlights ?? []).filter(Boolean);
   const included  = (tour.included  ?? []).filter(Boolean);
   const excluded  = (tour.excluded  ?? []).filter(Boolean);
@@ -256,10 +264,10 @@ const TourDetail = () => {
           <span style={{ color: "hsl(var(--primary))" }}>{tour.title}</span>
         </div>
 
-        {/*   Two-column layout   */}
+        {/* ── Two-column layout ── */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
 
-          {/*   Left: main content   */}
+          {/* ── Left: main content ── */}
           <div className="lg:col-span-2 space-y-10">
 
             {/* Title + meta */}
@@ -406,7 +414,7 @@ const TourDetail = () => {
             )}
           </div>
 
-          {/*   Right: sticky booking sidebar   */}
+          {/* ── Right: sticky booking sidebar ── */}
           <div className="hidden lg:block">
             <div className="sticky top-24 rounded-2xl p-6 space-y-5"
               style={{ border: "1px solid hsl(var(--border)/0.6)", background: "hsl(var(--muted)/0.2)" }}>

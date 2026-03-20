@@ -55,12 +55,17 @@ const SkeletonCard = () => (
 
 // ── Tour card ─────────────────────────────────────────────────────────────────
 
-const TourCard = ({ tour, idx }: { tour: Tour; idx: number }) => {
-  const isValidUrl = (url: unknown): url is string =>
-    typeof url === "string" && (url.startsWith("http://") || url.startsWith("https://") || url.startsWith("/"));
+// Extract URL from either a plain string or a {url, public_id} object
+const extractUrl = (img: unknown): string | null => {
+  if (!img) return null;
+  if (typeof img === "string" && (img.startsWith("http") || img.startsWith("/"))) return img;
+  if (typeof img === "object" && img !== null && "url" in img) return (img as any).url ?? null;
+  return null;
+};
 
-  const image = (isValidUrl(tour.cover_image) ? tour.cover_image : null)
-    ?? (isValidUrl(tour.images?.[0]) ? tour.images[0] : null)
+const TourCard = ({ tour, idx }: { tour: Tour; idx: number }) => {
+  const image = extractUrl(tour.cover_image)
+    ?? extractUrl(tour.images?.[0])
     ?? FALLBACK_IMAGES[idx % Object.keys(FALLBACK_IMAGES).length];
 
   return (
