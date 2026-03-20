@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { motion } from "framer-motion";
 import { Star, ChevronLeft, ChevronRight } from "lucide-react";
 
-// ── Types  ────────────
+// ── Types ─────────────────────────────────────────────────────────────────────
 
 interface Testimonial {
   id:       number;
@@ -13,7 +13,7 @@ interface Testimonial {
   rating:   number;
 }
 
-// ── Fallback  ─────────
+// ── Fallback ──────────────────────────────────────────────────────────────────
 
 const FALLBACK: Testimonial[] = [
   { id: 1, name: "Caroline M.",     location: "Canada",         avatar: null, rating: 5,
@@ -31,7 +31,7 @@ const FALLBACK: Testimonial[] = [
 const AUTO_MS  = 5000;
 const API_BASE = (import.meta as any).env?.VITE_API_URL ?? "http://localhost:8000";
 
-// ── Helpers  ──────────
+// ── Helpers ───────────────────────────────────────────────────────────────────
 
 const nameToColor = (name: string) => {
   const palette = ["#c8873a", "#3a7c6e", "#7c6a3a", "#8b3a3a", "#3a5c8b", "#6e3a7c", "#3a6e4a"];
@@ -43,7 +43,7 @@ const nameToColor = (name: string) => {
 const getInitials = (name: string) =>
   name.split(/[\s&]+/).filter(Boolean).slice(0, 2).map(w => w[0].toUpperCase()).join("");
 
-// ── Card  ─────────────
+// ── Card ──────────────────────────────────────────────────────────────────────
 
 const Card = ({ t, role }: { t: Testimonial; role: "center" | "side" }) => {
   const isCenter = role === "center";
@@ -115,7 +115,7 @@ const Card = ({ t, role }: { t: Testimonial; role: "center" | "side" }) => {
   );
 };
 
-// ── Section  ──────────
+// ── Section ───────────────────────────────────────────────────────────────────
 
 const TestimonialsSection = () => {
   const [testimonials, setTestimonials] = useState<Testimonial[]>(FALLBACK);

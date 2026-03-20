@@ -29,7 +29,7 @@ const AboutIntro = () => (
             </div>
             {/* Floating stat card */}
             <div className="absolute -bottom-5 -right-4 md:-right-8 rounded-2xl px-6 py-5 shadow-xl"
-              style={{ background: "hsl(var( --charcoal))", minWidth: 156 }}>
+              style={{ background: "hsl(var(--earth))", minWidth: 156 }}>
               <p className="font-body text-xs tracking-[0.2em] uppercase text-primary mb-1">Experience</p>
               <p className="font-display text-sand/90 leading-none mb-1" style={{ fontSize: "2.6rem", fontWeight: 700 }}>4+</p>
               <p className="font-body text-xs text-sand/45 leading-snug">Years of crafting<br />extraordinary safaris</p>
@@ -66,7 +66,7 @@ const AboutIntro = () => (
 
             {/* Divider + values preview */}
             <div className="mt-8 pt-8 border-t border-border">
-              <p className="font-body text-xs tracking-[0.25em] uppercase text-primary">
+              <p className="font-body text-xs tracking-[0.25em] uppercase" style={{ color: "hsl(var(--foreground)/0.35)" }}>
                 Honesty · Integrity · Authenticity · Trust
               </p>
             </div>

@@ -25,7 +25,7 @@ const VALUES = [
 
 const AboutValues = () => (
   <section className="py-20 lg:py-28"
-    style={{ background: "hsl(var( --charcoal))" }}>
+    style={{ background: "hsl(var(--earth))" }}>
     <div className="container mx-auto px-6 lg:px-12">
 
       <Reveal>
@@ -51,10 +51,10 @@ const AboutValues = () => (
         {VALUES.map((v, i) => (
           <Reveal key={v.word} delay={i * 0.05}>
             <div className="p-7 h-full transition-colors duration-200 cursor-default"
-              style={{ background: "hsl(var( --charcoal))" }}
+              style={{ background: "hsl(var(--earth))" }}
               onMouseEnter={e => (e.currentTarget.style.background = "hsl(var(--dark-overlay)/0.5)")}
-              onMouseLeave={e => (e.currentTarget.style.background = "hsl(var( --charcoal))")}>
-              <span className="font-body text-xs tracking-[0.25em] uppercase text-primary/60 block mb-3">
+              onMouseLeave={e => (e.currentTarget.style.background = "hsl(var(--earth))")}>
+              <span className="font-body text-xs tracking-[0.25em] uppercase block mb-3" style={{ color: "hsl(var(--foreground)/0.25)" }}>
                 0{i + 1}
               </span>
               <h3 className="font-display text-sand mb-2"

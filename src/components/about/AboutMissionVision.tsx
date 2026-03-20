@@ -54,7 +54,7 @@ const AboutMissionVision = () => (
         {/* Vision — dark */}
         <Reveal delay={0.18}>
           <div className="rounded-2xl p-8 lg:p-10 h-full"
-            style={{ background: "hsl(var( --charcoal))" }}>
+            style={{ background: "hsl(var(--earth))" }}>
             <p className="font-body text-xs tracking-[0.25em] uppercase text-primary mb-6">Our Vision</p>
             <h3 className="font-display text-sand mb-4"
               style={{ fontSize: "1.4rem", fontWeight: 600, lineHeight: 1.2 }}>

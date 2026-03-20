@@ -6,7 +6,7 @@ import { FAQ_SECTIONS } from "@/constants/faqData";
 import { useSiteSettings } from "@/hooks/use-site-settings";
 import { FAQAccordionGroup } from "./FaqAccordion";
 
-//   Reveal wrapper    
+// ── Reveal wrapper ────────────────────────────────────────────────────────────
 
 const Reveal = ({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) => {
   const ref = useRef(null);
@@ -20,7 +20,7 @@ const Reveal = ({ children, delay = 0 }: { children: React.ReactNode; delay?: nu
   );
 };
 
-//  Sticky sidebar nav 
+// ── Sticky sidebar nav ────────────────────────────────────────────────────────
 
 const CategoryNav = ({ active, onSelect }: {
   active: string | null;
@@ -51,7 +51,7 @@ const CategoryNav = ({ active, onSelect }: {
   </aside>
 );
 
-//   CTA block      ─
+// ── CTA block ─────────────────────────────────────────────────────────────────
 
 const StillHavingQuestions = () => {
   const { contact } = useSiteSettings();
@@ -85,7 +85,7 @@ const StillHavingQuestions = () => {
   );
 };
 
-//   Main body      ─
+// ── Main body ─────────────────────────────────────────────────────────────────
 
 const FAQBody = () => {
   const [activeSection, setActiveSection] = useState<string | null>(null);
@@ -109,12 +109,12 @@ const FAQBody = () => {
                 <div id={section.category.replace(/\s+/g, "-")}>
                   {/* Section heading */}
                   <div className="flex items-center gap-3 mb-6">
-                    <div className="w-1 h-6 rounded-full bg-primary" />
+                    <div className="w-1 h-6 rounded-full" style={{ background: "hsl(var(--foreground)/0.15)" }} />
                     <h2 className="font-display text-foreground"
                       style={{ fontSize: "1.2rem", fontWeight: 600 }}>
                       {section.category}
                     </h2>
-                    <span className="font-body text-xs text-muted-foreground ml-1">
+                    <span className="font-body text-xs ml-1" style={{ color: "hsl(var(--foreground)/0.3)" }}>
                       ({section.items.length})
                     </span>
                   </div>

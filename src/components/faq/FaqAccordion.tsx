@@ -21,7 +21,7 @@ export const FAQAccordionItem = ({ q, a }: FAQItem) => {
           transition={{ duration: 0.25, ease: [0.32, 0.72, 0, 1] }}
           className="flex-shrink-0 mt-0.5"
         >
-          <ChevronDown className="w-4 h-4 text-primary" />
+          <ChevronDown className="w-4 h-4" style={{ color: "hsl(var(--foreground)/0.4)" }} />
         </motion.div>
       </button>
 

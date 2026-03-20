@@ -66,7 +66,7 @@ const AboutTeam = () => (
             <div className="p-7 rounded-2xl h-full border border-border bg-background
               hover:border-primary/40 hover:bg-muted/30 transition-all duration-300">
               <div className="flex items-center justify-between mb-5">
-                <p className="font-body text-xs tracking-[0.25em] uppercase text-primary">{p.label}</p>
+                <p className="font-body text-xs tracking-[0.25em] uppercase" style={{ color: "hsl(var(--foreground)/0.35)" }}>{p.label}</p>
                 <div className="w-9 h-9 rounded-xl flex items-center justify-center bg-primary/10">
                   <p.icon className="w-4 h-4 text-primary" />
                 </div>
