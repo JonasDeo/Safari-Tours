@@ -34,6 +34,14 @@ const FALLBACK_IMAGES = [
   "https://images.unsplash.com/photo-1523805009345-7448845a9e53?w=800",
 ];
 
+const FALLBACK_TOURS: Tour[] = [
+  { id: 1, slug: "serengeti-migration-ngorongoro",  title: "Serengeti Migration & Ngorongoro Crater Safari",  destination: "Tanzania", type: "GUIDED",     duration_days: 7, price: 3200, currency: "USD", images: null, cover_image: FALLBACK_IMAGES[0], excerpt: "Witness the Great Migration and descend into the world's largest intact volcanic caldera.", tags: ["Wildlife", "Big Five", "Migration"] },
+  { id: 2, slug: "kilimanjaro-machame-route",        title: "Kilimanjaro Trek — Machame Route",                destination: "Tanzania", type: "MOUNTAIN",    duration_days: 7, price: 2280, currency: "USD", images: null, cover_image: FALLBACK_IMAGES[1], excerpt: "Conquer Africa's highest peak via the scenic Machame route.", tags: ["Kilimanjaro", "Trekking", "Adventure"] },
+  { id: 3, slug: "zanzibar-beach-escape",            title: "Zanzibar Beach Escape",                          destination: "Zanzibar", type: "BEACH",       duration_days: 5, price: 1200, currency: "USD", images: null, cover_image: FALLBACK_IMAGES[2], excerpt: "Unwind on the white sands of Zanzibar after your safari.", tags: ["Beach", "Island", "Relaxation"] },
+  { id: 4, slug: "self-drive-northern-circuit",      title: "Tanzania Self-Drive Safari — Northern Circuit",  destination: "Tanzania", type: "SELF_DRIVE",  duration_days: 8, price: 2600, currency: "USD", images: null, cover_image: FALLBACK_IMAGES[3], excerpt: "Explore the northern circuit at your own pace in a fully equipped 4×4.", tags: ["Self-Drive", "Freedom", "Serengeti"] },
+  { id: 5, slug: "uganda-gorilla-trekking",          title: "Uganda Gorilla Trekking & Queen Elizabeth",      destination: "Uganda",   type: "GUIDED",     duration_days: 6, price: 3800, currency: "USD", images: null, cover_image: FALLBACK_IMAGES[0], excerpt: "Sit with wild mountain gorillas in Bwindi Impenetrable Forest.", tags: ["Gorilla", "Uganda", "Wildlife"] },
+];
+
 const TourCard = ({ tour, i }: { tour: Tour; i: number }) => {
   const imgUrl = (() => {
     if (tour.cover_image) return tour.cover_image;
@@ -141,8 +149,11 @@ const ToursPage = () => {
 
   useEffect(() => {
     publicApi.getTours()
-      .then(data => setTours(data as Tour[]))
-      .catch(() => setTours([]))
+      .then((data: any) => {
+        const list = Array.isArray(data) ? data : (data?.data ?? []);
+        setTours(list.length > 0 ? list : FALLBACK_TOURS);
+      })
+      .catch(() => setTours(FALLBACK_TOURS))
       .finally(() => setLoading(false));
   }, []);
 

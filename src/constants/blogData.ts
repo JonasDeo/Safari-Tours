@@ -1,5 +1,10 @@
 import { BlogCategory, BlogPost } from "@/components/blog/Blog";
 
+// Import images
+import tour1Img from "@/assets/tour-1.jpg";
+import tour3Img from "@/assets/tour-3.jpg";
+import tour4Img from "@/assets/tour-4.jpg";
+
 // Categories
 // Centralised so CategoryFilter and filtering logic share the same source
 
@@ -12,7 +17,7 @@ export const CATEGORIES: BlogCategory[] = [
   "Planning",
 ];
 
-//  Posts 
+//  Posts
 export const BLOG_POSTS: BlogPost[] = [
   {
     id:          "1",
@@ -23,7 +28,7 @@ export const BLOG_POSTS: BlogPost[] = [
     author:      "Balbina Kiwia",
     date:        "2025-11-12",
     readingTime: 9,
-    image:       "/src/assets/tour-1.jpg",
+    image:       tour1Img,
     featured:    true,
   },
   {
@@ -35,7 +40,7 @@ export const BLOG_POSTS: BlogPost[] = [
     author:      "David Omondi",
     date:        "2025-10-28",
     readingTime: 7,
-    image:       "/src/assets/tour-3.jpg",
+    image:       tour3Img,
   },
   {
     id:          "3",
@@ -46,7 +51,7 @@ export const BLOG_POSTS: BlogPost[] = [
     author:      "Balbina Kiwia",
     date:        "2025-10-05",
     readingTime: 11,
-    image:       "/src/assets/tour-4.jpg",
+    image:       tour4Img,
   },
   {
     id:          "4",
