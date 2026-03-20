@@ -262,29 +262,39 @@ const TestimonialsPage = () => {
                 {/* Drag handle */}
                 <GripVertical className="w-4 h-4 text-muted-foreground mt-1 flex-shrink-0 cursor-grab" />
 
-                {/* Avatar */}
-                <div className="relative flex-shrink-0 group">
-                  <div className="w-12 h-12 rounded-full overflow-hidden"
-                    style={{ boxShadow: `0 0 0 2px ${color}44` }}>
-                    {t.avatar ? (
-                      <img src={t.avatar} alt={t.name} className="w-full h-full object-cover" />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-xs font-bold text-white"
-                        style={{ background: color, fontFamily: '"Yeseva One", serif' }}>
-                        {initials(t.name)}
+                {/* Avatar + upload */}
+                <div className="flex flex-col items-center gap-1.5 flex-shrink-0">
+                  <div className="relative">
+                    <div className="w-14 h-14 rounded-full overflow-hidden"
+                      style={{ border: "2px solid hsl(var(--border)/0.6)" }}>
+                      {t.avatar ? (
+                        <img src={t.avatar} alt={t.name} className="w-full h-full object-cover" />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-sm font-bold text-white"
+                          style={{ background: color, fontFamily: '"Playfair Display", serif' }}>
+                          {initials(t.name)}
+                        </div>
+                      )}
+                    </div>
+                    {/* Spinner overlay when uploading */}
+                    {uploading === t.id && (
+                      <div className="absolute inset-0 rounded-full flex items-center justify-center"
+                        style={{ background: "rgba(0,0,0,0.5)" }}>
+                        <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
                       </div>
                     )}
                   </div>
-                  {/* Upload overlay */}
-                  <label className="absolute inset-0 rounded-full flex items-center justify-center
-                    opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
-                    style={{ background: "rgba(0,0,0,0.55)" }}>
+                  {/* Always-visible upload button */}
+                  <label className="flex items-center gap-1 px-2 py-1 rounded-lg cursor-pointer
+                    font-body text-xs transition-colors duration-200"
+                    style={{ background: "hsl(var(--muted))", color: "hsl(var(--muted-foreground))" }}
+                    onMouseEnter={e => { e.currentTarget.style.background = "hsl(var(--primary)/0.1)"; e.currentTarget.style.color = "hsl(var(--primary))"; }}
+                    onMouseLeave={e => { e.currentTarget.style.background = "hsl(var(--muted))"; e.currentTarget.style.color = "hsl(var(--muted-foreground))"; }}>
                     <input type="file" accept="image/*" className="sr-only"
                       disabled={uploading === t.id}
-                      onChange={e => { const f = e.target.files?.[0]; if (f) handleAvatar(t.id, f); e.target.value=""; }} />
-                    {uploading === t.id
-                      ? <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                      : <ImagePlus className="w-3.5 h-3.5 text-white" />}
+                      onChange={e => { const f = e.target.files?.[0]; if (f) handleAvatar(t.id, f); e.target.value = ""; }} />
+                    <ImagePlus className="w-3 h-3" />
+                    {t.avatar ? "Change" : "Upload"}
                   </label>
                 </div>
 

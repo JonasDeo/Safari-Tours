@@ -9,7 +9,7 @@ import { useAdminAuth } from "./AdminAuth";
 import { adminApi } from "@/lib/api";
 import logoSrc from "@/assets/Balbina-logo.png";
 
-//   Nav config   ─
+// ── Nav config  ───────
 
 const NAV_MAIN = [
   { label: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
@@ -25,7 +25,7 @@ const NAV_BOTTOM = [
   { label: "Profile",  href: "/admin/profile",  icon: User     },
 ];
 
-//   Sidebar link  ─
+// ── Sidebar link  ─────
 
 const NavItem = ({
   item, collapsed, mobile, badge, onClick,
@@ -93,7 +93,7 @@ const NavItem = ({
   );
 };
 
-//   Sidebar content   ─
+// ── Sidebar content  ──
 
 const SidebarContent = ({
   collapsed, mobile, pendingQuotes, onClose,
@@ -132,7 +132,7 @@ const SidebarContent = ({
       </div>
 
       {/* Main nav */}
-      <nav className="flex-1 px-2 py-4 space-y-0.5 overflow-y-auto">
+      <nav className="flex-1 px-2 py-4 space-y-0.5 overflow-y-auto admin-scrollbar">
         {show && (
           <p className="text-xs uppercase tracking-[0.2em] font-body px-3 mb-2"
             style={{ color: "hsl(var(--sand)/0.2)" }}>
@@ -204,7 +204,7 @@ const SidebarContent = ({
   );
 };
 
-//   Layout     ─
+// ── Layout  ───────────
 
 const AdminLayout = () => {
   const [collapsed,     setCollapsed]     = useState(false);
@@ -225,9 +225,9 @@ const AdminLayout = () => {
 
   return (
     <div className="flex h-screen overflow-hidden"
-      style={{ background: "hsl(var(--background))" }}>
+      style={{ background: "hsl(var(--background))", isolation: "isolate" }}>
 
-      {/*   Desktop sidebar   */}
+      {/* ── Desktop sidebar ── */}
       <motion.aside
         animate={{ width: collapsed ? 60 : 216 }}
         transition={{ duration: 0.25, ease: [0.32, 0.72, 0, 1] }}
@@ -244,7 +244,7 @@ const AdminLayout = () => {
         </button>
       </motion.aside>
 
-      {/*   Mobile sidebar   */}
+      {/* ── Mobile sidebar ── */}
       <AnimatePresence>
         {mobileOpen && (
           <>
@@ -263,7 +263,7 @@ const AdminLayout = () => {
         )}
       </AnimatePresence>
 
-      {/*   Main   */}
+      {/* ── Main ── */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
 
         {/* Topbar */}
@@ -299,7 +299,7 @@ const AdminLayout = () => {
         </header>
 
         {/* Page content */}
-        <main className="flex-1 overflow-y-auto p-6">
+        <main className="flex-1 overflow-y-auto p-6 admin-scrollbar" style={{ scrollbarGutter: "stable" }}>
           <Outlet />
         </main>
       </div>

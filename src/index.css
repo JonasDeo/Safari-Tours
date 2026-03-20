@@ -1,5 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=Source+Sans+3:wght@300;400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;500&family=Playfair+Display:...');
 
 @tailwind base;
 @tailwind components;
@@ -7,88 +6,69 @@
 
 @layer base {
   :root {
-    --background: 0 0% 98%;           /* near-white */
-    --foreground: 0 0% 10%;           /* deep charcoal #1a1a1a */
+    /* ── Page  ─────── */
+    --background:          40 15% 96%;    /* warm off-white  #f5f3f0          */
+    --foreground:          0  0%  8%;     /* near-black      #141414          */
 
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 10%;
+    /* ── Cards & surfaces ──────────────────────────────────────────────────── */
+    --card:                0  0%  100%;   /* pure white card                  */
+    --card-foreground:     0  0%  8%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 10%;
+    --popover:             0  0%  100%;
+    --popover-foreground:  0  0%  8%;
 
-    --primary: 35 30% 50%;       /* gold #c8973a */
-    --primary-foreground: 0 0% 100%;
+    /* ── Primary accent — warm gold, used sparingly ────────────────────────── */
+    --primary:             36 55% 45%;   /* deep gold  #b07d2a               */
+    --primary-foreground:  0  0%  100%;
 
-    --secondary: 0 0% 10%;         
-    --secondary-foreground: 0 0% 95%;
+    /* ── Secondary — almost black, used for dark sections ─────────────────── */
+    --secondary:           0  0%  9%;    /* #171717                          */
+    --secondary-foreground:40 15% 94%;
 
-    --muted: 0 0% 93%;
-    --muted-foreground: 0 0% 45%;
+    /* ── Muted — very dark for contrast, not washed out ───────────────────── */
+    --muted:               0  0%  91%;   /* light grey surface               */
+    --muted-foreground:    0  0%  32%;   /* dark grey text                   */
 
-    --accent: 35 25% 60%;            /* gold */
-    --accent-foreground: 0 0% 100%;
+    --accent:              36 55% 45%;
+    --accent-foreground:   0  0%  100%;
 
-    --destructive: 0 84.2% 60.2%;
+    --destructive:         0  72%  45%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 0 0% 88%;
-    --input: 0 0% 88%;
-    --ring: 35 30% 50%;  
+    /* ── Borders — visible but not loud ────────────────────────────────────── */
+    --border:              0  0%  82%;   /* medium grey                      */
+    --input:               0  0%  82%;
+    --ring:                36 55% 45%;
+    --radius:              0.5rem;
 
-    --radius: 0.5rem;
+    /* ── Brand tokens   */
+    --sand:                40 20% 88%;
+    --sand-dark:           36 15% 65%;
+    --charcoal:            0  0%  9%;
+    --dark-overlay:        0  0%  9%;    /* for hero overlays                */
+    --earth:               0  0%  9%;    /* alias — dark sections bg         */
+    --olive:               90 12% 28%;
+    --olive-light:         90 8%  45%;
+    --warm-cream:          40 15% 96%;  /* = background                     */
+    --terracotta:          36 55% 45%;  /* alias → primary gold             */
+    --terracotta-light:    36 42% 58%;
 
-    --sand: 40 25% 90%;
-    --sand-dark: 36 20% 75%;
-    --charcoal: 0 0% 8%;             /* dark navy */
-    --olive: 120 15% 30%;             /* muted green */
-    --olive-light: 120 10% 50%;
-    --terracotta: 36 56% 50%;        
-    --terracotta-light: 36 45% 62%;
-    --warm-cream: 0 0% 98%;
-    --dark-overlay: 0 0% 8%;
-
-    --sidebar-background: 0 0% 9%;
-    --sidebar-foreground: 0 0% 95%;
-    --sidebar-primary: 36 56% 50%;
+    /* ── Admin sidebar   */
+    --sidebar-background:      0  0%  7%;   /* #121212                       */
+    --sidebar-foreground:      40 12% 90%;
+    --sidebar-primary:         36 55% 48%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 0 0% 18%;
-    --sidebar-accent-foreground: 0 0% 95%;
-    --sidebar-border: 0 0% 20%;
-    --sidebar-ring: 36 56% 50%;
+    --sidebar-accent:          0  0%  14%;
+    --sidebar-accent-foreground: 40 12% 90%;
+    --sidebar-border:          0  0%  16%;
+    --sidebar-ring:            36 55% 48%;
 
+    /* ── Typography  ── */
     --font-display: 'Playfair Display', serif;
-    --font-body: 'Source Sans 3', sans-serif;
+    --font-body:    'Source Sans 3', sans-serif;
   }
 
-  .dark {
-    --background: 210 33% 10%;
-    --foreground: 0 0% 95%;
-    --card: 210 33% 14%;
-    --card-foreground: 0 0% 95%;
-    --popover: 210 33% 14%;
-    --popover-foreground: 0 0% 95%;
-    --primary: 36 56% 55%;
-    --primary-foreground: 210 33% 10%;
-    --secondary: 0 0% 10%;
-    --secondary-foreground: 0 0% 95%;
-    --muted: 210 25% 18%;
-    --muted-foreground: 0 0% 60%;
-    --accent: 36 56% 55%;
-    --accent-foreground: 210 33% 10%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 210 25% 20%;
-    --input: 210 25% 20%;
-    --ring: 36 56% 55%;
-    --sidebar-background: 0 0% 9%;
-    --sidebar-foreground: 0 0% 95%;
-    --sidebar-primary: 36 56% 55%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 0 0% 18%;
-    --sidebar-accent-foreground: 0 0% 95%;
-    --sidebar-border: 210 25% 15%;
-    --sidebar-ring: 36 56% 55%;
-  }
+  /* No .dark override needed — single palette, always light bg */
 }
 
 @layer base {
@@ -99,6 +79,7 @@
   body {
     @apply bg-background text-foreground;
     font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -108,6 +89,41 @@
 
 @layer utilities {
   .text-shadow-hero {
-    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.55), 0 1px 6px rgba(0, 0, 0, 0.3);
   }
 }
+
+/* ── Layout fix  ─────
+   html/body full height so admin h-screen wrapper works correctly.
+*/
+html, body, #root {
+  height: 100%;
+}
+
+/* ── Scrollbars  ─────
+   Chrome / Edge / Safari: ::-webkit-scrollbar
+   Firefox: scrollbar-width + scrollbar-color on :root
+*/
+:root {
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--border)) transparent;
+}
+
+::-webkit-scrollbar        { width: 5px; height: 5px; }
+::-webkit-scrollbar-track  { background: transparent; }
+::-webkit-scrollbar-thumb  { background: hsl(var(--border)); border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: hsl(var(--muted-foreground) / 0.4); }
+::-webkit-scrollbar-corner { background: transparent; }
+
+/* Admin — darker thumb to match sidebar */
+.admin-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--sidebar-border)) transparent;
+}
+.admin-scrollbar::-webkit-scrollbar       { width: 4px; }
+.admin-scrollbar::-webkit-scrollbar-track { background: transparent; }
+.admin-scrollbar::-webkit-scrollbar-thumb {
+  background: hsl(var(--sidebar-border));
+  border-radius: 999px;
+}
+.admin-scrollbar::-webkit-scrollbar-thumb:hover { background: hsl(0 0% 30%); }
