@@ -1,6 +1,7 @@
 import tour1    from "@/assets/tour-1.jpg";
 import tour3    from "@/assets/tour-3.jpg";
 import tour4    from "@/assets/tour-4.jpg";
+import tour6    from "@/assets/tour-6.jpg";
 import beachImg from "@/assets/beach.jpg";
 
 export interface Highlight {
@@ -31,7 +32,7 @@ export const DESTINATIONS: Destination[] = [
     tagline:  "The Heart of the Wild",
     desc:     "Home to the Serengeti, Ngorongoro Crater, and Mt. Kilimanjaro. The ultimate safari destination.",
     longDesc: "Tanzania is the crown jewel of African safari. The endless plains of the Serengeti host the world-famous Great Migration — over two million wildebeest, zebra, and gazelle moving in a relentless cycle of life. The Ngorongoro Crater, a UNESCO World Heritage Site, shelters one of the densest concentrations of wildlife on earth within its ancient volcanic walls. Add Tarangire's giant elephant herds, the flamingo-fringed shores of Lake Manyara, and the snow-capped summit of Kilimanjaro, and Tanzania delivers an experience that cannot be replicated anywhere else on the planet.",
-    image:    tour1,
+    image:    tour4,
     parks:    ["Serengeti", "Ngorongoro", "Tarangire", "Lake Manyara", "Ruaha", "Selous"],
     highlights: [
       { icon: "Footprints", title: "Great Migration",   body: "Witness two million animals crossing the Mara River in one of nature's greatest spectacles." },
@@ -49,7 +50,7 @@ export const DESTINATIONS: Destination[] = [
     tagline:  "Where Legends Roam",
     desc:     "Witness the Great Migration in the Maasai Mara and explore Amboseli with views of Kilimanjaro.",
     longDesc: "Kenya is where the classic African safari was born. The Maasai Mara delivers year-round big-cat sightings and hosts the northern arc of the Great Migration each July to October. Amboseli offers the iconic image of elephant herds drifting beneath the snow-capped silhouette of Kilimanjaro. From the flamingo-pink shores of Lake Nakuru to the remote bush of Tsavo, every region has a completely different character.",
-    image:    tour4,
+    image:    tour1,
     parks:    ["Maasai Mara", "Amboseli", "Tsavo East", "Tsavo West", "Lake Nakuru", "Samburu"],
     highlights: [
       { icon: "Crosshair", title: "Big Cat Capital", body: "The Mara has the highest density of lion and leopard sightings in Africa." },
@@ -67,7 +68,7 @@ export const DESTINATIONS: Destination[] = [
     tagline:  "The Pearl of Africa",
     desc:     "Track mountain gorillas in Bwindi and explore the pearl of Africa's incredible biodiversity.",
     longDesc: "Uganda is Africa's most underrated destination — and its most rewarding. Bwindi Impenetrable Forest shelters half the world's remaining mountain gorillas; a permit to track them is one of the most profound wildlife encounters on earth. Chimpanzees swing through Kibale Forest, tree-climbing lions lounge in Queen Elizabeth National Park, and Murchison Falls sends the entire force of the Nile crashing through a seven-metre gap in the rock.",
-    image:    tour3,
+    image:    tour6,
     parks:    ["Bwindi", "Queen Elizabeth", "Murchison Falls", "Kibale", "Kidepo Valley"],
     highlights: [
       { icon: "Binoculars", title: "Gorilla Trekking",   body: "Spend a life-changing hour with a mountain gorilla family in Bwindi Impenetrable Forest." },
