@@ -21,22 +21,38 @@ interface Tour {
   tags:          string[];
 }
 
-// ── Fallback — shown while loading or if API fails ────────────────────────────
+// ── Fallback — shown while loading or if API fails 
 
 import tour1 from "@/assets/guided-safari.jpeg";
 import tour2 from "@/assets/beach.jpg";
+import tour3 from "@/assets/tour-4.jpg";
+import tour5 from "@/assets/tour-5.jpeg";
 
 const FALLBACK: Tour[] = [
   { id: 1, slug: "tanzania-safari-zanzibar",    title: "10 Days Best of Tanzania – Safari & Zanzibar Beach Escape",    images: [], cover_image: null, duration: "10 Days 9 Nights", duration_days: 10, destination: "Arusha", price: 3800, price_from: 3800, currency: "USD", type: "GUIDED", tags: ["Beach Holiday", "Wildlife Adventure"] },
   { id: 2, slug: "great-migration-serengeti",   title: "7 Days Great Migration & Big Cats Safari",                      images: [], cover_image: null, duration: "7 Days 6 Nights",  duration_days: 7,  destination: "Arusha", price: 3200, price_from: 3200, currency: "USD", type: "GUIDED", tags: ["Wildlife Adventure"] },
   { id: 3, slug: "big-five-cultural-safari",    title: "6 Days Tanzania Big Five & Cultural Experience Safari",         images: [], cover_image: null, duration: "6 Days 5 Nights",  duration_days: 6,  destination: "Arusha", price: 2900, price_from: 2900, currency: "USD", type: "GUIDED", tags: ["Wildlife Adventure"] },
-  { id: 4, slug: "wildebeest-migration-safari", title: "8 Days Ultimate Wildebeest Migration & Big Five Safari",        images: [], cover_image: null, duration: "8 Days 7 Nights",  duration_days: 8,  destination: "Arusha", price: 3800, price_from: 3800, currency: "USD", type: "GUIDED", tags: ["Wildlife Adventure"] },
+  {
+  id: 4,
+  slug: "zanzibar-beach-holiday",
+  title: "5 Days Zanzibar Beach Escape & Island Experience",
+  images: [],
+  cover_image: null,
+  duration: "5 Days 4 Nights",
+  duration_days: 5,
+  destination: "Zanzibar",
+  price: 1200,
+  price_from: 1200,
+  currency: "USD",
+  type: "GUIDED",
+  tags: ["Beach Holiday", "Island Escape", "Relaxation"]
+}
 ];
 
 const FALLBACK_IMAGES: Record<number, string> = {
   0: tour1,
-  1: tour2,
-  2: tour1,
+  1: tour3,
+  2: tour5,
   3: tour2,
 };
 
