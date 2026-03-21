@@ -40,7 +40,7 @@ const QuoteHero = ({ step, totalSteps, submitted, headline, sub }: QuoteHeroProp
             <p className="text-[10px] tracking-[0.25em] uppercase font-body mb-1 text-primary">
               All done
             </p>
-            <p className="font-display text-2xl text-sand/95">
+            <p className="font-display text-2xl text-sand/95" >
               Your safari journey<br />starts here.
             </p>
           </motion.div>
@@ -52,21 +52,23 @@ const QuoteHero = ({ step, totalSteps, submitted, headline, sub }: QuoteHeroProp
 
             <div className="flex items-center gap-2 mb-2.5">
               <span className="flex items-center justify-center w-6 h-6 rounded-full
-                text-[11px] font-bold font-body flex-shrink-0 text-dark"
-                style={{ background: "hsl(var(--primary))" }}>
+                text-[11px] font-bold font-body flex-shrink-0"
+                style={{ background: "hsl(var(--primary))",  }}>
                 {step + 1}
               </span>
-              <span className="text-[10px] tracking-[0.18em] uppercase font-body text-primary/80">
+              <span className="text-[10px] tracking-[0.18em] uppercase font-body"
+                style={{ color: "hsl(var(--primary))" }}>
                 of {totalSteps} steps
               </span>
             </div>
 
-            <h2 className="font-display text-2xl leading-tight mb-1 text-sand/96">{headline}</h2>
-            <p className="font-body text-[12px] text-sand/42">{sub}</p>
+            <h2 className="font-display text-2xl leading-tight mb-1 text-sand/96" style={{ color: "#f5f0e8" }}>{headline}</h2>
+
+            <p className="font-body text-[12px]" style={{ color: "rgba(245, 240, 232, 0.72)" }}>{sub}</p>
 
             <div className="mt-4 h-[2px] rounded-full overflow-hidden"
               style={{ width: "calc(100% + 2.5rem)", marginLeft: "-1.25rem",
-                background: "hsl(var(--sand)/0.1)" }}>
+                background: "rgba(245, 240, 232, 0.10)" }}>
               <motion.div className="h-full rounded-full"
                 style={{ background: "linear-gradient(90deg, hsl(var(--primary)), hsl(var(--primary)/0.4))" }}
                 initial={false}
