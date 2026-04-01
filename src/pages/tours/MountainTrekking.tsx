@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import PageLayout from "@/components/PageLayout";
 import { useTours, PackagesGrid } from "./_shared";
-import kilimanjaro from "@/assets/tour-2.jpg"
+import kilimanjaro from "@/assets/mount-trek.jpg"
 
 const accent = "hsl(210 80% 58%)";
 
