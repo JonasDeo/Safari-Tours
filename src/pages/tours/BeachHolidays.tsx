@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import PageLayout from "@/components/PageLayout";
 import { useTours, PackagesGrid } from "./_shared";
+import zanzibar from "@/assets/beach (2).jpg";
 
 const accent = "hsl(38 90% 52%)";
 
@@ -35,7 +36,7 @@ const BeachHolidays = () => {
 
         {/* Hero image */}
         <img
-          src="https://images.unsplash.com/photo-1646668072507-b2215b873c70?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          src={zanzibar}
           alt="Zanzibar beach at sunset"
           className="w-full rounded-xl object-cover mb-10"
           style={{ height: 380, objectPosition: "center 60%" }}
@@ -101,7 +102,7 @@ const BeachHolidays = () => {
         {/* When to travel */}
         <div className="rounded-xl p-6 mb-12"
           style={{ background: "hsl(var(--muted)/0.35)", border: "1px solid hsl(var(--border)/0.5)" }}>
-          <h3 className="font-body font-semibold text-foreground mb-3">🌊 When to Travel</h3>
+          <h3 className="font-body font-semibold text-foreground mb-3">When to Travel</h3>
           <ul className="font-body text-sm text-muted-foreground space-y-2">
             <li><strong className="text-foreground">✔ Best overall months:</strong> June to October and December to February — dry and sunny.</li>
             <li><strong className="text-foreground">✔ Short rains:</strong> November (spotty) — lower prices, still enjoyable.</li>

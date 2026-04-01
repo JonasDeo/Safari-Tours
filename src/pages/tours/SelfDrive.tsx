@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import PageLayout from "@/components/PageLayout";
 import { useTours, PackagesGrid } from "./_shared";
+import SDrive from "@/assets/self-drive.png";
 
 const accentGreen = "hsl(142 60% 42%)";
 
@@ -48,7 +49,7 @@ const SelfDrive = () => {
 
         {/* Hero image */}
         <img
-          src="https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?w=1200"
+          src={SDrive}
           alt="4WD Land Cruiser on open African plains"
           className="w-full rounded-xl object-cover mb-10"
           style={{ height: 380 }}

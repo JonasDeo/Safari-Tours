@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import PageLayout from "@/components/PageLayout";
 import { useTours, PackagesGrid } from "./_shared";
+import kilimanjaro from "@/assets/tour-2.jpg"
 
 const accent = "hsl(210 80% 58%)";
 
@@ -46,7 +47,7 @@ const MountainTrekking = () => {
 
         {/* Hero image */}
         <img
-          src="https://images.unsplash.com/photo-1604537466158-719b1972feb8?w=1200"
+          src={kilimanjaro}
           alt="Mount Kilimanjaro summit above the clouds"
           className="w-full rounded-xl object-cover mb-10"
           style={{ height: 380 }}

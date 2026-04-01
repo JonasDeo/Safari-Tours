@@ -12,7 +12,6 @@ export const TOUR_CATEGORIES = [
   { slug: "self-drive", label: "Self-Drive",       type: "SELF_DRIVE" },
   { slug: "mountain",   label: "Mountain Treks",   type: "MOUNTAIN"   },
   { slug: "beach",      label: "Beach Holidays",   type: "BEACH"      },
-  { slug: "car-rental", label: "Car Rental",        type: "CAR_RENTAL" },
 ];
 
 const NAV_LINKS = [
