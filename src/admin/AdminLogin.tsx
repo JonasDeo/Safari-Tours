@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Eye, EyeOff, LogIn, AlertCircle } from "lucide-react";
 import { useAdminAuth } from "./AdminAuth";
-import logoSrc from "@/assets/balbina-logo.png";
+import logoSrc from "@/assets/logo_thumbnail.png";
 import bgImg   from "@/assets/tour-3.jpg";
 
 const AdminLogin = () => {
@@ -80,13 +80,10 @@ const AdminLogin = () => {
 
           {/* Logo */}
           <div className="flex flex-col items-center mb-8">
-            <div className="w-20 h-20 mb-4 flex items-center justify-center">
-              <img src={logoSrc} alt="Native Kilimanjaro" className="w-20 h-20 object-contain"
+            <div className="w-40 h-20 flex items-center justify-center">
+              <img src={logoSrc} alt="Native Kilimanjaro" className="w-40 h-40 object-contain"
                 style={{ filter: "brightness(0) invert(1)" }} />
             </div>
-            <h2 className="text-2xl text-sand mb-1" style={{ fontFamily: '"Yeseva One", serif' }}>
-              Native<span style={{ color: "hsl(var(--primary))" }}>Kilimanjaro</span>
-            </h2>
             <p className="text-xs font-body tracking-[0.2em] uppercase"
               style={{ color: "hsl(var(--sand)/0.3)" }}>Admin Portal</p>
           </div>

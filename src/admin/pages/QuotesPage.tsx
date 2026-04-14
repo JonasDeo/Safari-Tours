@@ -1,359 +1,291 @@
-import { useRef, useEffect } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import { MapPin, Phone, MessageCircle } from "lucide-react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import { ChevronDown, Eye, Filter, Search, Trash2 } from "lucide-react";
+import { adminApi, ApiError } from "@/lib/api";
 
-import heroImg    from "@/assets/tour-1.jpg";
-import safariImg  from "@/assets/safari-landscape.jpg";
-import StepAccommodation from "@/components/quote/steps/StepAccommodation";
-import StepContact       from "@/components/quote/steps/StepContact";
-import StepDestinations  from "@/components/quote/steps/StepDestinations";
-import StepExperiences   from "@/components/quote/steps/StepExperiences";
-import StepGroupDate     from "@/components/quote/steps/StepGroupDate";
-import StepMessage       from "@/components/quote/steps/StepMessage";
-import StepOccasion      from "@/components/quote/steps/StepOccasion";
-import StepTripType      from "@/components/quote/steps/StepTripType";
-import QuoteSuccess      from "@/components/QuoteSuccess";
-import WizardNav         from "@/components/WizardNav";
-import WizardProgress    from "@/components/WizardProgress";
-import { WIZARD_STEPS }  from "@/constants/quoteData";
-import useQuoteWizard    from "@/hooks/use-quote-wizard";
-import PageLayout        from "@/components/PageLayout";
-import { useSiteSettings } from "@/hooks/use-site-settings";
+type QuoteStatus = "PENDING" | "REVIEWED" | "RESPONDED" | "CONVERTED" | "CLOSED";
 
-const SLIDE_VARIANTS = {
-  enter:  (dir: number) => ({ x: dir > 0 ? 32 : -32, opacity: 0 }),
-  center: { x: 0, opacity: 1 },
-  exit:   (dir: number) => ({ x: dir > 0 ? -32 : 32, opacity: 0 }),
+interface Quote {
+  id: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone: string | null;
+  country: string | null;
+  destinations: string[];
+  adults: number;
+  children: number;
+  status: QuoteStatus;
+  created_at: string;
+}
+
+interface QuotesResponse {
+  data: Quote[];
+  current_page: number;
+  last_page: number;
+  total: number;
+}
+
+const STATUSES: QuoteStatus[] = ["PENDING", "REVIEWED", "RESPONDED", "CONVERTED", "CLOSED"];
+const STATUS_STYLES: Record<QuoteStatus, { bg: string; color: string }> = {
+  PENDING: { bg: "hsl(var(--terracotta-light)/0.22)", color: "hsl(var(--terracotta))" },
+  REVIEWED: { bg: "hsl(var(--olive-light)/0.22)", color: "hsl(var(--olive))" },
+  RESPONDED: { bg: "hsl(var(--primary)/0.12)", color: "hsl(var(--primary))" },
+  CONVERTED: { bg: "hsl(var(--primary)/0.12)", color: "hsl(var(--primary))" },
+  CLOSED: { bg: "hsl(0 0% 50% / 0.12)", color: "hsl(0 0% 55%)" },
 };
-const SLIDE_TRANSITION = { duration: 0.32, ease: [0.32, 0.72, 0, 1] as const };
 
-const QuotePage = () => {
-  const { contact } = useSiteSettings();
-  const {
-    step, totalSteps, next, back, goTo,
-    submitted, handleSubmit,
-    state,
-    setTripTypes, setDestinations, setExperiences,
-    setOccasions, setAccommodation, setFormField,
-    canAdvance, errors, showErrors,
-  } = useQuoteWizard();
+const Skeleton = ({ className }: { className: string }) => (
+  <div className={`rounded animate-pulse ${className}`} style={{ background: "hsl(var(--muted)/0.6)" }} />
+);
 
-  const mainRef    = useRef<HTMLDivElement>(null);
-  const isFirstRef = useRef(true);
+const prettyStatus = (status: QuoteStatus) => status.charAt(0) + status.slice(1).toLowerCase();
 
-  // Only scroll on mobile, and only after the first render,
-  // so clicking Next doesn't yank the page down on every step.
+const QuotesPage = () => {
+  const [items, setItems] = useState<Quote[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [search, setSearch] = useState("");
+  const [status, setStatus] = useState<"ALL" | QuoteStatus>("ALL");
+  const [page, setPage] = useState(1);
+  const [lastPage, setLastPage] = useState(1);
+  const [total, setTotal] = useState(0);
+
+  const loadQuotes = useCallback(() => {
+    setLoading(true);
+    setError("");
+
+    const params: Record<string, string> = {
+      page: String(page),
+      per_page: "12",
+    };
+    if (search.trim()) params.search = search.trim();
+    if (status !== "ALL") params.status = status;
+
+    adminApi.getQuotes(params)
+      .then((res) => {
+        const payload = res as QuotesResponse;
+        setItems(payload.data ?? []);
+        setPage(payload.current_page ?? 1);
+        setLastPage(payload.last_page ?? 1);
+        setTotal(payload.total ?? 0);
+      })
+      .catch((err) => setError(err instanceof ApiError ? err.message : "Failed to load quotes."))
+      .finally(() => setLoading(false));
+  }, [page, search, status]);
+
   useEffect(() => {
-    if (isFirstRef.current) { isFirstRef.current = false; return; }
-    const isDesktop = window.matchMedia("(min-width: 1024px)").matches;
-    if (!isDesktop && mainRef.current) {
-      // Scroll just enough to keep the form top in view, not to the very bottom.
-      const top = mainRef.current.getBoundingClientRect().top + window.scrollY - 12;
-      window.scrollTo({ top, behavior: "smooth" });
+    const t = setTimeout(() => {
+      setPage(1);
+      loadQuotes();
+    }, 250);
+    return () => clearTimeout(t);
+  }, [search, status, loadQuotes]);
+
+  useEffect(() => {
+    loadQuotes();
+  }, [page, loadQuotes]);
+
+  const counts = useMemo(() => {
+    const base = { PENDING: 0, REVIEWED: 0, RESPONDED: 0, CONVERTED: 0, CLOSED: 0 };
+    for (const q of items) base[q.status] += 1;
+    return base;
+  }, [items]);
+
+  const updateStatus = async (quoteId: number, nextStatus: QuoteStatus) => {
+    try {
+      await adminApi.updateQuote(String(quoteId), { status: nextStatus });
+      setItems((prev) => prev.map((q) => (q.id === quoteId ? { ...q, status: nextStatus } : q)));
+    } catch {
+      alert("Failed to update quote status.");
     }
-  }, [step, submitted]);
+  };
 
-  const currentStep = WIZARD_STEPS[step];
-
-  const renderStep = () => {
-    const errs = showErrors ? errors : {};
-    switch (step) {
-      case 0: return <StepTripType      selected={state.tripTypes}     onChange={setTripTypes}     errors={errs} />;
-      case 1: return <StepDestinations  selected={state.destinations}  onChange={setDestinations}  errors={errs} />;
-      case 2: return <StepExperiences   selected={state.experiences}   onChange={setExperiences}   errors={errs} />;
-      case 3: return <StepOccasion      selected={state.occasions}     onChange={setOccasions}     errors={errs} />;
-      case 4: return <StepAccommodation selected={state.accommodation} onChange={setAccommodation} errors={errs} />;
-      case 5: return <StepGroupDate     form={state.form}              onFieldChange={setFormField} errors={errs} />;
-      case 6: return <StepContact       form={state.form}              onFieldChange={setFormField} errors={errs} />;
-      case 7: return (
-        <StepMessage
-          message={state.form.message}
-          onChange={(v) => setFormField("message", v)}
-          state={state}
-          errors={errs}
-        />
-      );
-      default: return null;
+  const deleteQuote = async (quote: Quote) => {
+    if (!confirm(`Delete quote #${quote.id} from ${quote.first_name} ${quote.last_name}?`)) return;
+    try {
+      await adminApi.deleteQuote(String(quote.id));
+      setItems((prev) => prev.filter((q) => q.id !== quote.id));
+      setTotal((v) => Math.max(0, v - 1));
+    } catch {
+      alert("Failed to delete quote.");
     }
   };
 
   return (
-    <PageLayout>
-      <div className="min-h-screen bg-background">
+    <div className="space-y-6 max-w-7xl">
+      <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
+        className="flex items-center justify-between gap-4 flex-wrap">
+        <div>
+          <h1 className="font-display text-2xl text-foreground mb-1">Quotes</h1>
+          <p className="font-body text-sm text-muted-foreground">
+            {loading ? "Loading..." : `${total} total quote${total !== 1 ? "s" : ""}`}
+          </p>
+        </div>
+      </motion.div>
 
-        {/*   Hero   */}
-        <section className="relative overflow-hidden"
-          style={{
-            height: "clamp(220px, 40vh, 380px)",
-            paddingTop: "var(--nav-total-h, 64px)",
-          }}>
-
-          <img src={heroImg} alt="Safari landscape"
-            className="absolute inset-0 w-full h-full object-cover object-[center_40%]" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10" />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/40 to-transparent" />
-          <div className="absolute top-0 inset-x-0 h-[2px]"
-            style={{ background: "linear-gradient(90deg, hsl(var(--primary)), hsl(var(--primary)/0.15))" }} />
-
-          {/* Desktop: centred title */}
-          <div className="hidden sm:flex absolute inset-0 items-end justify-center pb-10 z-10">
-            <div className="text-center px-4">
-              <h1 className="font-display text-4xl md:text-5xl font-bold mb-2"
-                style={{ color: "hsl(var(--sand)/0.97)" }}>
-                Request a Quote
-              </h1>
-              <p className="font-body text-sm md:text-base"
-                style={{ color: "hsl(var(--sand)/0.5)" }}>
-                Tell us your dream — we'll craft your perfect African safari
-              </p>
-            </div>
+      <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.05 }}
+        className="grid grid-cols-2 md:grid-cols-5 gap-3">
+        {STATUSES.map((s) => (
+          <div key={s} className="rounded-xl px-4 py-3"
+            style={{ background: "hsl(var(--muted)/0.35)", border: "1px solid hsl(var(--border)/0.5)" }}>
+            <p className="text-[11px] uppercase tracking-widest font-body text-muted-foreground">{prettyStatus(s)}</p>
+            <p className="font-display text-2xl text-foreground leading-tight">{counts[s]}</p>
           </div>
+        ))}
+      </motion.div>
 
-          {/* Mobile: left-aligned, step headline overlaid on photo */}
-          <div className="sm:hidden absolute inset-0 flex flex-col justify-end px-5 pb-0 z-10">
-            <AnimatePresence mode="wait">
-              {submitted ? (
-                <motion.div key="done" className="pb-5"
-                  initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}>
-                  <p className="text-[10px] tracking-[0.25em] uppercase font-body mb-1"
-                    style={{ color: "hsl(var(--primary))" }}>All done</p>
-                  <p className="font-display text-2xl" style={{ color: "hsl(var(--sand)/0.95)" }}>
-                    Your safari journey<br />starts here.
-                  </p>
-                </motion.div>
-              ) : (
-                <motion.div key={step}
-                  initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -6 }}
-                  transition={{ duration: 0.28, ease: [0.32, 0.72, 0, 1] }}>
+      <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.08 }}
+        className="flex flex-col md:flex-row gap-3 md:items-center md:justify-between">
+        <div className="relative w-full md:max-w-md">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+          <input
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search by client name or email..."
+            className="w-full pl-9 pr-4 py-2.5 rounded-xl text-sm font-body outline-none"
+            style={{ background: "hsl(var(--muted)/0.45)", border: "1px solid hsl(var(--border)/0.6)", color: "hsl(var(--foreground))" }}
+          />
+        </div>
 
-                  <div className="flex items-center gap-2 mb-2.5">
-                    <span className="flex items-center justify-center w-6 h-6 rounded-full
-                      text-[11px] font-bold font-body flex-shrink-0"
-                      style={{
-                        background: "hsl(var(--primary))",
-                        color: "hsl(var(--primary-foreground))",
-                        boxShadow: "0 0 10px hsl(var(--primary)/0.5)",
-                      }}>
-                      {step + 1}
-                    </span>
-                    <span className="text-[10px] tracking-[0.18em] uppercase font-body"
-                      style={{ color: "hsl(var(--primary)/0.8)" }}>
-                      of {totalSteps} steps
-                    </span>
-                  </div>
-
-                  <h2 className="font-display text-2xl leading-tight mb-1"
-                    style={{ color: "hsl(var(--sand)/0.96)" }}>
-                    {currentStep.headline}
-                  </h2>
-                  <p className="font-body text-[12px] mb-0"
-                    style={{ color: "hsl(var(--sand)/0.42)" }}>
-                    {currentStep.sub}
-                  </p>
-
-                  <div className="mt-4 h-[2px] rounded-full overflow-hidden"
-                    style={{
-                      width: "calc(100% + 2.5rem)",
-                      marginLeft: "-1.25rem",
-                      background: "hsl(var(--sand)/0.1)",
-                    }}>
-                    <motion.div className="h-full rounded-full"
-                      style={{ background: "linear-gradient(90deg, hsl(var(--primary)), hsl(var(--primary)/0.4))" }}
-                      initial={false}
-                      animate={{ width: `${((step + 1) / totalSteps) * 100}%` }}
-                      transition={{ duration: 0.45, ease: [0.32, 0.72, 0, 1] }} />
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-        </section>
-
-        {/*   Wizard   */}
-        <div className="flex flex-col lg:flex-row min-h-screen bg-background">
-
-          {/* Left panel — desktop only */}
-          <aside
-            className={[
-              "hidden lg:flex flex-col",
-              "relative w-full lg:w-[36%] xl:w-[32%] overflow-hidden",
-              submitted ? "" : "lg:sticky lg:top-[var(--nav-total-h,64px)] lg:h-[calc(100vh-var(--nav-total-h,64px))]",
-            ].join(" ")}
+        <div className="relative w-full md:w-[220px]">
+          <Filter className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+          <select
+            value={status}
+            onChange={(e) => { setStatus(e.target.value as "ALL" | QuoteStatus); setPage(1); }}
+            className="w-full pl-9 pr-9 py-2.5 rounded-xl text-sm font-body outline-none appearance-none"
+            style={{ background: "hsl(var(--muted)/0.45)", border: "1px solid hsl(var(--border)/0.6)", color: "hsl(var(--foreground))" }}
           >
-            <div className="absolute inset-0 z-0">
-              <img src={safariImg} alt="" aria-hidden
-                className="w-full h-full object-cover object-center"
-                style={{ filter: "brightness(0.28) saturate(0.7)" }} />
-              <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-black/25 to-transparent" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent" />
-              <div className="absolute inset-0" style={{ background: "hsl(var(--primary)/0.05)" }} />
-            </div>
-            <div className="absolute top-0 inset-x-0 h-[2px] z-10"
-              style={{ background: "linear-gradient(90deg, transparent, hsl(var(--primary)), hsl(var(--primary)/0.2))" }} />
-            <div className="absolute inset-y-0 left-0 w-[2px] z-10"
-              style={{ background: "linear-gradient(180deg, hsl(var(--primary)), hsl(var(--primary)/0.06) 80%, transparent)" }} />
+            <option value="ALL">All statuses</option>
+            {STATUSES.map((s) => <option key={s} value={s}>{prettyStatus(s)}</option>)}
+          </select>
+          <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+        </div>
+      </motion.div>
 
-            <div className="relative z-10 flex flex-col justify-between h-full
-              px-6 py-8 sm:px-8 sm:py-10 lg:px-10 lg:py-12">
+      {error && (
+        <div className="rounded-xl px-4 py-3 text-sm font-body"
+          style={{ background: "hsl(0 70% 50%/0.1)", color: "hsl(0 70% 65%)", border: "1px solid hsl(0 70% 50%/0.2)" }}>
+          {error}
+        </div>
+      )}
 
-              {/* Step info */}
-              <div className="flex-1">
-                <AnimatePresence mode="wait">
-                  {submitted ? (
-                    <motion.div key="done"
-                      initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.4 }}>
-                      <p className="text-xs tracking-[0.25em] uppercase font-body mb-3"
-                        style={{ color: "hsl(var(--primary))" }}>All done</p>
-                      <p className="font-display text-xl sm:text-2xl text-sand/90 leading-snug">
-                        Your safari journey<br />starts here.
-                      </p>
-                    </motion.div>
-                  ) : (
-                    <motion.div key={step}
-                      initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      transition={{ duration: 0.36, ease: [0.32, 0.72, 0, 1] }}>
-
-                      <div className="flex items-center gap-2.5 mb-5">
-                        <span className="flex items-center justify-center w-7 h-7 rounded-full
-                          text-xs font-bold font-body flex-shrink-0"
-                          style={{
-                            background: "hsl(var(--primary))",
-                            color: "hsl(var(--primary-foreground))",
-                            boxShadow: "0 0 14px hsl(var(--primary)/0.45)",
-                          }}>
-                          {step + 1}
-                        </span>
-                        <span className="text-xs tracking-[0.18em] uppercase font-body"
-                          style={{ color: "hsl(var(--primary)/0.75)" }}>
-                          of {totalSteps} steps
-                        </span>
-                      </div>
-
-                      <h2 className="font-display text-xl sm:text-2xl lg:text-[1.85rem]
-                        text-sand leading-tight mb-3">
-                        {currentStep.headline}
-                      </h2>
-
-                      <p className="font-body text-sm leading-relaxed"
-                        style={{ color: "hsl(var(--sand)/0.48)", maxWidth: "22rem" }}>
-                        {currentStep.sub}
-                      </p>
-
-                      {/* Progress */}
-                      <div className="mt-7 lg:mt-9">
-                        <div className="flex items-center justify-between mb-1.5">
-                          <span className="text-xs font-body" style={{ color: "hsl(var(--sand)/0.3)" }}>
-                            Progress
-                          </span>
-                          <span className="text-xs font-body" style={{ color: "hsl(var(--primary)/0.8)" }}>
-                            {Math.round(((step + 1) / totalSteps) * 100)}%
-                          </span>
-                        </div>
-                        <div className="h-[3px] w-full rounded-full overflow-hidden"
-                          style={{ background: "hsl(var(--sand)/0.1)" }}>
-                          <motion.div className="h-full rounded-full"
-                            style={{
-                              background: "linear-gradient(90deg, hsl(var(--primary)), hsl(var(--primary)/0.6))",
-                              boxShadow: "0 0 8px hsl(var(--primary)/0.5)",
-                            }}
-                            initial={false}
-                            animate={{ width: `${((step + 1) / totalSteps) * 100}%` }}
-                            transition={{ duration: 0.5, ease: [0.32, 0.72, 0, 1] }} />
-                        </div>
-                        <div className="flex gap-1.5 mt-2.5">
-                          {Array.from({ length: totalSteps }).map((_, i) => (
-                            <div key={i} className="rounded-full transition-all duration-300"
-                              style={{
-                                width: i === step ? "14px" : "4px",
-                                height: "4px",
-                                background: i <= step
-                                  ? "hsl(var(--primary))"
-                                  : "hsl(var(--sand)/0.12)",
-                              }} />
-                          ))}
-                        </div>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-
-              {/* Contact footer */}
-              <div className="pt-5" style={{ borderTop: "1px solid hsl(var(--sand)/0.08)" }}>
-                <p className="text-xs font-body mb-3" style={{ color: "hsl(var(--sand)/0.28)" }}>
-                  Need help planning?
-                </p>
-                <div className="flex flex-wrap gap-x-5 gap-y-2 lg:flex-col lg:gap-2.5">
-                  <a href="tel:+255685808332"
-                    className="flex items-center gap-2 text-sm font-body group w-fit"
-                    style={{ color: "hsl(var(--sand)/0.5)" }}>
-                    <Phone className="w-3.5 h-3.5 flex-shrink-0 transition-colors group-hover:text-primary" />
-                    <span className="transition-colors group-hover:text-sand">{contact.phone}</span>
-                  </a>
-                  <a href={`https://wa.me/${contact.whatsapp.replace(/\D/g,"")}`} target="_blank" rel="noreferrer"
-                    className="flex items-center gap-2 text-sm font-body group w-fit"
-                    style={{ color: "hsl(var(--sand)/0.5)" }}>
-                    <MessageCircle className="w-3.5 h-3.5 flex-shrink-0 transition-colors group-hover:text-primary" />
-                    <span className="transition-colors group-hover:text-sand">WhatsApp us</span>
-                  </a>
-                </div>
-                <div className="flex items-center gap-1.5 mt-4"
-                  style={{ color: "hsl(var(--sand)/0.2)" }}>
-                  <MapPin className="w-3 h-3 flex-shrink-0" />
-                  <span className="text-xs font-body">Based in {contact.address}</span>
-                </div>
-              </div>
-
-            </div>
-          </aside>
-
-          {/* Right panel */}
-          <main ref={mainRef}
-            className="flex-1 flex flex-col px-4 py-8 sm:px-8 sm:py-10 lg:px-12 lg:py-12 xl:px-16 xl:py-14">
-
-            <AnimatePresence mode="wait">
-              {submitted ? (
-                <motion.div key="success"
-                  initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }}
-                  transition={SLIDE_TRANSITION}
-                  className="flex-1 flex items-center justify-center py-12">
-                  <QuoteSuccess firstName={state.form.firstName} />
-                </motion.div>
+      <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.12 }} className="rounded-2xl overflow-hidden"
+        style={{ border: "1px solid hsl(var(--border)/0.6)" }}>
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead>
+              <tr style={{ background: "hsl(var(--muted)/0.35)", borderBottom: "1px solid hsl(var(--border)/0.5)" }}>
+                {["Client", "Trip", "Submitted", "Status", "Actions"].map((h) => (
+                  <th key={h} className="text-left px-5 py-3.5 text-xs font-body uppercase tracking-widest text-muted-foreground">{h}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {loading ? (
+                Array.from({ length: 6 }).map((_, i) => (
+                  <tr key={i} style={{ borderBottom: "1px solid hsl(var(--border)/0.3)" }}>
+                    {Array.from({ length: 5 }).map((__, j) => (
+                      <td key={j} className="px-5 py-4"><Skeleton className="h-4 w-full" /></td>
+                    ))}
+                  </tr>
+                ))
+              ) : items.length === 0 ? (
+                <tr>
+                  <td colSpan={5} className="px-5 py-14 text-center text-sm font-body text-muted-foreground">
+                    No quotes found for the current filter.
+                  </td>
+                </tr>
               ) : (
-                <motion.div key="wizard" className="flex-1 flex flex-col w-full max-w-2xl mx-auto lg:mx-0">
-                  <div className="mb-8 lg:mb-10">
-                    <WizardProgress step={step} goTo={goTo} />
-                  </div>
-                  <div className="flex-1">
-                    <AnimatePresence mode="wait" custom={1}>
-                      <motion.div key={step} custom={1}
-                        variants={SLIDE_VARIANTS}
-                        initial="enter" animate="center" exit="exit"
-                        transition={SLIDE_TRANSITION}>
-                        {renderStep()}
-                      </motion.div>
-                    </AnimatePresence>
-                  </div>
-                  <WizardNav
-                    step={step}
-                    totalSteps={totalSteps}
-                    onBack={back}
-                    onNext={next}
-                    onSubmit={handleSubmit}
-                    canAdvance={canAdvance}
-                  />
-                </motion.div>
+                items.map((quote) => (
+                  <tr key={quote.id} style={{ borderBottom: "1px solid hsl(var(--border)/0.3)" }}>
+                    <td className="px-5 py-4 align-top">
+                      <p className="font-body text-sm font-semibold text-foreground">{quote.first_name} {quote.last_name}</p>
+                      <p className="font-body text-xs text-muted-foreground">{quote.email}</p>
+                    </td>
+                    <td className="px-5 py-4 align-top">
+                      <p className="font-body text-sm text-foreground">{(quote.destinations ?? []).slice(0, 2).join(", ") || "-"}</p>
+                      <p className="font-body text-xs text-muted-foreground">
+                        {quote.adults} adult{quote.adults !== 1 ? "s" : ""}
+                        {quote.children ? `, ${quote.children} children` : ""}
+                      </p>
+                    </td>
+                    <td className="px-5 py-4 align-top">
+                      <p className="font-body text-sm text-foreground">
+                        {new Date(quote.created_at).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}
+                      </p>
+                    </td>
+                    <td className="px-5 py-4 align-top">
+                      <div className="relative max-w-[180px]">
+                        <select
+                          value={quote.status}
+                          onChange={(e) => updateStatus(quote.id, e.target.value as QuoteStatus)}
+                          className="w-full pl-3 pr-8 py-2 rounded-lg text-xs font-body font-semibold outline-none appearance-none"
+                          style={{
+                            background: STATUS_STYLES[quote.status].bg,
+                            color: STATUS_STYLES[quote.status].color,
+                            border: `1px solid ${STATUS_STYLES[quote.status].color}33`,
+                          }}
+                        >
+                          {STATUSES.map((s) => <option key={s} value={s}>{prettyStatus(s)}</option>)}
+                        </select>
+                        <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-3 h-3 pointer-events-none"
+                          style={{ color: STATUS_STYLES[quote.status].color }} />
+                      </div>
+                    </td>
+                    <td className="px-5 py-4 align-top">
+                      <div className="flex items-center gap-2">
+                        <Link to={`/admin/quotes/${quote.id}`}
+                          className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-body font-semibold"
+                          style={{ background: "hsl(var(--muted))", color: "hsl(var(--foreground))" }}>
+                          <Eye className="w-3.5 h-3.5" /> View
+                        </Link>
+                        <button
+                          onClick={() => deleteQuote(quote)}
+                          className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-body font-semibold"
+                          style={{ background: "hsl(0 70% 50%/0.08)", color: "hsl(0 70% 58%)" }}
+                        >
+                          <Trash2 className="w-3.5 h-3.5" /> Delete
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
               )}
-            </AnimatePresence>
+            </tbody>
+          </table>
+        </div>
+      </motion.div>
 
-          </main>
+      <div className="flex items-center justify-between pt-1">
+        <p className="font-body text-xs text-muted-foreground">
+          Page {page} of {lastPage}
+        </p>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setPage((p) => Math.max(1, p - 1))}
+            disabled={page <= 1 || loading}
+            className="px-3 py-2 rounded-lg text-xs font-body font-semibold disabled:opacity-50"
+            style={{ background: "hsl(var(--muted))", color: "hsl(var(--foreground))" }}
+          >
+            Previous
+          </button>
+          <button
+            onClick={() => setPage((p) => Math.min(lastPage, p + 1))}
+            disabled={page >= lastPage || loading}
+            className="px-3 py-2 rounded-lg text-xs font-body font-semibold disabled:opacity-50"
+            style={{ background: "hsl(var(--primary))", color: "hsl(var(--primary-foreground))" }}
+          >
+            Next
+          </button>
         </div>
       </div>
-    </PageLayout>
+    </div>
   );
 };
 
-export default QuotePage;
+export default QuotesPage;
