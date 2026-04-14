@@ -77,7 +77,7 @@ const ToursPage = () => {
         <Link to="/admin/tours/new"
           className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-body
             font-semibold transition-all duration-200"
-          style={{ background: "hsl(var(--primary))", color: "hsl(var(--dark))" }}>
+          style={{ background: "hsl(var(--primary))", color: "hsl(var(--primary-foreground))" }}>
           <Plus className="w-4 h-4" /> New Tour
         </Link>
       </motion.div>
@@ -160,7 +160,7 @@ const ToursPage = () => {
                         <td className="px-5 py-4">
                           <span className="text-xs font-body px-2.5 py-1 rounded-full font-medium"
                             style={tour.published
-                              ? { background: "hsl(142 70% 50%/0.12)", color: "hsl(142 70% 50%)" }
+                              ? { background: "hsl(var(--olive)/0.12)", color: "hsl(var(--olive))" }
                               : { background: "hsl(var(--muted))",      color: "hsl(var(--muted-foreground))" }}>
                             {tour.published ? "Published" : "Draft"}
                           </span>
@@ -172,7 +172,7 @@ const ToursPage = () => {
                               style={{ background: "hsl(var(--muted))" }}>
                               {tour.published
                                 ? <EyeOff className="w-3.5 h-3.5" style={{ color: "hsl(var(--muted-foreground))" }} />
-                                : <Eye    className="w-3.5 h-3.5" style={{ color: "hsl(142 70% 50%)" }} />}
+                                : <Eye    className="w-3.5 h-3.5" style={{ color: "hsl(var(--olive))" }} />}
                             </button>
                             <Link to={`/admin/tours/${tour.id}/edit`}
                               className="w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-150"

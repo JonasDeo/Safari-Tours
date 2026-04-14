@@ -132,7 +132,7 @@ const QuotePage = () => {
                       text-[11px] font-bold font-body flex-shrink-0"
                       style={{
                         background: "hsl(var(--primary))",
-                        color: "hsl(var(--dark))",
+                        color: "hsl(var(--primary-foreground))",
                         boxShadow: "0 0 10px hsl(var(--primary)/0.5)",
                       }}>
                       {step + 1}
@@ -221,7 +221,7 @@ const QuotePage = () => {
                           text-xs font-bold font-body flex-shrink-0"
                           style={{
                             background: "hsl(var(--primary))",
-                            color: "hsl(var(--dark))",
+                            color: "hsl(var(--primary-foreground))",
                             boxShadow: "0 0 14px hsl(var(--primary)/0.45)",
                           }}>
                           {step + 1}

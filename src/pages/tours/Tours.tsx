@@ -342,7 +342,7 @@ const ToursPage = () => {
             Can't find what you're looking for?
           </h2>
           <p className="font-body text-muted-foreground mb-8 max-w-md mx-auto">
-            Every Balbina safari is built from scratch. Tell us your dream trip and we'll make it happen.
+            Every Native Kilimanjaro safari is built from scratch. Tell us your dream trip and we'll make it happen.
           </p>
           <Link to="/quote"
             className="inline-flex items-center gap-2 px-8 py-4 rounded-full text-sm font-body

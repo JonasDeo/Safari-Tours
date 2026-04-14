@@ -26,7 +26,7 @@ const onB = (e: React.FocusEvent<any>) => e.currentTarget.style.borderColor = "h
 const cls = "w-full px-4 py-3 rounded-xl text-sm font-body outline-none transition-all duration-200";
 
 const nameToColor = (name: string) => {
-  const p = ["#c8873a","#3a7c6e","#7c6a3a","#8b3a3a","#3a5c8b","#6e3a7c","#3a6e4a"];
+  const p = ["#b6552a", "#414a26", "#c46a42", "#5b6334", "#a74f2f", "#6d7440", "#8f4228"];
   let h = 0;
   for (let i = 0; i < name.length; i++) h = name.charCodeAt(i) + ((h << 5) - h);
   return p[Math.abs(h) % p.length];
@@ -138,7 +138,7 @@ const TestimonialsPage = () => {
         </div>
         <button onClick={openNew}
           className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-body font-semibold"
-          style={{ background: "hsl(var(--primary))", color: "hsl(var(--dark))" }}>
+          style={{ background: "hsl(var(--primary))", color: "hsl(var(--primary-foreground))" }}>
           <Plus className="w-4 h-4" /> Add Testimonial
         </button>
       </motion.div>
@@ -223,7 +223,7 @@ const TestimonialsPage = () => {
                 <button type="submit" disabled={saving}
                   className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-body font-semibold"
                   style={{ background: saving ? "hsl(var(--primary)/0.5)" : "hsl(var(--primary))",
-                    color: "hsl(var(--dark))", cursor: saving ? "not-allowed" : "pointer" }}>
+                    color: "hsl(var(--primary-foreground))", cursor: saving ? "not-allowed" : "pointer" }}>
                   {saving
                     ? <span className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
                     : <Save className="w-4 h-4" />}

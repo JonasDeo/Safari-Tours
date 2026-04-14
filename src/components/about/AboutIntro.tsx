@@ -49,7 +49,7 @@ const AboutIntro = () => (
 
             <div className="space-y-4 font-body text-sm leading-relaxed text-muted-foreground">
               <p>
-                Balbina Safari Limited is a locally owned company, fully registered to operate
+                Native Kilimanjaro is a locally owned company, fully registered to operate
                 tourism business in Tanzania. For 4 years, we have been providing an unrivalled
                 full spectrum of top quality travel services.
               </p>

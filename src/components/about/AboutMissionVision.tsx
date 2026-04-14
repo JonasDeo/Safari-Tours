@@ -38,7 +38,7 @@ const AboutMissionVision = () => (
               Exceptional Service, Every Journey
             </h3>
             <p className="font-body text-sm leading-relaxed text-muted-foreground">
-              Balbina Safari Limited is committed to providing our clients with exceptional service
+              Native Kilimanjaro is committed to providing our clients with exceptional service
               to meet their demands — accomplishing high customer satisfaction and complete travel
               solutions covering all aspects of their needs, tailored at an affordable price with
               pro-active customer service.

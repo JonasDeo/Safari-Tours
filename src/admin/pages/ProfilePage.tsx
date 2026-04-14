@@ -142,7 +142,7 @@ const ProfilePage = () => {
                 whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.98 }}
                 className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-body
                   font-semibold transition-all duration-200"
-                style={{ background: "hsl(var(--primary))", color: "hsl(var(--dark))" }}>
+                style={{ background: "hsl(var(--primary))", color: "hsl(var(--primary-foreground))" }}>
                 {saving === "profile"
                   ? <span className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
                   : <Save className="w-4 h-4" />}
@@ -151,7 +151,7 @@ const ProfilePage = () => {
               {success === "profile" && (
                 <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }}
                   className="flex items-center gap-1.5 text-sm font-body"
-                  style={{ color: "hsl(142 70% 50%)" }}>
+                  style={{ color: "hsl(var(--olive))" }}>
                   <CheckCircle className="w-4 h-4" /> Saved
                 </motion.span>
               )}
@@ -175,7 +175,7 @@ const ProfilePage = () => {
                 whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.98 }}
                 className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-body
                   font-semibold transition-all duration-200"
-                style={{ background: "hsl(var(--primary))", color: "hsl(var(--dark))" }}>
+                style={{ background: "hsl(var(--primary))", color: "hsl(var(--primary-foreground))" }}>
                 {saving === "password"
                   ? <span className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
                   : <Lock className="w-4 h-4" />}
@@ -184,7 +184,7 @@ const ProfilePage = () => {
               {success === "password" && (
                 <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }}
                   className="flex items-center gap-1.5 text-sm font-body"
-                  style={{ color: "hsl(142 70% 50%)" }}>
+                  style={{ color: "hsl(var(--olive))" }}>
                   <CheckCircle className="w-4 h-4" /> Password updated
                 </motion.span>
               )}

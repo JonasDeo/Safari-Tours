@@ -13,7 +13,7 @@ const services = [
     href:  "/tours/self-drive",
   },
   {
-    title: "Balbina Guided Safaris",
+    title: "Native Kilimanjaro Guided Safaris",
     desc:  "Travel with an experienced guide for a richer and more relaxed safari experience.",
     image: guidedImg,
     href:  "/tours/guided",

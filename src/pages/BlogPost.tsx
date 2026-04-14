@@ -44,7 +44,7 @@ const mapApiPost = (p: any) => ({
   title:       p.title,
   excerpt:     p.excerpt    ?? "",
   category:    p.category   ?? "Tips",
-  author:      p.author     ?? "Balbina Safaris",
+  author:      p.author     ?? "Native Kilimanjaro",
   authorBio:   p.author_bio ?? "Expert safari guide and travel writer sharing insights about East Africa.",
   date:        p.created_at ?? new Date().toISOString(),
   readingTime: Number(p.read_time ?? p.readingTime ?? 5),

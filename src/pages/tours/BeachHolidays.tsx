@@ -5,7 +5,7 @@ import PageLayout from "@/components/PageLayout";
 import { useTours, PackagesGrid } from "./_shared";
 import zanzibar from "@/assets/beach (2).jpg";
 
-const accent = "hsl(38 90% 52%)";
+const accent = "hsl(var(--terracotta-light))";
 
 const BeachHolidays = () => {
   const { tours, loading } = useTours("BEACH");
@@ -119,7 +119,7 @@ const BeachHolidays = () => {
         <p className="font-body text-muted-foreground leading-relaxed mb-12 max-w-3xl">
           Fly into Abeid Amani Karume International Airport (ZNZ) for Zanzibar, or Julius Nyerere
           International Airport (DAR) for Dar es Salaam. Domestic flights and fast ferries link Dar and
-          Zanzibar daily. Coastal Aviation and Auric Air cover Mafia and Pemba. Balbina Safaris arranges
+          Zanzibar daily. Coastal Aviation and Auric Air cover Mafia and Pemba. Native Kilimanjaro arranges
           all connections, transfers, and schedules so your journey is completely seamless.
         </p>
 

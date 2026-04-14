@@ -178,7 +178,7 @@ const BlogFormPage = () => {
             className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-body
               font-semibold tracking-wider uppercase transition-all duration-200"
             style={form.published
-              ? { background: "hsl(142 70% 50%/0.12)", color: "hsl(142 70% 50%)", border: "1px solid hsl(142 70% 50%/0.25)" }
+              ? { background: "hsl(var(--olive)/0.12)", color: "hsl(var(--olive))", border: "1px solid hsl(var(--olive)/0.25)" }
               : { background: "hsl(var(--muted))", color: "hsl(var(--muted-foreground))", border: "1px solid hsl(var(--border)/0.5)" }}>
             {form.published
               ? <><Eye    className="w-3.5 h-3.5" /> Published</>
@@ -346,7 +346,7 @@ const BlogFormPage = () => {
                 Author Name
               </label>
               <input value={form.author} onChange={set("author")}
-                placeholder="e.g. James Oloo, Balbina Safaris Team"
+                placeholder="e.g. James Oloo, Native Kilimanjaro Team"
                 className={inputCls} style={iStyle} onFocus={onF} onBlur={onB} />
             </div>
             <div className="space-y-1.5">
@@ -407,7 +407,7 @@ const BlogFormPage = () => {
           <div className="flex items-center gap-3">
             {saved && (
               <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                className="text-sm font-body" style={{ color: "hsl(142 70% 50%)" }}>
+                className="text-sm font-body" style={{ color: "hsl(var(--olive))" }}>
                 Saved ✓
               </motion.span>
             )}
@@ -418,7 +418,7 @@ const BlogFormPage = () => {
                 font-semibold tracking-wide transition-all duration-200"
               style={{
                 background: saving ? "hsl(var(--primary)/0.5)" : "hsl(var(--primary))",
-                color: "hsl(var(--dark))", cursor: saving ? "not-allowed" : "pointer",
+                color: "hsl(var(--primary-foreground))", cursor: saving ? "not-allowed" : "pointer",
               }}>
               {saving
                 ? <span className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />

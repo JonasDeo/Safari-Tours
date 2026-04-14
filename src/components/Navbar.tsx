@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Menu, X, Phone, Mail, ChevronDown } from "lucide-react";
 import { Link, useLocation, useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import logoSrc from "@/assets/balbina-logo.png";
+import logoSrc from "@/assets/logo_thumbnail.png";
 import { useSiteSettings } from "@/hooks/use-site-settings";
 
 const CURRENCIES = ["USD", "TZS", "EUR"];
@@ -37,19 +37,11 @@ function useClickOutside(ref: React.RefObject<HTMLElement>, handler: () => void)
 }
 
 const NavLogo = () => (
-  <Link to="/" className="flex items-center gap-3 hover:opacity-90 transition-opacity group flex-shrink-0"
-    aria-label="Balbina Safaris — Home">
-    <img src={logoSrc} alt="Balbina Safaris"
-      className="w-12 h-12 object-contain flex-shrink-0 group-hover:scale-105 transition-transform duration-200"
-      style={{ filter: "brightness(0) invert(1)" }} />
-    <div className="leading-none flex flex-col gap-0.5">
-      <span className="text-sand" style={{ fontFamily: '"Yeseva One", serif', fontSize: "1.45rem", lineHeight: 1, letterSpacing: "0.02em" }}>
-        Balbina
-      </span>
-      <span className="text-primary" style={{ fontFamily: '"Cormorant Garamond", serif', fontStyle: "italic", fontSize: "0.65rem", letterSpacing: "0.28em", lineHeight: 1, textTransform: "uppercase" }}>
-        Safaris
-      </span>
-    </div>
+  <Link to="/" className="flex items-center hover:opacity-90 transition-opacity group flex-shrink-0"
+    aria-label="Native Kilimanjaro — Home">
+    <img src={logoSrc} alt="Native Kilimanjaro"
+      className="h-12 w-auto object-contain group-hover:scale-105 transition-transform duration-200 -my-2"
+      style={{ filter: "brightness(0) invert(1)", maxWidth: "160px" }} />
   </Link>
 );
 
@@ -195,9 +187,9 @@ const Navbar = () => {
                 className="flex items-center gap-1.5 hover:text-primary transition-colors duration-200">
                 <Phone className="w-3 h-3" /><span>{contact.phone}</span>
               </a>
-              <a href="mailto:info@Balbinasafaris.com"
+              <a href="mailto:info@nativekilimanjaro.com"
                 className="hidden sm:flex items-center gap-1.5 hover:text-primary transition-colors duration-200">
-                <Mail className="w-3 h-3" /><span>info@Balbinasafaris.com</span>
+                <Mail className="w-3 h-3" /><span>info@nativekilimanjaro.com</span>
               </a>
             </div>
             <CurrencySwitcher currency={currency} setCurrency={setCurrency} />

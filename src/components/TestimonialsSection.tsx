@@ -17,13 +17,13 @@ interface Testimonial {
 
 const FALLBACK: Testimonial[] = [
   { id: 1, name: "Caroline M.",     location: "Canada",         avatar: null, rating: 5,
-    text: "As a solo traveler, I wanted safety and comfort. Balbina matched me with a kind, professional guide and a personalised itinerary that hit every spot I dreamed of." },
+    text: "As a solo traveler, I wanted safety and comfort. Native Kilimanjaro matched me with a kind, professional guide and a personalised itinerary that hit every spot I dreamed of." },
   { id: 2, name: "Nasser & Leila",  location: "Oman",           avatar: null, rating: 5,
-    text: "We chose Balbina for our family of five and it was flawless. The guide was fantastic with our kids, adjusting the pace perfectly. Tanzania stole our hearts." },
+    text: "We chose Native Kilimanjaro for our family of five and it was flawless. The guide was fantastic with our kids, adjusting the pace perfectly. Tanzania stole our hearts." },
   { id: 3, name: "Sophie & Daniel", location: "Germany",        avatar: null, rating: 5,
     text: "We saw all the Big Five in just four days! Our guide had an incredible eye for spotting wildlife. We felt like VIPs from start to finish." },
   { id: 4, name: "Lisa T.",         location: "United Kingdom",  avatar: null, rating: 5,
-    text: "I was nervous about a self-drive safari, but Balbina made it incredibly easy and safe. The car was in excellent condition and the itinerary suggestions were spot on." },
+    text: "I was nervous about a self-drive safari, but Native Kilimanjaro made it incredibly easy and safe. The car was in excellent condition and the itinerary suggestions were spot on." },
   { id: 5, name: "Alex & Jordan",   location: "USA",            avatar: null, rating: 5,
     text: "Our self-drive safari through Tanzania was the most unforgettable trip we've ever taken. Everything was seamless, from route planning to the vehicle." },
 ];
@@ -34,7 +34,7 @@ const API_BASE = (import.meta as any).env?.VITE_API_URL ?? "http://localhost:800
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
 const nameToColor = (name: string) => {
-  const palette = ["#c8873a", "#3a7c6e", "#7c6a3a", "#8b3a3a", "#3a5c8b", "#6e3a7c", "#3a6e4a"];
+  const palette = ["#b6552a", "#414a26", "#c46a42", "#5b6334", "#a74f2f", "#6d7440", "#8f4228"];
   let h = 0;
   for (let i = 0; i < name.length; i++) h = name.charCodeAt(i) + ((h << 5) - h);
   return palette[Math.abs(h) % palette.length];

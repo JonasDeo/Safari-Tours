@@ -16,8 +16,8 @@ interface Booking {
 interface Paginated { data: Booking[]; total: number; current_page: number; last_page: number; }
 
 const STATUS_STYLES: Record<string, { bg: string; color: string; icon: any }> = {
-  PENDING:   { bg: "hsl(38 90% 55% / 0.12)",   color: "hsl(38 90% 55%)",    icon: Clock        },
-  CONFIRMED: { bg: "hsl(142 70% 50% / 0.12)",  color: "hsl(142 70% 50%)",   icon: CalendarCheck },
+  PENDING:   { bg: "hsl(var(--terracotta-light)/0.22)", color: "hsl(var(--terracotta))", icon: Clock        },
+  CONFIRMED: { bg: "hsl(var(--olive-light)/0.22)",      color: "hsl(var(--olive))",      icon: CalendarCheck },
   COMPLETED: { bg: "hsl(var(--primary)/0.12)", color: "hsl(var(--primary))", icon: DollarSign   },
   CANCELLED: { bg: "hsl(0 70% 50% / 0.1)",    color: "hsl(0 70% 65%)",      icon: XCircle      },
 };
@@ -124,7 +124,7 @@ const BookingsPage = () => {
         </div>
         <button onClick={() => setShowModal(true)}
           className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-body font-semibold"
-          style={{ background: "hsl(var(--primary))", color: "hsl(var(--dark))" }}>
+          style={{ background: "hsl(var(--primary))", color: "hsl(var(--primary-foreground))" }}>
           <Plus className="w-4 h-4" /> New Booking
         </button>
       </motion.div>
@@ -191,7 +191,7 @@ const BookingsPage = () => {
                     className="px-4 py-2.5 rounded-xl text-sm font-body text-muted-foreground">Cancel</button>
                   <button type="submit" disabled={creating}
                     className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-body font-semibold"
-                    style={{ background: creating ? "hsl(var(--primary)/0.5)" : "hsl(var(--primary))", color: "hsl(var(--dark))", cursor: creating ? "not-allowed" : "pointer" }}>
+                    style={{ background: creating ? "hsl(var(--primary)/0.5)" : "hsl(var(--primary))", color: "hsl(var(--primary-foreground))", cursor: creating ? "not-allowed" : "pointer" }}>
                     {creating ? <span className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" /> : <Save className="w-4 h-4" />}
                     {creating ? "Creating…" : "Create Booking"}
                   </button>
@@ -212,10 +212,10 @@ const BookingsPage = () => {
       {/* Summary cards */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {[
-          { label: "Confirmed", value: loading ? '…' : confirmed,                         color: "hsl(142 70% 50%)"    },
-          { label: "Pending",   value: loading ? '…' : pending,                           color: "hsl(38 90% 55%)"     },
+          { label: "Confirmed", value: loading ? '…' : confirmed,                         color: "hsl(var(--olive))"      },
+          { label: "Pending",   value: loading ? '…' : pending,                           color: "hsl(var(--terracotta))" },
           { label: "Completed", value: loading ? '…' : completed,                         color: "hsl(var(--primary))" },
-          { label: "Revenue",   value: loading ? '…' : `$${(totalRevenue/1000).toFixed(0)}k`, color: "hsl(210 80% 60%)" },
+          { label: "Revenue",   value: loading ? '…' : `$${(totalRevenue/1000).toFixed(0)}k`, color: "hsl(var(--terracotta-light))" },
         ].map((s, i) => (
           <motion.div key={s.label}
             initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
@@ -322,7 +322,7 @@ const BookingsPage = () => {
                           <td className="px-5 py-4">
                             {b.paid
                               ? <span className="text-xs font-body px-2 py-1 rounded-full font-medium"
-                                  style={{ background: "hsl(142 70% 50% / 0.12)", color: "hsl(142 70% 50%)" }}>Paid</span>
+                                  style={{ background: "hsl(var(--olive)/0.12)", color: "hsl(var(--olive))" }}>Paid</span>
                               : <button onClick={() => markPaid(b)}
                                   className="text-xs font-body px-2 py-1 rounded-full font-medium transition-all duration-150"
                                   style={{ background: "hsl(var(--muted))", color: "hsl(var(--muted-foreground))" }}

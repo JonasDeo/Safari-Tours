@@ -25,14 +25,14 @@ export const DEFAULT_SETTINGS: SiteSettings = {
   contact: {
     phone:    "+255 623 880844",
     whatsapp: "+255 685 808332",
-    email:    "info@balbinasafaris.com",
+    email:    "info@nativekilimanjaro.com",
     address:  "Arusha, Tanzania",
-    website:  "https://balbinasafaris.com",
+    website:  "https://nativekilimanjaro.com",
   },
   socials: {
-    facebook:    "https://facebook.com/balbinasafaris",
-    instagram:   "https://instagram.com/balbinasafaris",
-    youtube:     "https://youtube.com/@balbinasafaris",
+    facebook:    "https://facebook.com/nativekilimanjaro",
+    instagram:   "https://instagram.com/nativekilimanjaro",
+    youtube:     "https://youtube.com/@nativekilimanjaro",
     tripadvisor: "https://tripadvisor.com",
   },
 };

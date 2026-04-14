@@ -11,8 +11,8 @@ export const FULL_POSTS: Record<string, FullBlogPost> = {
     title:       "The Great Wildebeest Migration: A Complete Traveller's Guide",
     excerpt:     "Over two million wildebeest, zebra, and gazelle thunder across the Serengeti-Mara ecosystem every year. Here's everything you need to know to witness one of nature's greatest spectacles.",
     category:    "Wildlife",
-    author:      "Balbina Kiwia",
-    authorBio:   "Balbina has guided safaris across East Africa for over 15 years. She specialises in wildlife behaviour and the Serengeti ecosystem.",
+    author:      "Theophil Kiwia",
+    authorBio:   "BalbTheophilina has guided safaris across East Africa for over 15 years. She specialises in wildlife behaviour and the Serengeti ecosystem.",
     date:        "2025-11-12",
     readingTime: 9,
     image:       "/src/assets/tour-1.jpg",
@@ -25,7 +25,7 @@ export const FULL_POSTS: Record<string, FullBlogPost> = {
       {
         type:    "pullquote",
         content: "It is not a single event — it is a year-round cycle. The herds are always moving, always following the rains.",
-        attribution: "Balbina Kiwia, Lead Guide",
+        attribution: "Theophil Kiwia, Lead Guide",
       },
       {
         type:    "heading",

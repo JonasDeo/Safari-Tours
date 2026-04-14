@@ -58,13 +58,13 @@ const AdminLogin = () => {
 
       {/*   Right: form panel — flex-centered, no scroll   */}
       <div className="flex-1 flex items-center justify-center relative overflow-hidden"
-        style={{ background: "#0e1117" }}>
+        style={{ background: "hsl(var(--sidebar-background))" }}>
 
         {/* Mobile background image */}
         <div className="lg:hidden absolute inset-0 pointer-events-none">
           <img src={bgImg} alt="" aria-hidden className="w-full h-full object-cover opacity-15" />
           <div className="absolute inset-0"
-            style={{ background: "linear-gradient(to bottom, rgba(14,17,23,0.7), #0e1117 60%)" }} />
+            style={{ background: "linear-gradient(to bottom, hsl(var(--sidebar-background)/0.7), hsl(var(--sidebar-background)) 60%)" }} />
         </div>
 
         {/* Top accent line */}
@@ -81,11 +81,11 @@ const AdminLogin = () => {
           {/* Logo */}
           <div className="flex flex-col items-center mb-8">
             <div className="w-20 h-20 mb-4 flex items-center justify-center">
-              <img src={logoSrc} alt="Balbina" className="w-20 h-20 object-contain"
+              <img src={logoSrc} alt="Native Kilimanjaro" className="w-20 h-20 object-contain"
                 style={{ filter: "brightness(0) invert(1)" }} />
             </div>
             <h2 className="text-2xl text-sand mb-1" style={{ fontFamily: '"Yeseva One", serif' }}>
-              Balbina<span style={{ color: "hsl(var(--primary))" }}>Safaris</span>
+              Native<span style={{ color: "hsl(var(--primary))" }}>Kilimanjaro</span>
             </h2>
             <p className="text-xs font-body tracking-[0.2em] uppercase"
               style={{ color: "hsl(var(--sand)/0.3)" }}>Admin Portal</p>
@@ -155,7 +155,7 @@ const AdminLogin = () => {
                   text-xs font-semibold tracking-widest uppercase font-body transition-all duration-200 mt-2"
                 style={{
                   background: loading ? "hsl(var(--primary)/0.4)" : "hsl(var(--primary))",
-                  color: "hsl(var(--dark))",
+                  color: "hsl(var(--primary-foreground))",
                   cursor: loading ? "not-allowed" : "pointer",
                 }}>
                 {loading
@@ -166,7 +166,7 @@ const AdminLogin = () => {
           </div>
 
           <p className="text-center text-xs font-body mt-5" style={{ color: "hsl(var(--sand)/0.2)" }}>
-            © {new Date().getFullYear()} Balbina Safaris · Admin Only
+            © {new Date().getFullYear()} Native Kilimanjaro · Admin Only
           </p>
 
         </motion.div>

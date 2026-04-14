@@ -16,7 +16,7 @@ const mapPost = (p: any) => ({
   title:       p.title,
   excerpt:     p.excerpt ?? "",
   category:    p.category as BlogCategory,
-  author:      p.author  ?? "Balbina Safaris",
+  author:      p.author  ?? "Native Kilimanjaro",
   date:        p.created_at ?? new Date().toISOString(),
   readingTime: p.read_time ?? 5,
   image:       p.cover_image ?? "",

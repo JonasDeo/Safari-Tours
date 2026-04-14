@@ -85,7 +85,7 @@ const NavItem = ({
         <div className="absolute left-full ml-3 px-2.5 py-1.5 rounded-lg text-xs font-body
           whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none
           transition-opacity duration-150 z-50"
-          style={{ background: "#0e1117", color: "hsl(var(--sand)/0.9)", border: "1px solid hsl(var(--sand)/0.1)" }}>
+          style={{ background: "hsl(var(--sidebar-background))", color: "hsl(var(--sidebar-foreground)/0.9)", border: "1px solid hsl(var(--sidebar-border)/0.8)" }}>
           {item.label}{badge && badge > 0 ? ` (${badge})` : ""}
         </div>
       )}
@@ -125,7 +125,7 @@ const SidebarContent = ({
               exit={{ opacity: 0, width: 0 }}
               className="font-display text-base leading-none overflow-hidden whitespace-nowrap"
               style={{ fontFamily: '"Yeseva One", serif', color: "hsl(var(--sand))" }}>
-              Balbina<span style={{ color: "hsl(var(--primary))" }}>Admin</span>
+              Native<span style={{ color: "hsl(var(--primary))" }}>Admin</span>
             </motion.p>
           )}
         </AnimatePresence>
@@ -232,14 +232,14 @@ const AdminLayout = () => {
         animate={{ width: collapsed ? 60 : 216 }}
         transition={{ duration: 0.25, ease: [0.32, 0.72, 0, 1] }}
         className="hidden lg:flex flex-col h-full flex-shrink-0 relative"
-        style={{ background: "#0e1117", borderRight: "1px solid hsl(var(--sand)/0.07)" }}>
+        style={{ background: "hsl(var(--sidebar-background))", borderRight: "1px solid hsl(var(--sidebar-border))" }}>
         <SidebarContent collapsed={collapsed} mobile={false} pendingQuotes={pendingQuotes} />
 
         {/* Collapse toggle */}
         <button onClick={() => setCollapsed(v => !v)}
           className="absolute bottom-24 -right-3 w-6 h-6 rounded-full flex items-center
             justify-center z-10 transition-colors"
-          style={{ background: "#0e1117", border: "1px solid hsl(var(--sand)/0.12)", color: "hsl(var(--sand)/0.4)" }}>
+          style={{ background: "hsl(var(--sidebar-background))", border: "1px solid hsl(var(--sidebar-border)/0.9)", color: "hsl(var(--sidebar-foreground)/0.5)" }}>
           <ChevronRight className={`w-3 h-3 transition-transform duration-300 ${collapsed ? "" : "rotate-180"}`} />
         </button>
       </motion.aside>
@@ -255,7 +255,7 @@ const AdminLayout = () => {
               initial={{ x: -220 }} animate={{ x: 0 }} exit={{ x: -220 }}
               transition={{ duration: 0.25, ease: [0.32, 0.72, 0, 1] }}
               className="fixed left-0 top-0 bottom-0 w-56 z-50 flex flex-col lg:hidden"
-              style={{ background: "#0e1117", borderRight: "1px solid hsl(var(--sand)/0.07)" }}>
+              style={{ background: "hsl(var(--sidebar-background))", borderRight: "1px solid hsl(var(--sidebar-border))" }}>
               <SidebarContent collapsed={false} mobile={true} pendingQuotes={pendingQuotes}
                 onClose={() => setMobileOpen(false)} />
             </motion.aside>

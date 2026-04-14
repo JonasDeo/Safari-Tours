@@ -5,7 +5,7 @@ import PageLayout from "@/components/PageLayout";
 import { useTours, PackagesGrid } from "./_shared";
 import kilimanjaro from "@/assets/mount-trek.jpg"
 
-const accent = "hsl(210 80% 58%)";
+const accent = "hsl(var(--terracotta))";
 
 const MountainTrekking = () => {
   const { tours, loading } = useTours("MOUNTAIN");
@@ -38,7 +38,7 @@ const MountainTrekking = () => {
 
         {/* Intro */}
         <p className="font-body text-muted-foreground leading-relaxed mb-4 max-w-3xl">
-          At Balbina Safaris, we offer tailored packages to suit your adventure preferences and budget.
+          At Native Kilimanjaro, we offer tailored packages to suit your adventure preferences and budget.
           Whether you're looking for a more economical <strong className="text-foreground">Budget Package</strong> or
           a more comfortable experience with our <strong className="text-foreground">Standard Full Package</strong>,
           we provide all the support you need to reach the summit safely. Our certified guides and
@@ -169,7 +169,7 @@ const MountainTrekking = () => {
           Kilimanjaro National Park Fees
         </h2>
         <p className="font-body text-muted-foreground leading-relaxed mb-6 max-w-3xl">
-          All TANAPA (Tanzania National Parks) fees are included in your Balbina Safaris package price.
+          All TANAPA (Tanzania National Parks) fees are included in your Native Kilimanjaro package price.
           We list them here for full transparency so you know exactly what is covered:
         </p>
         <div className="overflow-x-auto rounded-xl mb-12"

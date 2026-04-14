@@ -34,20 +34,20 @@ const SettingsPage = () => {
   const [contact, setContact] = useState({
     phone:     "+255 623 880844",
     whatsapp:  "+255 685 808332",
-    email:     "info@balbinasafaris.com",
+    email:     "info@nativekilimanjaro.com",
     address:   "Arusha, Tanzania",
-    website:   "https://balbinasafaris.com",
+    website:   "https://nativekilimanjaro.com",
   });
 
   const [socials, setSocials] = useState({
-    facebook:    "https://facebook.com/balbinasafaris",
-    instagram:   "https://instagram.com/balbinasafaris",
-    youtube:     "https://youtube.com/@balbinasafaris",
+    facebook:    "https://facebook.com/nativekilimanjaro",
+    instagram:   "https://instagram.com/nativekilimanjaro",
+    youtube:     "https://youtube.com/@nativekilimanjaro",
     tripadvisor: "https://tripadvisor.com",
   });
 
   const [seo, setSeo] = useState({
-    metaTitle:       "Balbina Safaris — East Africa Safari Tours",
+    metaTitle:       "Native Kilimanjaro — East Africa Safari Tours",
     metaDescription: "Luxury and custom safari tours across Tanzania, Kenya, Uganda, and Zanzibar. Guided safaris, self-drive, mountain treks, and beach holidays.",
     googleAnalytics: "",
   });
@@ -84,7 +84,7 @@ const SettingsPage = () => {
         whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.98 }}
         className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-body
           font-semibold transition-all duration-200"
-        style={{ background: "hsl(var(--primary))", color: "hsl(var(--dark))" }}>
+        style={{ background: "hsl(var(--primary))", color: "hsl(var(--primary-foreground))" }}>
         {saving === section
           ? <span className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
           : <Save className="w-4 h-4" />}
@@ -93,7 +93,7 @@ const SettingsPage = () => {
       {success === section && (
         <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }}
           className="flex items-center gap-1.5 text-sm font-body"
-          style={{ color: "hsl(142 70% 50%)" }}>
+          style={{ color: "hsl(var(--olive))" }}>
           <CheckCircle className="w-4 h-4" /> Saved
         </motion.span>
       )}

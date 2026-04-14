@@ -182,8 +182,8 @@ const KiliPriceTable = () => {
                 <td className="px-5 py-4">
                   <span className="text-xs font-body px-2.5 py-1 rounded-full"
                     style={{
-                      background: r.difficulty === "Moderate" ? "hsl(142 70% 50%/0.12)" : "hsl(38 90% 55%/0.12)",
-                      color: r.difficulty === "Moderate" ? "hsl(142 70% 50%)" : "hsl(38 90% 55%)",
+                      background: r.difficulty === "Moderate" ? "hsl(var(--olive)/0.14)" : "hsl(var(--terracotta)/0.14)",
+                      color: r.difficulty === "Moderate" ? "hsl(var(--olive))" : "hsl(var(--terracotta))",
                     }}>
                     {r.difficulty}
                   </span>
@@ -227,7 +227,7 @@ const ParkFeesSection = () => {
       <SectionTitle
         eyebrow="Park Fees"
         title="Kilimanjaro National Park Fees"
-        subtitle="All TANAPA fees are included in your Balbina Safaris package price. Listed here for full transparency."
+        subtitle="All TANAPA fees are included in your Native Kilimanjaro package price. Listed here for full transparency."
       />
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {fees.map((fee, i) => (
@@ -261,7 +261,7 @@ const TrekkingPreparations = () => {
     {
       title: "Physical Preparation",
       icon: Mountain,
-      color: "hsl(210 80% 60%)",
+      color: "hsl(var(--olive-light))",
       items: [
         "Start training 3–6 months before your climb",
         "Build cardiovascular endurance — running, cycling, swimming",
@@ -273,7 +273,7 @@ const TrekkingPreparations = () => {
     {
       title: "Altitude & Acclimatisation",
       icon: AlertTriangle,
-      color: "hsl(38 90% 55%)",
+      color: "hsl(var(--terracotta))",
       items: [
         "Choose a longer route (7–9 days) for better acclimatisation",
         "Follow the 'climb high, sleep low' principle",
@@ -285,7 +285,7 @@ const TrekkingPreparations = () => {
     {
       title: "Medical Preparation",
       icon: Shield,
-      color: "hsl(142 70% 50%)",
+      color: "hsl(var(--olive))",
       items: [
         "Get a full medical check-up before your climb",
         "Ensure travel insurance covers high-altitude evacuation",
@@ -352,7 +352,7 @@ const FleetSection = () => {
       features: ["Air conditioning", "Rooftop tent", "Fridge/cooler", "GPS navigation", "Camping kit"],
       priceDay: 220,
       badge: "Premium",
-      badgeColor: "hsl(210 80% 60%)",
+      badgeColor: "hsl(var(--terracotta-light))",
     },
     {
       name: "Toyota Hilux Double Cab",
@@ -361,7 +361,7 @@ const FleetSection = () => {
       features: ["Canopy", "Load bed", "Recovery gear", "GPS navigation", "Spare tyre"],
       priceDay: 140,
       badge: "Budget Friendly",
-      badgeColor: "hsl(142 70% 50%)",
+      badgeColor: "hsl(var(--olive))",
     },
   ];
 
@@ -427,12 +427,12 @@ const FleetSection = () => {
 
 const WhatIsIncluded = () => {
   const included = [
-    { icon: Shield,  color: "hsl(142 70% 50%)",   title: "Full Insurance",        desc: "Comprehensive vehicle insurance covering collision, theft, and third-party liability." },
+    { icon: Shield,  color: "hsl(var(--olive))",   title: "Full Insurance",        desc: "Comprehensive vehicle insurance covering collision, theft, and third-party liability." },
     { icon: Map,     color: "hsl(var(--primary))", title: "GPS + Offline Maps",    desc: "Pre-loaded GPS device with offline maps for all national parks and routes." },
-    { icon: Tent,    color: "hsl(210 80% 60%)",    title: "Camping Equipment",     desc: "Rooftop tent, sleeping bags, cooking stove, utensils, and a 40L cooler box." },
-    { icon: Wifi,    color: "hsl(38 90% 55%)",     title: "24/7 Support Line",     desc: "Direct line to our team for emergencies, route advice, and mechanical support." },
+    { icon: Tent,    color: "hsl(var(--terracotta-light))",    title: "Camping Equipment",     desc: "Rooftop tent, sleeping bags, cooking stove, utensils, and a 40L cooler box." },
+    { icon: Wifi,    color: "hsl(var(--terracotta))",     title: "24/7 Support Line",     desc: "Direct line to our team for emergencies, route advice, and mechanical support." },
     { icon: Package, color: "hsl(var(--primary))", title: "Recovery Gear",         desc: "Hi-lift jack, sand boards, tow rope, and shovel — all essentials for off-road driving." },
-    { icon: Phone,   color: "hsl(142 70% 50%)",    title: "Detailed Roadbook",     desc: "Printed and digital itinerary with GPS waypoints, park fees, and camp locations." },
+    { icon: Phone,   color: "hsl(var(--olive))",    title: "Detailed Roadbook",     desc: "Printed and digital itinerary with GPS waypoints, park fees, and camp locations." },
   ];
 
   return (
@@ -562,12 +562,12 @@ const CATEGORY_CONFIG: Record<string, CategoryConfig> = {
     description: "Take the wheel and write your own adventure. With a well-equipped 4WD, detailed route maps and 24/7 support, you have all the freedom of the wild with none of the worry.",
     heroImage: "https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=1600",
     heroAlt: "4WD vehicle on open African plains",
-    accentColor: "hsl(142 70% 50%)",
+    accentColor: "hsl(var(--olive))",
     tabs: [
       { id: "packages", label: "Self-Drive Packages" },
     ],
     renderTab: (_, tours, loading) => (
-      <ToursGrid tours={tours} loading={loading} accent="hsl(142 70% 50%)" categoryTitle="Self-Drive Safaris" />
+      <ToursGrid tours={tours} loading={loading} accent="hsl(var(--olive))" categoryTitle="Self-Drive Safaris" />
     ),
   },
 
@@ -578,7 +578,7 @@ const CATEGORY_CONFIG: Record<string, CategoryConfig> = {
     description: "Conquer Kilimanjaro — Africa's highest peak — with certified guides, carefully acclimatised itineraries, and full equipment support. Your summit, your story.",
     heroImage: "https://images.unsplash.com/photo-1604537466158-719b1972feb8?w=1600",
     heroAlt: "Kilimanjaro summit above the clouds",
-    accentColor: "hsl(210 80% 60%)",
+    accentColor: "hsl(var(--terracotta))",
     tabs: [
       { id: "packages",     label: "Trekking Packages"  },
       { id: "prices",       label: "Trek Prices"         },
@@ -586,7 +586,7 @@ const CATEGORY_CONFIG: Record<string, CategoryConfig> = {
       { id: "preparations", label: "Preparations"        },
     ],
     renderTab: (tabId, tours, loading) => {
-      if (tabId === "packages")     return <ToursGrid tours={tours} loading={loading} accent="hsl(210 80% 60%)" categoryTitle="Mountain Expeditions" />;
+      if (tabId === "packages")     return <ToursGrid tours={tours} loading={loading} accent="hsl(var(--terracotta))" categoryTitle="Mountain Expeditions" />;
       if (tabId === "prices")       return <KiliPriceTable />;
       if (tabId === "park-fees")    return <ParkFeesSection />;
       if (tabId === "preparations") return <TrekkingPreparations />;
@@ -601,12 +601,12 @@ const CATEGORY_CONFIG: Record<string, CategoryConfig> = {
     description: "Let the Indian Ocean wash the dust of the savannah away. White-sand shores, coral reef snorkelling, and the spice-scented charm of Zanzibar's Stone Town.",
     heroImage: "https://images.unsplash.com/photo-1504945005722-33670dcaf685?w=1600",
     heroAlt: "Zanzibar beach at sunset",
-    accentColor: "hsl(38 90% 55%)",
+    accentColor: "hsl(var(--terracotta-light))",
     tabs: [
       { id: "packages", label: "Beach Packages" },
     ],
     renderTab: (_, tours, loading) => (
-      <ToursGrid tours={tours} loading={loading} accent="hsl(38 90% 55%)" categoryTitle="Beach Holidays" />
+      <ToursGrid tours={tours} loading={loading} accent="hsl(var(--terracotta-light))" categoryTitle="Beach Holidays" />
     ),
   },
 
@@ -794,7 +794,7 @@ const TourCategoryPage = () => {
             Can't find what you're looking for?
           </h2>
           <p className="font-body text-muted-foreground mb-8 max-w-md mx-auto">
-            Every Balbina safari is built from scratch. Tell us your dream trip and we'll make it happen.
+            Every Native Kilimanjaro safari is built from scratch. Tell us your dream trip and we'll make it happen.
           </p>
           <Link to="/quote"
             className="inline-flex items-center gap-2 px-8 py-4 rounded-full text-sm font-body

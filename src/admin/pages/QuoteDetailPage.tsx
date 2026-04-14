@@ -17,9 +17,9 @@ interface Quote {
 
 const STATUSES = ["PENDING", "REVIEWED", "RESPONDED", "CONVERTED", "CLOSED"];
 const STATUS_STYLES: Record<string, { bg: string; color: string }> = {
-  PENDING:   { bg: "hsl(38 90% 55% / 0.12)",   color: "hsl(38 90% 55%)"    },
-  REVIEWED:  { bg: "hsl(210 80% 60% / 0.12)",  color: "hsl(210 80% 60%)"   },
-  RESPONDED: { bg: "hsl(142 70% 50% / 0.12)",  color: "hsl(142 70% 50%)"   },
+  PENDING:   { bg: "hsl(var(--terracotta-light)/0.22)", color: "hsl(var(--terracotta))" },
+  REVIEWED:  { bg: "hsl(var(--olive-light)/0.22)",      color: "hsl(var(--olive))"      },
+  RESPONDED: { bg: "hsl(var(--primary)/0.12)",          color: "hsl(var(--primary))"    },
   CONVERTED: { bg: "hsl(var(--primary)/0.12)", color: "hsl(var(--primary))" },
   CLOSED:    { bg: "hsl(0 0% 50% / 0.12)",     color: "hsl(0 0% 55%)"      },
 };
@@ -145,7 +145,7 @@ const QuoteDetailPage = () => {
           <div className="flex items-center gap-3">
             {saved && (
               <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                className="text-xs font-body" style={{ color: "hsl(142 70% 50%)" }}>
+                className="text-xs font-body" style={{ color: "hsl(var(--olive))" }}>
                 Saved ✓
               </motion.span>
             )}
@@ -167,7 +167,7 @@ const QuoteDetailPage = () => {
             <button onClick={handleSave} disabled={saving}
               className="px-4 py-2 rounded-xl text-xs font-body font-semibold
                 tracking-wider uppercase transition-all duration-200"
-              style={{ background: "hsl(var(--primary))", color: "hsl(var(--dark))", opacity: saving ? 0.5 : 1 }}>
+              style={{ background: "hsl(var(--primary))", color: "hsl(var(--primary-foreground))", opacity: saving ? 0.5 : 1 }}>
               {saving ? 'Saving…' : 'Save'}
             </button>
           </div>
@@ -270,10 +270,10 @@ const QuoteDetailPage = () => {
           </div>
 
           <div className="space-y-2.5">
-            <a href={`mailto:${quote.email}?subject=Your Balbina Safaris Quote&body=Dear ${quote.first_name},`}
+            <a href={`mailto:${quote.email}?subject=Your Native Kilimanjaro Quote&body=Dear ${quote.first_name},`}
               className="flex items-center justify-center gap-2 w-full py-3 rounded-xl
                 text-xs font-semibold tracking-widest uppercase font-body transition-all duration-200"
-              style={{ background: "hsl(var(--primary))", color: "hsl(var(--dark))" }}>
+              style={{ background: "hsl(var(--primary))", color: "hsl(var(--primary-foreground))" }}>
               <Send className="w-3.5 h-3.5" /> Reply via Email
             </a>
             {quote.phone && (
@@ -281,7 +281,7 @@ const QuoteDetailPage = () => {
                 target="_blank" rel="noreferrer"
                 className="flex items-center justify-center gap-2 w-full py-3 rounded-xl
                   text-xs font-semibold tracking-widest uppercase font-body transition-all duration-200"
-                style={{ background: "hsl(142 70% 50%/0.12)", color: "hsl(142 70% 50%)", border: "1px solid hsl(142 70% 50%/0.25)" }}>
+                style={{ background: "hsl(var(--olive)/0.12)", color: "hsl(var(--olive))", border: "1px solid hsl(var(--olive)/0.25)" }}>
                 WhatsApp Client
               </a>
             )}

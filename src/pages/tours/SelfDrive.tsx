@@ -5,7 +5,7 @@ import PageLayout from "@/components/PageLayout";
 import { useTours, PackagesGrid } from "./_shared";
 import SDrive from "@/assets/self-drive.png";
 
-const accentGreen = "hsl(142 60% 42%)";
+const accentGreen = "hsl(var(--olive))";
 
 const SelfDrive = () => {
   const { tours: selfDriveTours, loading: sdLoading } = useTours("SELF_DRIVE");
@@ -40,7 +40,7 @@ const SelfDrive = () => {
         <p className="font-body text-muted-foreground leading-relaxed mb-4 max-w-3xl">
           Take the wheel and write your own adventure. Rent a fully equipped 4WD and explore East Africa
           at your own pace — no fixed schedules, no shared vehicles, no compromises. Whether you're
-          navigating the vast savannas of Tanzania or the scenic landscapes of Kenya, Balbina Safaris puts
+          navigating the vast savannas of Tanzania or the scenic landscapes of Kenya, Native Kilimanjaro puts
           you in the driver's seat.
         </p>
         <p className="font-body text-muted-foreground leading-relaxed mb-8 max-w-3xl">

@@ -1,6 +1,6 @@
 import { Phone, Mail, MapPin } from "lucide-react";
 import { Link } from "react-router-dom";
-import logoSrc from "@/assets/balbina-logo.png";
+import logoSrc from "@/assets/logo_thumbnail.png";
 import { useSiteSettings } from "@/hooks/use-site-settings";
 
 const FacebookIcon    = () => <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" /></svg>;
@@ -42,10 +42,10 @@ const QUICK_LINKS = [
 const BrandLockup = () => (
   <div className="leading-none flex flex-col gap-0.5">
     <span className="text-sand" style={{ fontFamily: '"Yeseva One", serif', fontSize: "1.55rem", lineHeight: 1, letterSpacing: "0.02em" }}>
-      Balbina
+      Native
     </span>
     <span className="text-primary" style={{ fontFamily: '"Cormorant Garamond", serif', fontStyle: "italic", fontSize: "0.65rem", letterSpacing: "0.28em", lineHeight: 1, textTransform: "uppercase" }}>
-      Safaris
+      Kilimanjaro
     </span>
   </div>
 );
@@ -69,12 +69,11 @@ const FooterSection = () => {
 
         {/* Brand */}
         <div className="sm:col-span-2 lg:col-span-1">
-          <Link to="/" className="flex items-center gap-3 mb-5 group w-fit">
-            <img src={logoSrc} alt="Balbina Safaris"
-              className="w-14 h-14 object-contain flex-shrink-0 group-hover:scale-105 transition-transform duration-200"
-              style={{ filter: "brightness(0) invert(1)" }} />
-            <BrandLockup />
-          </Link>
+        <Link to="/" className="flex items-center mb-5 group w-fit">
+  <img src={logoSrc} alt="Native Kilimanjaro"
+    className="h-16 w-auto object-contain group-hover:scale-105 transition-transform duration-200 -my-2"
+    style={{ filter: "brightness(0) invert(1)", maxWidth: "200px" }} />
+</Link>
 
           <p className="font-body text-sand/55 text-sm leading-relaxed mb-5 max-w-xs">
             Based in Tanzania with on-the-ground teams across East Africa.
@@ -166,7 +165,7 @@ const FooterSection = () => {
       <div className="border-t border-sand/8 mt-12 pt-8
         flex flex-col sm:flex-row items-center justify-between gap-5">
         <p className="font-body text-xs text-sand/35 order-2 sm:order-1">
-          © {new Date().getFullYear()} Balbina Safaris. All rights reserved.
+          © {new Date().getFullYear()} Native Kilimanjaro. All rights reserved.
         </p>
         <div className="flex items-center gap-2 flex-wrap justify-center order-1 sm:order-2">
           <span className="font-body text-xs text-sand/30 mr-1">We accept</span>

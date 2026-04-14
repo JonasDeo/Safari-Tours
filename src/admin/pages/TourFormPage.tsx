@@ -371,7 +371,7 @@ const TourFormPage = () => {
             className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-body
               font-semibold tracking-wider uppercase transition-all duration-200"
             style={form.published
-              ? { background: "hsl(142 70% 50%/0.12)", color: "hsl(142 70% 50%)", border: "1px solid hsl(142 70% 50%/0.25)" }
+              ? { background: "hsl(var(--olive)/0.12)", color: "hsl(var(--olive))", border: "1px solid hsl(var(--olive)/0.25)" }
               : { background: "hsl(var(--muted))", color: "hsl(var(--muted-foreground))", border: "1px solid hsl(var(--border)/0.5)" }}>
             {form.published ? <><Eye className="w-3.5 h-3.5" /> Published</> : <><EyeOff className="w-3.5 h-3.5" /> Draft</>}
           </button>
@@ -512,7 +512,7 @@ const TourFormPage = () => {
           <div className="flex items-center gap-3">
             {saved && (
               <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                className="text-sm font-body" style={{ color: "hsl(142 70% 50%)" }}>
+                className="text-sm font-body" style={{ color: "hsl(var(--olive))" }}>
                 Saved ✓
               </motion.span>
             )}

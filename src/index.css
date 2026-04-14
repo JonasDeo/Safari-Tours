@@ -5,7 +5,7 @@
 @layer base {
   :root {
     /* ── Page ───────────────────────────────────────────────────────────────── */
-    --background:          38 18% 96%;    /* warm cream  #f5f2ed              */
+    --background:          0  0% 94%;     /* soft light gray  #f0f0f0         */
     --foreground:          0  0%  8%;     /* near-black  #141414              */
 
     /* ── Cards & surfaces — light greys, unchanged ──────────────────────────── */
@@ -16,57 +16,57 @@
     --popover-foreground:  0  0%  8%;
 
     /* ── Gold — dialed back ──────────────────────────────────────────────────── */
-    --primary:             36 42% 40%;    /* #8f6e2a                          */
+    --primary:             17 64% 44%;    /* burnt orange #b6552a             */
     --primary-foreground:  0  0%  100%;
 
     /* ── Secondary ───────────────────────────────────────────────────────────── */
-    --secondary:           0  0%  92%;
+    --secondary:           0  0%  89%;
     --secondary-foreground:0  0%  8%;
 
     /* ── Muted — light, as before ────────────────────────────────────────────── */
-    --muted:               0  0%  92%;
-    --muted-foreground:    0  0%  42%;
+    --muted:               0  0%  89%;
+    --muted-foreground:    0  0%  34%;
 
-    --accent:              36 42% 40%;
+    --accent:              76 33% 22%;    /* olive green  #414a26             */
     --accent-foreground:   0  0%  100%;
 
     --destructive:         0  72%  45%;
     --destructive-foreground: 0 0% 98%;
 
-    --border:              0  0%  86%;
-    --input:               0  0%  86%;
-    --ring:                36 42% 40%;
+    --border:              0  0%  78%;
+    --input:               0  0%  82%;
+    --ring:                17 64% 44%;
     --radius:              0.5rem;
 
     /* ── Brand tokens ───────────────────────────────────────────────────────── */
-    --sand:                38 18% 88%;
-    --sand-dark:           36 15% 65%;
+    --sand:                0  0%  92%;
+    --sand-dark:           0  0%  70%;
     --charcoal:            0  0%  8%;
     --dark-overlay:        0  0%  8%;
     --earth:               0  0%  9%;
-    --olive:               90 12% 28%;
-    --olive-light:         90 8%  45%;
-    --warm-cream:          38 18% 96%;
-    --terracotta:          36 42% 40%;
-    --terracotta-light:    36 35% 55%;
+    --olive:               76 33% 22%;
+    --olive-light:         76 22% 34%;
+    --warm-cream:          0  0%  96%;
+    --terracotta:          17 64% 44%;
+    --terracotta-light:    17 56% 54%;
 
     /* ── Navbar & Footer — dark ─────────────────────────────────────────────── */
-    --nav-background:      0  0%  7%;     /* #121212 near-black               */
-    --nav-foreground:      38 12% 88%;    /* warm off-white                   */
-    --nav-border:          0  0%  14%;    /* subtle separator                 */
+    --nav-background:      76 25% 14%;    /* deep olive                       */
+    --nav-foreground:      0  0%  94%;    /* near-white                       */
+    --nav-border:          76 18% 24%;
 
-    --footer-background:   0  0%  5%;     /* #0d0d0d — slightly deeper        */
-    --footer-foreground:   38 12% 82%;
+    --footer-background:   76 28% 12%;
+    --footer-foreground:   0  0%  90%;
 
     /* ── Admin sidebar ──────────────────────────────────────────────────────── */
-    --sidebar-background:      0  0%  7%;
-    --sidebar-foreground:      38 12% 88%;
-    --sidebar-primary:         36 42% 44%;
+    --sidebar-background:      76 25% 14%;
+    --sidebar-foreground:      0  0%  94%;
+    --sidebar-primary:         17 64% 44%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent:          0  0%  13%;
-    --sidebar-accent-foreground: 38 12% 88%;
-    --sidebar-border:          0  0%  15%;
-    --sidebar-ring:            36 42% 44%;
+    --sidebar-accent:          76 18% 22%;
+    --sidebar-accent-foreground: 0 0% 94%;
+    --sidebar-border:          76 18% 26%;
+    --sidebar-ring:            17 64% 44%;
 
     /* ── Typography ─────────────────────────────────────────────────────────── */
     --font-display: 'Playfair Display', serif;

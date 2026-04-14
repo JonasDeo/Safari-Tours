@@ -61,7 +61,7 @@ const BlogAdminPage = () => {
         </div>
         <Link to="/admin/blog/new"
           className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-semibold tracking-widest uppercase font-body transition-all duration-200"
-          style={{ background: "hsl(var(--primary))", color: "hsl(var(--dark))" }}>
+          style={{ background: "hsl(var(--primary))", color: "hsl(var(--primary-foreground))" }}>
           <Plus className="w-3.5 h-3.5" /> New Post
         </Link>
       </motion.div>
@@ -88,7 +88,7 @@ const BlogAdminPage = () => {
             <button key={c} onClick={() => setCatFilter(c)}
               className="px-3 py-2 rounded-xl text-xs font-body font-semibold uppercase tracking-wider transition-all duration-200"
               style={catFilter === c
-                ? { background: "hsl(var(--primary))", color: "hsl(var(--dark))" }
+                ? { background: "hsl(var(--primary))", color: "hsl(var(--primary-foreground))" }
                 : { background: "hsl(var(--muted)/0.5)", color: "hsl(var(--muted-foreground))" }}>
               {c}
             </button>
@@ -161,7 +161,7 @@ const BlogAdminPage = () => {
                         <td className="px-5 py-4">
                           <span className="text-xs font-body px-2.5 py-1 rounded-full font-medium"
                             style={post.published
-                              ? { background: "hsl(142 70% 50%/0.12)", color: "hsl(142 70% 50%)" }
+                              ? { background: "hsl(var(--olive)/0.12)", color: "hsl(var(--olive))" }
                               : { background: "hsl(var(--muted))",      color: "hsl(var(--muted-foreground))" }}>
                             {post.published ? "Live" : "Draft"}
                           </span>

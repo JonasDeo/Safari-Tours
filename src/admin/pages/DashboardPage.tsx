@@ -45,9 +45,9 @@ type PipelineCardDef = {
 //   Constants      ─
 
 const STATUS_STYLES: Record<string, { bg: string; color: string; label: string }> = {
-  PENDING:   { bg: "hsl(38 90% 55% / 0.12)",   color: "hsl(38 90% 55%)",    label: "Pending"   },
-  REVIEWED:  { bg: "hsl(210 80% 60% / 0.12)",  color: "hsl(210 80% 60%)",   label: "Reviewed"  },
-  RESPONDED: { bg: "hsl(142 70% 50% / 0.12)",  color: "hsl(142 70% 50%)",   label: "Responded" },
+  PENDING:   { bg: "hsl(var(--terracotta-light)/0.22)", color: "hsl(var(--terracotta))", label: "Pending"   },
+  REVIEWED:  { bg: "hsl(var(--olive-light)/0.22)",      color: "hsl(var(--olive))",      label: "Reviewed"  },
+  RESPONDED: { bg: "hsl(var(--primary)/0.12)",          color: "hsl(var(--primary))",    label: "Responded" },
   CONVERTED: { bg: "hsl(var(--primary)/0.12)", color: "hsl(var(--primary))", label: "Converted" },
   CLOSED:    { bg: "hsl(0 0% 50% / 0.12)",     color: "hsl(0 0% 55%)",      label: "Closed"    },
 };
@@ -67,21 +67,21 @@ const buildStatCards = (stats: Stats): StatCardDef[] => [
     value: stats.bookings.confirmed,
     delta: `${stats.bookings.pending} pending`,
     icon:  CalendarCheck,
-    color: "hsl(142 70% 50%)",
+    color: "hsl(var(--olive))",
   },
   {
     label: "Conversion Rate",
     value: `${stats.conversion_rate}%`,
     delta: "quote → booking",
     icon:  TrendingUp,
-    color: "hsl(210 80% 60%)",
+    color: "hsl(var(--terracotta))",
   },
   {
     label: "Revenue This Month",
     value: `$${((stats.revenue.this_month_usd ?? stats.revenue.total_usd) / 1000).toFixed(1)}k`,
     delta: "confirmed",
     icon:  DollarSign,
-    color: "hsl(38 90% 55%)",
+    color: "hsl(var(--terracotta-light))",
   },
 ];
 
@@ -105,7 +105,7 @@ const buildPipelineCards = (stats: Stats): PipelineCardDef[] => [
       : " -",
     sub:   stats.avg_response_minutes != null ? "to first reply" : "No responses recorded",
     icon:  Timer,
-    color: "hsl(142 70% 50%)",
+    color: "hsl(var(--olive))",
     empty: stats.avg_response_minutes == null,
   },
   {
@@ -115,7 +115,7 @@ const buildPipelineCards = (stats: Stats): PipelineCardDef[] => [
       ? `${stats.top_destination.bookings} bookings`
       : "No bookings yet",
     icon:  MapPin,
-    color: "hsl(210 80% 60%)",
+    color: "hsl(var(--terracotta))",
     empty: stats.top_destination == null,
   },
   {
@@ -125,7 +125,7 @@ const buildPipelineCards = (stats: Stats): PipelineCardDef[] => [
       : " -",
     sub:   stats.avg_booking_value_usd != null ? "per confirmed tour" : "No bookings yet",
     icon:  BarChart2,
-    color: "hsl(38 90% 55%)",
+    color: "hsl(var(--terracotta-light))",
     empty: stats.avg_booking_value_usd == null,
   },
 ];
@@ -149,7 +149,7 @@ const getUrgency = (status: string, created_at: string) => {
   if (status?.toUpperCase() !== "PENDING") return null;
   const age = ageMinutes(created_at);
   if (age <= 30)  return { icon: AlertCircle,   color: "hsl(0 80% 60%)",   label: "Reply urgently" };
-  if (age <= 120) return { icon: AlertTriangle,  color: "hsl(38 90% 55%)", label: "Waiting for response" };
+  if (age <= 120) return { icon: AlertTriangle,  color: "hsl(var(--terracotta))", label: "Waiting for response" };
   return null;
 };
 
@@ -213,8 +213,8 @@ const PipelineCard = ({ label, value, sub, icon: Icon, color, empty, delay }: Pi
 const QuoteStatusBar = ({ stats }: { stats: Stats }) => {
   const total = stats.quotes.total || 1;
   const bars = [
-    { label: "Pending",   count: stats.quotes.pending,    color: "hsl(38 90% 55%)"     },
-    { label: "Responded", count: stats.quotes.responded,   color: "hsl(142 70% 50%)"    },
+    { label: "Pending",   count: stats.quotes.pending,    color: "hsl(var(--terracotta))" },
+    { label: "Responded", count: stats.quotes.responded,  color: "hsl(var(--olive))"      },
     { label: "Converted", count: stats.quotes.converted,   color: "hsl(var(--primary))" },
     { label: "Closed",    count: stats.quotes.closed ?? 0, color: "hsl(0 0% 50%)"       },
   ];
@@ -308,7 +308,7 @@ const DashboardPage = () => {
       <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="font-display text-2xl text-foreground mb-1">{greeting}!</h1>
         <p className="font-body text-sm text-muted-foreground">
-          Here's what's happening with Balbina Safaris today.
+          Here's what's happening with Native Kilimanjaro today.
         </p>
       </motion.div>
 
@@ -500,7 +500,7 @@ const DashboardPage = () => {
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center justify-between p-5 rounded-2xl transition-all duration-200 group"
-            style={{ background: "hsl(142 70% 50% / 0.08)", border: "1px solid hsl(142 70% 50% / 0.2)" }}
+            style={{ background: "hsl(var(--olive)/0.08)", border: "1px solid hsl(var(--olive)/0.2)" }}
           >
             <div>
               <p className="font-body font-semibold text-sm text-foreground mb-0.5">Create Quote</p>
@@ -509,7 +509,7 @@ const DashboardPage = () => {
 
             <PlusCircle
               className="w-4 h-4 transition-transform group-hover:scale-110 duration-200"
-              style={{ color: "hsl(142 70% 50%)" }}
+              style={{ color: "hsl(var(--olive))" }}
             />
           </Link>
 

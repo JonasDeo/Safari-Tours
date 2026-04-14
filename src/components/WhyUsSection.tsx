@@ -144,7 +144,7 @@ const WhyUsSection = () => (
               transition={{ duration: 0.45, delay: 0.1 }}
               className="font-body text-sand/60 leading-relaxed mb-10 max-w-md"
             >
-              Balbina Safaris was born in Tanzania, not in a travel agency office
+              Native Kilimanjaro was born in Tanzania, not in a travel agency office
               somewhere else. That difference shows — in every route we plan,
               every guide we hire, every community we support.
             </motion.p>

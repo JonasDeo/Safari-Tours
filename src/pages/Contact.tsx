@@ -96,7 +96,7 @@ const ContactPage = () => {
       {/*   Hero   */}
       <section className="relative flex items-center overflow-hidden"
         style={{ height: "clamp(200px, 35vh, 360px)", paddingTop: "var(--nav-total-h, 64px)" }}>
-        <img src={tour1} alt="Contact Balbina Safaris"
+        <img src={tour1} alt="Contact Native Kilimanjaro"
           className="absolute inset-0 w-full h-full object-cover object-center" />
         <div className="absolute inset-0 bg-dark-overlay/70" />
         <div className="relative z-10 container mx-auto px-6">
