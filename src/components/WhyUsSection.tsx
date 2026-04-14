@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import img1 from "@/assets/safari-elephants.jpg";
 import img2 from "@/assets/safari-landscape.jpg";
 import img3 from "@/assets/safari-lions.jpg";
-import logoSrc from "@/assets/balbina-logo.png";
+import logoSrc from "@/assets/watermark.png";
 
 const reasons = [
   { icon: TreePine,   title: "Local & On the Ground",  desc: "Based in Tanzania. Our guides live the land — no middlemen, no guesswork." },
@@ -98,19 +98,23 @@ const WhyUsSection = () => (
         <div className="order-2 lg:order-2 relative">
 
           {/* Logo watermark */}
-          <img
-            src={logoSrc}
-            alt="" aria-hidden
-            className="pointer-events-none select-none absolute left-1/2 top-1/2 object-contain"
-            style={{
-              width: "440px",
-              opacity: 0.09,
-              filter: "invert(1)",
-              mixBlendMode: "screen" as const,
-              zIndex: 0,
-              transform: "translate(-50%, -50%)",
-            }}
-          />
+          <motion.img
+          src={logoSrc}
+          alt=""
+          aria-hidden
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.14 }}
+          transition={{ duration: 1.2 }}
+          className="pointer-events-none select-none absolute left-1/2 top-1/2 object-contain"
+          style={{
+            width: "600px",
+            height:"600px",
+            filter: "invert(1) drop-shadow(0 0 20px rgba(255,255,255,0.12))",
+            mixBlendMode: "screen",
+            zIndex: 0,
+            transform: "translate(-50%, -50%)",
+          }}
+/>
 
           {/* Content sits above the watermark */}
           <div className="relative z-10">

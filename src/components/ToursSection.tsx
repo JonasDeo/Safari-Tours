@@ -23,7 +23,7 @@ interface Tour {
 
 // ── Fallback — shown while loading or if API fails 
 
-import tour1 from "@/assets/guided-safari.jpeg";
+import tour1 from "@/assets/guided-safari.jpg";
 import tour2 from "@/assets/beach.jpg";
 import tour3 from "@/assets/tour-4.jpg";
 import tour5 from "@/assets/tour-5.jpeg";

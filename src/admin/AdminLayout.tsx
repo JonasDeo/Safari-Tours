@@ -113,23 +113,58 @@ const SidebarContent = ({
     <div className="flex flex-col h-full">
 
       {/* Logo */}
-      <div className="px-4 py-5 flex items-center gap-3 flex-shrink-0"
-        style={{ borderBottom: "1px solid hsl(var(--sand)/0.07)" }}>
-        <div className="w-12 h-12 flex items-center justify-center flex-shrink-0">
-          <img src={logoSrc} alt="" className="w-12 h-12 object-contain"
-            style={{ filter: "brightness(0) invert(1)" }} />
+<div
+  className="px-4 pt-4 pb-4 flex flex-col items-center flex-shrink-0"
+  style={{ borderBottom: "1px solid hsl(var(--sand)/0.07)" }}
+>
+  <AnimatePresence mode="wait">
+    {!collapsed ? (
+      <motion.div
+        key="expanded"
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.9 }}
+        transition={{ duration: 0.2 }}
+        className="flex flex-col items-center gap-1.5"
+      >
+        {/* Logo — bigger */}
+        <div className="w-22 h-22 flex items-center justify-center">
+          <img
+            src={logoSrc}
+            alt="Native Kilimanjaro"
+            className="w-22 h-22 object-contain"
+            style={{ filter: "brightness(0) invert(1)" }}
+          />
         </div>
-        <AnimatePresence>
-          {show && (
-            <motion.p initial={{ opacity: 0, width: 0 }} animate={{ opacity: 1, width: "auto" }}
-              exit={{ opacity: 0, width: 0 }}
-              className="font-display text-base leading-none overflow-hidden whitespace-nowrap"
-              style={{ fontFamily: '"Yeseva One", serif', color: "hsl(var(--sand))" }}>
-              Native<span style={{ color: "hsl(var(--primary))" }}>Admin</span>
-            </motion.p>
-          )}
-        </AnimatePresence>
-      </div>
+
+        {/* Label — tight beneath, very quiet */}
+        <p
+          className="text-[9px] tracking-[0.28em] font-body uppercase"
+          style={{ color: "hsl(var(--sand)/0.22)" }}
+        >
+          Native&nbsp;
+          <span style={{ color: "hsl(var(--primary)/0.55)" }}>Admin</span>
+        </p>
+      </motion.div>
+    ) : (
+      <motion.div
+        key="collapsed"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.15 }}
+        className="w-9 h-9 flex items-center justify-center"
+      >
+        <img
+          src={logoSrc}
+          alt=""
+          className="w-9 h-9 object-contain"
+          style={{ filter: "brightness(0) invert(1)" }}
+        />
+      </motion.div>
+    )}
+  </AnimatePresence>
+</div>
 
       {/* Main nav */}
       <nav className="flex-1 px-2 py-4 space-y-0.5 overflow-y-auto admin-scrollbar">
