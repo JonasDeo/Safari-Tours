@@ -56,7 +56,7 @@ export const TourCard = ({
   fallbackImg?: string;
 }) => (
   <Link
-    to={`/quote?tour=${tour.slug}`}
+    to={`/tours/${tour.slug}`}
     className="group flex flex-col rounded-xl overflow-hidden border transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5"
     style={{ borderColor: "hsl(var(--border)/0.7)", background: "hsl(var(--background))" }}
   >

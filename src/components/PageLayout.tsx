@@ -6,7 +6,7 @@ const PageLayout = ({ children }: { children: ReactNode }) => {
   return (
     <div className="min-h-screen">
       <Navbar />
-      <main className="pt-[90px]">{children}</main>
+      <main className="pt-[var(--nav-total-h)]">{children}</main>
       <FooterSection />
     </div>
   );

@@ -27,6 +27,45 @@ const SectionCard = ({ title, icon: Icon, children }: { title: string; icon: any
   </div>
 );
 
+type PwFieldProps = {
+  label: string;
+  field: "current" | "next" | "confirm";
+  value: string;
+  onChange: (val: string) => void;
+  show: boolean;
+  toggle: () => void;
+};
+
+const PwField = ({ label, value, onChange, show, toggle }: PwFieldProps) => (
+  <div className="space-y-1.5">
+    <label className="text-xs uppercase tracking-[0.15em] font-body text-muted-foreground">
+      {label}
+    </label>
+
+    <div className="relative">
+      <input
+        type={show ? "text" : "password"}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        required
+        className={`${inputCls} pr-11`}
+        style={iStyle}
+        onFocus={onF}
+        onBlur={onB}
+      />
+
+      <button
+        type="button"
+        onClick={toggle}
+        className="absolute right-3 top-1/2 -translate-y-1/2"
+        style={{ color: "hsl(var(--muted-foreground))" }}
+      >
+        {show ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+      </button>
+    </div>
+  </div>
+);
+
 const ProfilePage = () => {
   const { adminName } = useAdminAuth();
 
@@ -78,22 +117,6 @@ const ProfilePage = () => {
 
   const toggleShow = (k: keyof typeof showPw) =>
     setShowPw(v => ({ ...v, [k]: !v[k] }));
-
-  const PwField = ({ label, field }: { label: string; field: keyof typeof pw }) => (
-    <div className="space-y-1.5">
-      <label className="text-xs uppercase tracking-[0.15em] font-body text-muted-foreground">{label}</label>
-      <div className="relative">
-        <input type={showPw[field] ? "text" : "password"} value={pw[field]}
-          onChange={e => setPw(v => ({ ...v, [field]: e.target.value }))} required
-          className={`${inputCls} pr-11`} style={iStyle} onFocus={onF} onBlur={onB} />
-        <button type="button" onClick={() => toggleShow(field)}
-          className="absolute right-3 top-1/2 -translate-y-1/2"
-          style={{ color: "hsl(var(--muted-foreground))" }}>
-          {showPw[field] ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-        </button>
-      </div>
-    </div>
-  );
 
   return (
     <div className="max-w-2xl space-y-8">
@@ -164,9 +187,32 @@ const ProfilePage = () => {
       <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.16 }}>
         <SectionCard title="Change Password" icon={Lock}>
           <form onSubmit={savePassword} className="space-y-4">
-            <PwField label="Current Password"  field="current" />
-            <PwField label="New Password"       field="next"    />
-            <PwField label="Confirm New Password" field="confirm" />
+            <PwField
+  label="Current Password"
+  field="current"
+  value={pw.current}
+  onChange={(val) => setPw(v => ({ ...v, current: val }))}
+  show={showPw.current}
+  toggle={() => toggleShow("current")}
+/>
+
+<PwField
+  label="New Password"
+  field="next"
+  value={pw.next}
+  onChange={(val) => setPw(v => ({ ...v, next: val }))}
+  show={showPw.next}
+  toggle={() => toggleShow("next")}
+/>
+
+<PwField
+  label="Confirm New Password"
+  field="confirm"
+  value={pw.confirm}
+  onChange={(val) => setPw(v => ({ ...v, confirm: val }))}
+  show={showPw.confirm}
+  toggle={() => toggleShow("confirm")}
+/>
             {pwError && (
               <p className="text-xs font-body" style={{ color: "hsl(0 70% 65%)" }}>{pwError}</p>
             )}

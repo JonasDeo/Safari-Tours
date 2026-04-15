@@ -63,7 +63,7 @@ const BeachHolidays = () => {
 
         {/* Second image */}
         <img
-          src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=1200"
+          src="https://images.pexels.com/photos/417083/pexels-photo-417083.jpeg"
           alt="Pemba Island clear waters"
           className="w-full rounded-xl object-cover mb-10"
           style={{ height: 320 }}

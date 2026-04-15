@@ -4,12 +4,12 @@ import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import machameImg from "@/assets/mount-trek.jpg";
 import lemoshoImg from "@/assets/mount-trek.jpg";
-import rongaiImg  from "@/assets/mount-trek.jpg";
+import maranguImg  from "@/assets/mount-trek.jpg";
 
 const treks = [
-  { days: 9, type: "Trek",   title: "Rongai Route",   price: 2130, image: rongaiImg  },
-  { days: 9, type: "Trek",   title: "Machame Route",  price: 2470, image: machameImg },
-  { days: 9, type: "Trek",   title: "Lemosho Route",  price: 2585, image: lemoshoImg },
+  { days: 6, type: "Trek",   title: "Marangu Route",   price: 2130, image: maranguImg  },
+  { days: 7, type: "Trek",   title: "Machame Route",  price: 2470, image: machameImg },
+  { days: 8, type: "Trek",   title: "Lemosho Route",  price: 2585, image: lemoshoImg },
 ];
 
 const AUTO_INTERVAL = 3500; // ms between auto-scroll steps

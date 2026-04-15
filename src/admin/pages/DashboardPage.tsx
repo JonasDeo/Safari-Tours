@@ -496,7 +496,7 @@ const DashboardPage = () => {
         </Link>
 
         <Link
-            to="/quotes"
+            to="/quote"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center justify-between p-5 rounded-2xl transition-all duration-200 group"

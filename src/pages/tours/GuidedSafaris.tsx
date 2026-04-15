@@ -1,11 +1,29 @@
-// src/pages/tours/GuidedSafaris.tsx
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import PageLayout from "@/components/PageLayout";
 import { useTours, PackagesGrid } from "./_shared";
+import { DESTINATIONS } from "@/data/destinationData";
 
 const GuidedSafaris = () => {
   const { tours, loading } = useTours("GUIDED");
+
+  const topDestinations = [
+  {
+    name: "Tanzania",
+    slug: "tanzania",
+    desc: "Home of the Great Wildebeest Migration, Ngorongoro Crater, and tree-climbing lions.",
+  },
+  {
+    name: "Kenya",
+    slug: "kenya",
+    desc: "Iconic Big Five safaris in the Maasai Mara — the heart of African wildlife.",
+  },
+  {
+    name: "Uganda & Rwanda",
+    slug: "uganda", 
+    desc: "Gorilla and chimpanzee trekking through lush jungle — a truly life-changing encounter.",
+  },
+];
 
   return (
     <PageLayout>
@@ -69,21 +87,36 @@ const GuidedSafaris = () => {
           we craft journeys that connect you deeply to Africa — and give back to the people who call it home.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-10">
-          {[
-            { name: "Tanzania", desc: "Home of the Great Wildebeest Migration, Ngorongoro Crater, and tree-climbing lions.", img: "https://images.unsplash.com/photo-1534177616072-ef7dc120449d?w=600" },
-            { name: "Kenya", desc: "Iconic Big Five safaris in the Maasai Mara — the heart of African wildlife.", img: "https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=600" },
-            { name: "Uganda & Rwanda", desc: "Gorilla and chimpanzee trekking through lush jungle — a truly life-changing encounter.", img: "https://images.unsplash.com/photo-1551316679-9c6ae9dec224?w=600" },
-          ].map((d) => (
-            <div key={d.name} className="rounded-xl overflow-hidden border"
-              style={{ borderColor: "hsl(var(--border)/0.6)" }}>
-              <img src={d.img} alt={d.name} className="w-full object-cover" style={{ height: 160 }} />
-              <div className="p-4">
-                <h3 className="font-body font-semibold text-foreground mb-1">{d.name}</h3>
-                <p className="font-body text-xs text-muted-foreground leading-relaxed">{d.desc}</p>
-              </div>
-            </div>
-          ))}
+  {topDestinations.map((d) => {
+    const data = DESTINATIONS.find(dest => dest.slug === d.slug);
+
+    return (
+      <Link
+        key={d.name}
+        to={`/destinations/${d.slug}`}
+        className="rounded-xl overflow-hidden border block group transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+        style={{ borderColor: "hsl(var(--border)/0.6)" }}
+      >
+        <img
+          src={data?.image}
+          alt={d.name}
+          className="w-full object-cover group-hover:scale-105 transition-transform duration-700"
+          style={{ height: 160 }}
+        />
+
+        <div className="p-4">
+          <h3 className="font-body font-semibold text-foreground mb-1 group-hover:underline">
+            {d.name}
+          </h3>
+
+          <p className="font-body text-xs text-muted-foreground leading-relaxed">
+            {d.desc}
+          </p>
         </div>
+      </Link>
+    );
+  })}
+</div>
 
         {/* Best time */}
         <div className="rounded-xl p-6 mb-12"

@@ -30,7 +30,7 @@ interface Tour {
 const FALLBACK_IMAGES = [
   "https://images.unsplash.com/photo-1516426122078-c23e76319801?w=800",
   "https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=800",
-  "https://images.unsplash.com/photo-1504945005722-33670dcaf685?w=800",
+  "https://images.unsplash.com/photo-1549035092-33b2937b075a?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8emFuemliYXJ8ZW58MHx8MHx8fDA%3D",
   "https://images.unsplash.com/photo-1523805009345-7448845a9e53?w=800",
 ];
 
