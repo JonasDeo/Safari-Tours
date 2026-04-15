@@ -23,8 +23,8 @@ export interface SiteSettings {
 
 export const DEFAULT_SETTINGS: SiteSettings = {
   contact: {
-    phone:    "+255 623 880844",
-    whatsapp: "+255 685 808332",
+    phone:    "+255 753 000000",
+    whatsapp: "+255 123 808808",
     email:    "info@nativekilimanjaro.com",
     address:  "Moshi, Tanzania",
     website:  "https://nativekilimanjaro.com",

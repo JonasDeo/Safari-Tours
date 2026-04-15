@@ -24,11 +24,11 @@ const SAFARI_TYPES = [
 ];
 
 const DESTINATIONS = [
-  { label: "Tanzania Safari", href: "/destinations" },
-  { label: "Kenya Safari",    href: "/destinations" },
-  { label: "Uganda Safari",   href: "/destinations" },
-  { label: "Rwanda Safari",   href: "/destinations" },
-  { label: "Zanzibar",        href: "/destinations" },
+  { label: "Tanzania Safari", href: "/destinations/tanzania" },
+  { label: "Kenya Safari",    href: "/destinations/kenya" },
+  { label: "Uganda Safari",   href: "/destinations/uganda" },
+  { label: "Rwanda Safari",   href: "/destinations/uganda" },
+  { label: "Zanzibar",        href: "/destinations/zanzibar" },
 ];
 
 const QUICK_LINKS = [

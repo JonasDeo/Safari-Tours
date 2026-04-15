@@ -26,7 +26,7 @@ interface Tour {
 import tour1 from "@/assets/guided-safari.jpg";
 import tour2 from "@/assets/beach.jpg";
 import tour3 from "@/assets/tour-4.jpg";
-import tour5 from "@/assets/tour-5.jpeg";
+import tour5 from "@/assets/tour-4.jpg";
 
 const FALLBACK: Tour[] = [
   { id: 1, slug: "tanzania-safari-zanzibar",    title: "10 Days Best of Tanzania – Safari & Zanzibar Beach Escape",    images: [], cover_image: null, duration: "10 Days 9 Nights", duration_days: 10, destination: "Arusha", price: 3800, price_from: 3800, currency: "USD", type: "GUIDED", tags: ["Beach Holiday", "Wildlife Adventure"] },
