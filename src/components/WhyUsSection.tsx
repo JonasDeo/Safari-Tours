@@ -98,24 +98,28 @@ const WhyUsSection = () => (
         <div className="order-2 lg:order-2 relative">
 
           {/* Logo watermark */}
-          <motion.img
-          src={logoSrc}
-          alt=""
-          aria-hidden
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 0.14 }}
-          transition={{ duration: 1.2 }}
-          className="pointer-events-none select-none absolute left-1/2 top-1/2 object-contain"
-          style={{
-            width: "600px",
-            height:"600px",
-            filter: "invert(1) drop-shadow(0 0 20px rgba(255,255,255,0.12))",
-            mixBlendMode: "screen",
-            zIndex: 0,
-            transform: "translate(-50%, -50%)",
-          }}
-/>
-
+<motion.div
+  aria-hidden
+  initial={{ opacity: 0 }}
+  animate={{ opacity: 1 }}
+  transition={{ duration: 1.4 }}
+  className="pointer-events-none select-none absolute inset-0 flex items-center justify-center"
+  style={{ zIndex: 0 }}
+>
+  <img
+    src={logoSrc}
+    alt=""
+    className="object-contain"
+    style={{
+      width: "420px",
+      height: "420px",
+      opacity: 0.06,
+      filter: "grayscale(1) brightness(10)",
+      maskImage: "radial-gradient(ellipse 65% 65% at 50% 50%, black 30%, transparent 100%)",
+      WebkitMaskImage: "radial-gradient(ellipse 65% 65% at 50% 50%, black 30%, transparent 100%)",
+    }}
+  />
+</motion.div>
           {/* Content sits above the watermark */}
           <div className="relative z-10">
 

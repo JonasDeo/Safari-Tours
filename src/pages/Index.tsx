@@ -9,6 +9,7 @@ import WhyUsSection from "@/components/WhyUsSection";
 import AccommodationSection from "@/components/AccommodationSection";
 import TestimonialsSection from "@/components/TestimonialsSection";
 import FooterSection from "@/components/FooterSection";
+import { KilimanjaroSection } from "@/components/KilimanjaroSection";
 
 const Index = () => {
   return (
@@ -20,7 +21,8 @@ const Index = () => {
         <IntroSection />
         <HighlightCards />
         <ServicesSection />
-        <SelfDriveSection />
+        {/* <SelfDriveSection /> */}
+        <KilimanjaroSection />
         <ToursSection />
         <WhyUsSection />
         <AccommodationSection />

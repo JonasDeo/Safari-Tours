@@ -63,8 +63,8 @@ const ContactPage = () => {
       icon: MapPin,
       label: "Office",
       value: contact.address,
-      sub:   "Near the Arusha Clock Tower",
-      href:  "https://maps.google.com/?q=Arusha,Tanzania",
+      sub:   "Near the Moshi Askari Monument",
+      href:  "https://maps.app.goo.gl/HUbyRCCeBAGT5Exv6",
     },
   ];
   const [form, setForm] = useState({

@@ -64,7 +64,7 @@ const StillHavingQuestions = () => {
           Still have questions?
         </h3>
         <p className="font-body text-sm text-muted-foreground">
-          Our team is based in Arusha and available Mon–Sat, 8am–6pm EAT.
+          Our team is based in Moshi and available Mon–Sat, 8am–6pm EAT.
         </p>
       </div>
       <div className="flex flex-col sm:flex-row gap-3 flex-shrink-0">
