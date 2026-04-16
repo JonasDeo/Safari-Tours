@@ -1,6 +1,6 @@
 import { useRef, useEffect } from "react";
 import PageLayout  from "@/components/PageLayout";
-import { WIZARD_STEPS } from "@/constants/quoteData"; 
+import { WIZARD_STEPS } from "@/data/quoteData"; 
 import useQuoteWizard   from "@/hooks/use-quote-wizard";
 import QuoteHero from "@/components/quote/QuoteHero";
 import QuoteSidebar from "@/components/quote/QuoteSidebar";

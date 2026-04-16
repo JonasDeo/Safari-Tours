@@ -1,4 +1,4 @@
-import { CATEGORIES } from "@/constants/blogData";
+import { CATEGORIES } from "@/data/blogData";
 import { motion } from "framer-motion";
 import { BlogCategory } from "./Blog";
 

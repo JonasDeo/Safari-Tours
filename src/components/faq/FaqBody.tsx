@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { Phone, Mail } from "lucide-react";
 import { Link } from "react-router-dom";
-import { FAQ_SECTIONS } from "@/constants/faqData";
+import { FAQ_SECTIONS } from "@/data/faqData";
 import { useSiteSettings } from "@/hooks/use-site-settings";
 import { FAQAccordionGroup } from "./FaqAccordion";
 

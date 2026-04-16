@@ -1,5 +1,4 @@
-// src/pages/TourDetail.tsx
-// Route: /tours/:slug
+
 import { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";

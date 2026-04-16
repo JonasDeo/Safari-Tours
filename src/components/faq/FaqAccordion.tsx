@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
-import { FAQItem } from "@/constants/faqData";
+import { FAQItem } from "@/data/faqData";
 
 export const FAQAccordionItem = ({ q, a }: FAQItem) => {
   const [open, setOpen] = useState(false);

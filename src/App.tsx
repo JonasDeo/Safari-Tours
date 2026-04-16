@@ -57,10 +57,11 @@ const App = () => (
             {/* Tours — specific static routes MUST come before /:slug */}
             <Route path="/tours"               element={<Tours />} />
             <Route path="/tours/guided"        element={<GuidedSafaris />} />
-            <Route path="/tours/self-drive"    element={<SelfDrive />} />
+            {/* <Route path="/tours/self-drive"    element={<SelfDrive />} /> */}
             <Route path="/tours/mountain"      element={<MountainTrekking />} />
             <Route path="/tours/beach"         element={<BeachHolidays />} />
             <Route path="/tours/:slug"         element={<TourDetail />} />
+            <Route path="/tours/:category/:slug" element={<TourDetail />} />
 
             <Route path="/destinations"        element={<Destinations />} />
             <Route path="/destinations/:slug"  element={<DestinationPage />} />

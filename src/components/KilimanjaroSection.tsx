@@ -7,9 +7,30 @@ import lemoshoImg from "@/assets/mount-trek.jpg";
 import maranguImg  from "@/assets/mount-trek.jpg";
 
 const treks = [
-  { days: 6, type: "Trek",   title: "Marangu Route",   price: 2130, image: maranguImg  },
-  { days: 7, type: "Trek",   title: "Machame Route",  price: 2470, image: machameImg },
-  { days: 8, type: "Trek",   title: "Lemosho Route",  price: 2585, image: lemoshoImg },
+  {
+    slug: "marangu-route",
+    days: 6,
+    type: "Trek",
+    title: "Marangu Route",
+    price: 2130,
+    image: maranguImg,
+  },
+  {
+    slug: "machame-route",
+    days: 7,
+    type: "Trek",
+    title: "Machame Route",
+    price: 2470,
+    image: machameImg,
+  },
+  {
+    slug: "lemosho-route",
+    days: 8,
+    type: "Trek",
+    title: "Lemosho Route",
+    price: 2585,
+    image: lemoshoImg,
+  },
 ];
 
 const AUTO_INTERVAL = 3500; // ms between auto-scroll steps
@@ -190,7 +211,7 @@ export function KilimanjaroSection() {
                       </div>
 
                       <Link
-                        to={`/tours/mountain/${trek.title.toLowerCase().replace(/\s+/g, "-")}`}
+                        to={`/tours/mountain/${trek.slug}`}
                         className="font-body text-[11px] tracking-[0.15em] uppercase
                           font-semibold px-5 py-3 bg-primary text-white
                           hover:bg-[hsl(var(--rust-light))]

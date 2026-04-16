@@ -6,7 +6,7 @@ import CategoryFilter from "@/components/blog/CategoryFilter";
 import FeaturedPost from "@/components/blog/FeaturedPost";
 import PostGrid from "@/components/blog/Postgrid";
 import { publicApi } from "@/lib/api";
-import { BLOG_POSTS } from "@/constants/blogData"; // fallback if API empty
+import { BLOG_POSTS } from "@/data/blogData"; // fallback if API empty
 
 //   Map API response → BlogPost shape FeaturedPost/PostGrid expect       ─
 

@@ -9,7 +9,7 @@ const CURRENCIES = ["USD", "TZS", "EUR"];
 
 export const TOUR_CATEGORIES = [
   { slug: "guided",     label: "Guided Safaris",  type: "GUIDED"     },
-  { slug: "self-drive", label: "Self-Drive",       type: "SELF_DRIVE" },
+  // { slug: "self-drive", label: "Self-Drive",       type: "SELF_DRIVE" },
   { slug: "mountain",   label: "Mountain Treks",   type: "MOUNTAIN"   },
   { slug: "beach",      label: "Beach Holidays",   type: "BEACH"      },
 ];

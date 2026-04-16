@@ -1,4 +1,4 @@
-import { DESTINATIONS } from "@/constants/quoteData";
+import { DESTINATIONS } from "@/data/quoteData";
 import MultiSelect from "../MultiSelect";
 import toggleItem from "@/lib/toggleItem";
 

@@ -1,4 +1,4 @@
-import { OCCASIONS } from "@/constants/quoteData";
+import { OCCASIONS } from "@/data/quoteData";
 import MultiSelect from "../MultiSelect";
 import toggleItem from "@/lib/toggleItem";
 

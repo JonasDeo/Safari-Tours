@@ -20,7 +20,6 @@ const SAFARI_TYPES = [
   { label: "Self-Drive",      href: "/tours/self-drive" },
   { label: "Mountain Treks",  href: "/tours/mountain"   },
   { label: "Beach Holidays",  href: "/tours/beach"      },
-  { label: "Car Rental",      href: "/tours/car-rental" },
 ];
 
 const DESTINATIONS = [

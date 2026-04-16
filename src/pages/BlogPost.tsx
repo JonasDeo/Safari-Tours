@@ -11,7 +11,7 @@ import ReadingProgress from "@/components/blog/post/ReadingProgress";
 import TableOfContents from "@/components/blog/post/TableOfContents";
 import { TOCItem } from "@/components/blog/post/types/blogPost";
 import type { ContentBlock } from "@/components/blog/post/types/blogPost";
-import { BLOG_POSTS } from "@/constants/blogData";
+import { BLOG_POSTS } from "@/data/blogData";
 import { publicApi } from "@/lib/api";
 
 //   Helpers       ─

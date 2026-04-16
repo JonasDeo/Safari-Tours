@@ -1,4 +1,4 @@
-import { EXPERIENCES } from "@/constants/quoteData";
+import { EXPERIENCES } from "@/data/quoteData";
 import MultiSelect from "../MultiSelect";
 import toggleItem from "@/lib/toggleItem";
 
