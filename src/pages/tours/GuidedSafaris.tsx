@@ -3,6 +3,7 @@ import { ArrowRight } from "lucide-react";
 import PageLayout from "@/components/PageLayout";
 import { useTours, PackagesGrid } from "./_shared";
 import { DESTINATIONS } from "@/data/destinationData";
+import guidedSafari from "@/assets/guided-safari.jpg";
 
 const GuidedSafaris = () => {
   const { tours, loading } = useTours("GUIDED");
@@ -51,7 +52,7 @@ const GuidedSafaris = () => {
 
         {/* Image */}
         <img
-          src="https://images.unsplash.com/photo-1516426122078-c23e76319801?w=1200"
+          src={guidedSafari}
           alt="Safari vehicles at sunrise in the Serengeti"
           className="w-full rounded-xl object-cover mb-10"
           style={{ height: 380, objectPosition: "center 40%" }}

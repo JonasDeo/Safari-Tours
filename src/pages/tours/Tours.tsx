@@ -4,10 +4,8 @@ import { motion } from "framer-motion";
 import { MapPin, Clock, ArrowRight, SlidersHorizontal, X } from "lucide-react";
 import PageLayout from "@/components/PageLayout";
 import { publicApi } from "@/lib/api";
-import tour1  from "@/assets/guided-safari.jpg";
-import tour3  from "@/assets/tour-3.jpg";
-import tour4  from "@/assets/tour-4.jpg";
-import beach  from "@/assets/beach.jpg";
+import { FALLBACK_TOURS, type Tour } from "@/data/toursData";
+import tour1 from "@/assets/guided-safari.jpg";
 
 const TYPE_LABELS: Record<string, string> = {
   GUIDED:     "Guided Safari",
@@ -21,33 +19,12 @@ const DEST_FILTERS = ["All", "Tanzania", "Kenya", "Uganda", "Zanzibar"];
 
 // ── Tour card ─────────────────────────────────────────────────────────────────
 
-interface Tour {
-  id: number; slug: string; title: string; destination: string;
-  type: string; duration_days: number; price: number; currency: string;
-  images: any[] | null; cover_image?: string | null; excerpt: string | null; tags: string[] | null;
-}
-
-const FALLBACK_IMAGES = [
-  "https://images.unsplash.com/photo-1516426122078-c23e76319801?w=800",
-  "https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=800",
-  "https://images.unsplash.com/photo-1549035092-33b2937b075a?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8emFuemliYXJ8ZW58MHx8MHx8fDA%3D",
-  "https://images.unsplash.com/photo-1523805009345-7448845a9e53?w=800",
-];
-
-const FALLBACK_TOURS: Tour[] = [
-  { id: 1, slug: "serengeti-migration-ngorongoro",  title: "Serengeti Migration & Ngorongoro Crater Safari",  destination: "Tanzania", type: "GUIDED",     duration_days: 7, price: 3200, currency: "USD", images: null, cover_image: FALLBACK_IMAGES[0], excerpt: "Witness the Great Migration and descend into the world's largest intact volcanic caldera.", tags: ["Wildlife", "Big Five", "Migration"] },
-  { id: 2, slug: "kilimanjaro-machame-route",        title: "Kilimanjaro Trek — Machame Route",                destination: "Tanzania", type: "MOUNTAIN",    duration_days: 7, price: 2280, currency: "USD", images: null, cover_image: FALLBACK_IMAGES[1], excerpt: "Conquer Africa's highest peak via the scenic Machame route.", tags: ["Kilimanjaro", "Trekking", "Adventure"] },
-  { id: 3, slug: "zanzibar-beach-escape",            title: "Zanzibar Beach Escape",                          destination: "Zanzibar", type: "BEACH",       duration_days: 5, price: 1200, currency: "USD", images: null, cover_image: FALLBACK_IMAGES[2], excerpt: "Unwind on the white sands of Zanzibar after your safari.", tags: ["Beach", "Island", "Relaxation"] },
-  { id: 4, slug: "self-drive-northern-circuit",      title: "Tanzania Self-Drive Safari — Northern Circuit",  destination: "Tanzania", type: "SELF_DRIVE",  duration_days: 8, price: 2600, currency: "USD", images: null, cover_image: FALLBACK_IMAGES[3], excerpt: "Explore the northern circuit at your own pace in a fully equipped 4×4.", tags: ["Self-Drive", "Freedom", "Serengeti"] },
-  { id: 5, slug: "uganda-gorilla-trekking",          title: "Uganda Gorilla Trekking & Queen Elizabeth",      destination: "Uganda",   type: "GUIDED",     duration_days: 6, price: 3800, currency: "USD", images: null, cover_image: FALLBACK_IMAGES[0], excerpt: "Sit with wild mountain gorillas in Bwindi Impenetrable Forest.", tags: ["Gorilla", "Uganda", "Wildlife"] },
-];
-
 const TourCard = ({ tour, i }: { tour: Tour; i: number }) => {
   const imgUrl = (() => {
     if (tour.cover_image) return tour.cover_image;
     const first = tour.images?.[0];
-    if (!first) return FALLBACK_IMAGES[i % FALLBACK_IMAGES.length];
-    return typeof first === "string" ? first : (first as any)?.url ?? FALLBACK_IMAGES[i % FALLBACK_IMAGES.length];
+    if (!first) return "https://images.unsplash.com/photo-1516426122078-c23e76319801?w=800";
+    return typeof first === "string" ? first : (first as any)?.url ?? "https://images.unsplash.com/photo-1516426122078-c23e76319801?w=800";
   })();
 
   return (
@@ -60,31 +37,22 @@ const TourCard = ({ tour, i }: { tour: Tour; i: number }) => {
         hover:shadow-xl hover:-translate-y-0.5 cursor-pointer"
       style={{ borderColor: "hsl(var(--border)/0.6)", background: "hsl(var(--background))" }}
     >
-      {/* Entire card is a link to the detail page */}
       <Link to={`/tours/${tour.slug}`} className="flex flex-col flex-1">
-
-        {/* Image */}
         <div className="relative overflow-hidden h-52 flex-shrink-0">
           <img src={imgUrl} alt={tour.title} loading="lazy"
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-
-          {/* Type badge */}
           <span className="absolute top-3 left-3 text-xs font-body px-2.5 py-1 rounded-full font-medium"
             style={{ background: "hsl(var(--primary)/0.9)", color: "hsl(var(--dark))" }}>
-            {TYPE_LABELS[tour.type]}
+            {TYPE_LABELS[tour.type] ?? tour.type}
           </span>
-
-          {/* Duration */}
           <div className="absolute bottom-3 right-3 flex items-center gap-1.5 text-xs font-body text-white/90">
             <Clock className="w-3 h-3" />
             {tour.duration_days} days
           </div>
         </div>
 
-        {/* Content */}
         <div className="flex flex-col flex-1 p-5 gap-3">
-          {/* Destination */}
           <div className="flex items-center gap-1.5 text-xs font-body capitalize"
             style={{ color: "hsl(var(--primary))" }}>
             <MapPin className="w-3 h-3" />
@@ -102,7 +70,6 @@ const TourCard = ({ tour, i }: { tour: Tour; i: number }) => {
             </p>
           )}
 
-          {/* Tags */}
           {(tour.tags ?? []).length > 0 && (
             <div className="flex flex-wrap gap-1.5">
               {(tour.tags ?? []).slice(0, 3).map(tag => (
@@ -114,7 +81,6 @@ const TourCard = ({ tour, i }: { tour: Tour; i: number }) => {
             </div>
           )}
 
-          {/* Footer */}
           <div className="flex items-center justify-between pt-3 mt-1"
             style={{ borderTop: "1px solid hsl(var(--border)/0.5)" }}>
             <div>
@@ -131,8 +97,6 @@ const TourCard = ({ tour, i }: { tour: Tour; i: number }) => {
           </div>
         </div>
       </Link>
-
-
     </motion.article>
   );
 };
@@ -148,7 +112,8 @@ const ToursPage = () => {
   const [loading,     setLoading]     = useState(true);
 
   useEffect(() => {
-    publicApi.getTours()
+    publicApi
+      .getTours()
       .then((data: any) => {
         const list = Array.isArray(data) ? data : (data?.data ?? []);
         setTours(list.length > 0 ? list : FALLBACK_TOURS);
@@ -168,7 +133,6 @@ const ToursPage = () => {
 
   return (
     <PageLayout>
-
       {/* ── Hero ── */}
       <section className="relative flex items-center justify-center overflow-hidden"
         style={{ height: "clamp(320px, 50vh, 520px)", marginTop: "calc(-1 * var(--nav-total-h, 64px))", paddingTop: "var(--nav-total-h, 64px)" }}>
@@ -201,8 +165,6 @@ const ToursPage = () => {
         style={{ borderBottom: "1px solid hsl(var(--border)/0.5)" }}>
         <div className="container mx-auto px-4">
           <div className="flex items-center gap-3 py-3 overflow-x-auto scrollbar-none">
-
-            {/* Mobile filter toggle */}
             <button onClick={() => setShowFilters(v => !v)}
               className="lg:hidden flex items-center gap-2 px-4 py-2 rounded-full text-xs
                 font-body font-semibold uppercase tracking-wider flex-shrink-0 transition-all duration-200"
@@ -214,7 +176,6 @@ const ToursPage = () => {
               )}
             </button>
 
-            {/* Type filters */}
             <div className="hidden lg:flex items-center gap-2">
               {TYPE_FILTERS.map(f => (
                 <button key={f} onClick={() => setTypeFilter(f)}
@@ -228,11 +189,9 @@ const ToursPage = () => {
               ))}
             </div>
 
-            {/* Divider */}
             <div className="hidden lg:block w-px h-5 flex-shrink-0"
               style={{ background: "hsl(var(--border))" }} />
 
-            {/* Destination filters */}
             <div className="hidden lg:flex items-center gap-2">
               {DEST_FILTERS.map(d => (
                 <button key={d} onClick={() => setDestFilter(d)}
@@ -246,7 +205,6 @@ const ToursPage = () => {
               ))}
             </div>
 
-            {/* Clear */}
             {hasActiveFilters && (
               <button onClick={() => { setTypeFilter("All"); setDestFilter("All"); }}
                 className="ml-auto flex items-center gap-1 text-xs font-body flex-shrink-0
@@ -257,7 +215,6 @@ const ToursPage = () => {
             )}
           </div>
 
-          {/* Mobile expanded filters */}
           {showFilters && (
             <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
@@ -294,8 +251,6 @@ const ToursPage = () => {
       {/* ── Tour grid ── */}
       <section className="py-14 bg-background">
         <div className="container mx-auto px-4">
-
-          {/* Result count */}
           <p className="font-body text-sm text-muted-foreground mb-8">
             Showing <strong className="text-foreground">{filtered.length}</strong> tour{filtered.length !== 1 ? "s" : ""}
             {hasActiveFilters && " matching your filters"}
@@ -311,7 +266,6 @@ const ToursPage = () => {
                     <div className="h-3 rounded w-1/3" style={{ background: "hsl(var(--muted))" }} />
                     <div className="h-5 rounded w-3/4" style={{ background: "hsl(var(--muted))" }} />
                     <div className="h-3 rounded w-full" style={{ background: "hsl(var(--muted)/0.6)" }} />
-                    <div className="h-3 rounded w-2/3" style={{ background: "hsl(var(--muted)/0.6)" }} />
                   </div>
                 </div>
               ))}
@@ -353,7 +307,6 @@ const ToursPage = () => {
           </Link>
         </div>
       </section>
-
     </PageLayout>
   );
 };
