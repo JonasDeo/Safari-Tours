@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import PageLayout from "@/components/PageLayout";
 import { publicApi } from "@/lib/api";
+import { FALLBACK_TOURS } from "@/data/toursData";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -197,13 +198,16 @@ const TourDetail = () => {
   const [notFound, setNotFound] = useState(false);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-    if (!slug) return;
-    publicApi.getTour(slug)
-      .then(data => setTour(data as Tour))
-      .catch(() => setNotFound(true))
-      .finally(() => setLoading(false));
-  }, [slug]);
+  window.scrollTo(0, 0);
+  if (!slug) return;
+  publicApi.getTour(slug)
+    .then(data => setTour(data as Tour))
+    .catch(() => {
+      const fallback = FALLBACK_TOURS.find(t => t.slug === slug);
+      fallback ? setTour(fallback as unknown as Tour) : setNotFound(true);
+    })
+    .finally(() => setLoading(false));
+}, [slug]);
 
   if (loading) {
     return (
