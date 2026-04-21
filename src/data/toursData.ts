@@ -1,8 +1,11 @@
 // Single source of truth for fallback tours — used by ToursSection, ToursPage, and TourDetail
 
-import maranguRouteImg from "@/assets/Marangu-Route-Map.jpg";
-import machameRouteImg from "@/assets/Machame-Route-Map.avif";
-import lemoshoRouteImg from "@/assets/Lemosho-Route-Map.avif";
+import maranguRouteImg from "@/assets/kilimanjaro.jpg";
+import machameRouteImg from "@/assets/kili-2.webp";
+import lemoshoRouteImg from "@/assets/kili-3.jpg";
+import mountain1 from "@/assets/kili-trek.webp";
+import Mountain2  from "@/assets/kili-5.jpg";
+import Mountain3 from "@/assets/mount-trek.jpg"
 
 
 export interface ItineraryDay { day: number; title: string; desc: string; }
@@ -261,10 +264,8 @@ The following day takes you into the island's interior on a spice farm tour — 
     currency:           "USD",
     cover_image:        maranguRouteImg,
     images: [
+      mountain1,
       maranguRouteImg,
-      "https://images.unsplash.com/photo-1621414050946-1b3bc24b2e92?w=800&auto=format&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1609198093458-f2c6a0e2e21f?w=800&auto=format&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1631515243349-e0cb75fb8d3a?w=800&auto=format&fit=crop&q=80",
       "https://images.unsplash.com/photo-1589553416260-f586c8f1514f?w=800&auto=format&fit=crop&q=80",
     ],
     excerpt:            "The classic 'Coca-Cola' route — the only Kilimanjaro route with hut accommodation.",
@@ -321,10 +322,8 @@ A dedicated acclimatization day at Horombo Hut (3,720m) is built into the itiner
     cover_image:        machameRouteImg,
     images: [
       machameRouteImg,
-      "https://images.unsplash.com/photo-1568259547325-f08f48165cda?w=800&auto=format&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1631515243349-e0cb75fb8d3a?w=800&auto=format&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1609198093458-f2c6a0e2e21f?w=800&auto=format&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1589553416260-f586c8f1514f?w=800&auto=format&fit=crop&q=80",
+      Mountain2,
+      Mountain3
     ],
     excerpt:            "The most popular route — scenic, challenging, and with high summit success rates.",
     description: `The Machame Route — nicknamed the "Whiskey Route" in contrast to the gentler Marangu — is the most popular climbing route on Mount Kilimanjaro, and for good reason. It combines outstanding scenery, an excellent acclimatization profile, and enough physical challenge to make reaching the summit feel genuinely earned. Of all the routes on the mountain, Machame offers the most diverse landscapes and the most dramatic visual transitions as you climb from dense equatorial rainforest to the icy summit dome.
@@ -380,10 +379,9 @@ The Barranco Wall on Day 4 is the route's most exhilarating section: a 300-metre
     currency:           "USD",
     cover_image:        lemoshoRouteImg,
     images: [
+      Mountain2,
       lemoshoRouteImg,
-      "https://images.unsplash.com/photo-1621414050946-1b3bc24b2e92?w=800&auto=format&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1568259547325-f08f48165cda?w=800&auto=format&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1609198093458-f2c6a0e2e21f?w=800&auto=format&fit=crop&q=80",
+      mountain1,
       "https://images.unsplash.com/photo-1589553416260-f586c8f1514f?w=800&auto=format&fit=crop&q=80",
     ],
     excerpt:            "The most scenic and least crowded route — best for acclimatization.",
