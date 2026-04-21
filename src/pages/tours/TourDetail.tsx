@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   MapPin, Clock, ArrowRight, ArrowLeft,
@@ -9,7 +9,20 @@ import PageLayout from "@/components/PageLayout";
 import { publicApi } from "@/lib/api";
 import { FALLBACK_TOURS } from "@/data/toursData";
 
-// ─── Types ───────────────────────────────────────────────────────────────────
+// ─── Route map assets ─────────────────────────────────────────────────────────
+// These are the local map images keyed by tour slug.
+// Add / update entries here as you add more mountain routes.
+import maranguRouteImg from "@/assets/Marangu-Route-Map.jpg";
+import machameRouteImg from "@/assets/Machame-Route-Map.avif";
+import lemoshoRouteImg from "@/assets/Lemosho-Route-Map.avif";
+
+const ROUTE_MAP: Record<string, string> = {
+  "kilimanjaro-marangu-route":  maranguRouteImg,
+  "kilimanjaro-machame-route":  machameRouteImg,
+  "kilimanjaro-lemosho-route":  lemoshoRouteImg,
+};
+
+// ─── Types ────────────────────────────────────────────────────────────────────
 
 interface ItineraryDay { day: number; title: string; desc: string; }
 
@@ -37,35 +50,47 @@ interface Tour {
   published: boolean;
 }
 
-// ─── Helpers ─────────────────────────────────────────────────────────────────
+// ─── Helpers ──────────────────────────────────────────────────────────────────
 
-/**
- * Resolve any image value to a URL string.
- * Handles: plain string URLs, Vite-imported asset strings (start with / or blob),
- * and Cloudinary { url, public_id } objects.
- */
 const getImgUrl = (img: any): string => {
   if (!img) return "";
-  if (typeof img === "string") return img;                          // URL or imported asset
-  if (typeof img === "object" && img.url) return String(img.url);  // Cloudinary object
+  if (typeof img === "string") return img;
+  if (typeof img === "object" && img.url) return String(img.url);
   return "";
 };
 
 /**
- * Build a deduplicated ordered image list.
- * cover_image goes first, then images[] entries.
+ * Build the ordered, deduplicated image list for the gallery.
+ *
+ * MOUNTAIN tours: route map is always injected as image[0],
+ * followed by any remaining images (cover + API images, minus the map itself
+ * if it was already stored there).
+ *
+ * All other tours: cover_image first, then images[].
  */
 const buildImageList = (tour: Tour): string[] => {
-  const list: string[] = [];
   const seen = new Set<string>();
+  const list: string[] = [];
 
   const push = (raw: any) => {
     const url = getImgUrl(raw);
     if (url && !seen.has(url)) { seen.add(url); list.push(url); }
   };
 
-  push(tour.cover_image);
-  for (const img of tour.images ?? []) push(img);
+  const localMap = ROUTE_MAP[tour.slug];
+
+  if (tour.type === "MOUNTAIN" && localMap) {
+    // 1. Route map always first
+    push(localMap);
+    // 2. cover_image (skip if it IS the map — same reference)
+    push(tour.cover_image);
+    // 3. Rest of images[]
+    for (const img of tour.images ?? []) push(img);
+  } else {
+    // Standard order: cover → images[]
+    push(tour.cover_image);
+    for (const img of tour.images ?? []) push(img);
+  }
 
   return list;
 };
@@ -78,7 +103,7 @@ const TYPE_LABELS: Record<string, string> = {
   CAR_RENTAL: "Car Rental",
 };
 
-// ─── BookBar ─────────────────────────────────────────────────────────────────
+// ─── BookBar ──────────────────────────────────────────────────────────────────
 
 const BookBar = ({ tour }: { tour: Tour }) => (
   <div className="fixed bottom-0 left-0 right-0 z-40 md:hidden"
@@ -121,7 +146,7 @@ const ItineraryAccordion = ({ days }: { days: ItineraryDay[] }) => {
               <span className="font-body text-sm font-semibold text-foreground">{day.title || `Day ${day.day}`}</span>
             </div>
             {open === i
-              ? <ChevronUp  className="w-4 h-4 flex-shrink-0" style={{ color: "hsl(var(--muted-foreground))" }} />
+              ? <ChevronUp   className="w-4 h-4 flex-shrink-0" style={{ color: "hsl(var(--muted-foreground))" }} />
               : <ChevronDown className="w-4 h-4 flex-shrink-0" style={{ color: "hsl(var(--muted-foreground))" }} />}
           </button>
           <AnimatePresence>
@@ -140,24 +165,61 @@ const ItineraryAccordion = ({ days }: { days: ItineraryDay[] }) => {
   );
 };
 
-// ─── Gallery ─────────────────────────────────────────────────────────────────
+// ─── Gallery ──────────────────────────────────────────────────────────────────
 
-const Gallery = ({ images, title }: { images: string[]; title: string }) => {
+const Gallery = ({
+  images,
+  title,
+  firstIsMap = false,
+}: {
+  images: string[];
+  title: string;
+  firstIsMap?: boolean;
+}) => {
   const [active, setActive] = useState(0);
   const [lightbox, setLightbox] = useState(false);
   if (!images.length) return null;
 
   return (
     <div>
-      {/* Main */}
-      <div className="relative overflow-hidden rounded-2xl cursor-zoom-in mb-3"
-        style={{ aspectRatio: "16/9" }}
-        onClick={() => setLightbox(true)}>
-        <motion.img key={active} src={images[active]} alt={title}
-          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}
-          className="w-full h-full object-cover" />
-        <div className="absolute bottom-3 right-3 flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-body text-white"
-          style={{ background: "rgba(0,0,0,0.5)" }}>
+      {/* Map label — only shown when the active image is the route map */}
+      {firstIsMap && active === 0 && (
+        <div className="flex items-center gap-2 mb-2">
+          <span
+            className="font-body text-xs font-semibold px-2.5 py-1 rounded-full"
+            style={{ background: "hsl(var(--primary)/0.1)", color: "hsl(var(--primary))" }}
+          >
+            🗺 Route Map
+          </span>
+          <span className="font-body text-xs text-muted-foreground">
+            Scroll thumbnails to view tour photos
+          </span>
+        </div>
+      )}
+
+      {/* Main image */}
+      <div
+        className="relative overflow-hidden rounded-2xl cursor-zoom-in mb-3"
+        style={{ aspectRatio: firstIsMap && active === 0 ? "auto" : "16/9", maxHeight: 480 }}
+        onClick={() => setLightbox(true)}
+      >
+        <motion.img
+          key={active}
+          src={images[active]}
+          alt={active === 0 && firstIsMap ? `${title} — Route Map` : title}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.3 }}
+          className="w-full h-full"
+          style={{
+            objectFit: firstIsMap && active === 0 ? "contain" : "cover",
+            background: firstIsMap && active === 0 ? "hsl(var(--muted)/0.25)" : "transparent",
+          }}
+        />
+        <div
+          className="absolute bottom-3 right-3 flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-body text-white"
+          style={{ background: "rgba(0,0,0,0.5)" }}
+        >
           <Camera className="w-3 h-3" /> {images.length} photo{images.length !== 1 ? "s" : ""}
         </div>
       </div>
@@ -166,14 +228,26 @@ const Gallery = ({ images, title }: { images: string[]; title: string }) => {
       {images.length > 1 && (
         <div className="flex gap-2 overflow-x-auto pb-1">
           {images.map((url, i) => (
-            <button key={i} onClick={() => setActive(i)}
-              className="flex-shrink-0 rounded-lg overflow-hidden transition-all"
+            <button
+              key={i}
+              onClick={() => setActive(i)}
+              className="flex-shrink-0 rounded-lg overflow-hidden transition-all relative"
               style={{
                 width: 72, height: 52,
                 outline: i === active ? "2px solid hsl(var(--primary))" : "2px solid transparent",
                 outlineOffset: 2,
-              }}>
+              }}
+            >
               <img src={url} alt="" className="w-full h-full object-cover" />
+              {/* Small "Map" badge on the first thumbnail for mountain routes */}
+              {i === 0 && firstIsMap && (
+                <span
+                  className="absolute bottom-0 left-0 right-0 text-center font-body text-white"
+                  style={{ fontSize: 8, background: "rgba(0,0,0,0.55)", padding: "1px 0" }}
+                >
+                  MAP
+                </span>
+              )}
             </button>
           ))}
         </div>
@@ -182,28 +256,39 @@ const Gallery = ({ images, title }: { images: string[]; title: string }) => {
       {/* Lightbox */}
       <AnimatePresence>
         {lightbox && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+          <motion.div
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
             className="fixed inset-0 z-50 flex items-center justify-center p-4"
             style={{ background: "rgba(0,0,0,0.92)" }}
-            onClick={() => setLightbox(false)}>
-            <img src={images[active]} alt={title}
+            onClick={() => setLightbox(false)}
+          >
+            <img
+              src={images[active]}
+              alt={title}
               className="max-w-full max-h-full rounded-xl object-contain"
-              onClick={e => e.stopPropagation()} />
-            <button onClick={() => setLightbox(false)}
+              onClick={e => e.stopPropagation()}
+            />
+            <button
+              onClick={() => setLightbox(false)}
               className="absolute top-4 right-4 w-9 h-9 rounded-full flex items-center justify-center"
-              style={{ background: "rgba(255,255,255,0.12)" }}>
+              style={{ background: "rgba(255,255,255,0.12)" }}
+            >
               <X className="w-5 h-5 text-white" />
             </button>
             {images.length > 1 && (
               <>
-                <button onClick={e => { e.stopPropagation(); setActive(a => (a - 1 + images.length) % images.length); }}
+                <button
+                  onClick={e => { e.stopPropagation(); setActive(a => (a - 1 + images.length) % images.length); }}
                   className="absolute left-4 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full flex items-center justify-center"
-                  style={{ background: "rgba(255,255,255,0.12)" }}>
+                  style={{ background: "rgba(255,255,255,0.12)" }}
+                >
                   <ArrowLeft className="w-5 h-5 text-white" />
                 </button>
-                <button onClick={e => { e.stopPropagation(); setActive(a => (a + 1) % images.length); }}
+                <button
+                  onClick={e => { e.stopPropagation(); setActive(a => (a + 1) % images.length); }}
                   className="absolute right-4 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full flex items-center justify-center"
-                  style={{ background: "rgba(255,255,255,0.12)" }}>
+                  style={{ background: "rgba(255,255,255,0.12)" }}
+                >
                   <ArrowRight className="w-5 h-5 text-white" />
                 </button>
               </>
@@ -219,8 +304,7 @@ const Gallery = ({ images, title }: { images: string[]; title: string }) => {
 
 const TourDetail = () => {
   const { slug } = useParams<{ slug: string }>();
-  const navigate = useNavigate();
-  const [tour, setTour] = useState<Tour | null>(null);
+  const [tour, setTour]       = useState<Tour | null>(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
 
@@ -269,13 +353,14 @@ const TourDetail = () => {
     );
   }
 
-  // ── Derive display data ────────────────────────────────────────────────────
-  const images    = buildImageList(tour);
+  // ── Derived data ───────────────────────────────────────────────────────────
+  const images     = buildImageList(tour);
+  const firstIsMap = tour.type === "MOUNTAIN" && !!ROUTE_MAP[tour.slug];
   const highlights = (tour.highlights ?? []).filter(Boolean);
-  const included  = (tour.included   ?? []).filter(Boolean);
-  const excluded  = (tour.excluded   ?? []).filter(Boolean);
-  const itinerary = (tour.itinerary  ?? []).filter(d => d.title || d.desc);
-  const tags      = (tour.tags       ?? []).filter(Boolean);
+  const included   = (tour.included   ?? []).filter(Boolean);
+  const excluded   = (tour.excluded   ?? []).filter(Boolean);
+  const itinerary  = (tour.itinerary  ?? []).filter(d => d.title || d.desc);
+  const tags       = (tour.tags       ?? []).filter(Boolean);
 
   return (
     <PageLayout>
@@ -335,8 +420,14 @@ const TourDetail = () => {
               </div>
             </div>
 
-            {/* Gallery */}
-            {images.length > 0 && <Gallery images={images} title={tour.title} />}
+            {/* Gallery — route map is image[0] for MOUNTAIN tours */}
+            {images.length > 0 && (
+              <Gallery
+                images={images}
+                title={tour.title}
+                firstIsMap={firstIsMap}
+              />
+            )}
 
             {/* Overview */}
             {tour.description && (
