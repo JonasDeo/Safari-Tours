@@ -1,5 +1,4 @@
 import FAQBody from "@/components/faq/FaqBody";
-import FAQHero from "@/components/faq/FaqHero";
 import PageHero from "@/components/PageHero";
 import PageLayout from "@/components/PageLayout";
 import faqImg from "@/assets/faq-2.jpg"

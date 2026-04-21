@@ -1,9 +1,10 @@
 import { useRef, useState, useEffect, useCallback } from "react";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import machameImg  from "@/assets/Machame-Route-Map.avif";
-import lemoshoImg  from "@/assets/Lemosho-Route-Map.avif";
-import maranguImg  from "@/assets/Marangu-Route-Map.jpg";
+
+import machameImg  from "@/assets/kili-3.jpg";
+import lemoshoImg  from "@/assets/kili-1.webp";
+import maranguImg  from "@/assets/kili-2.webp";
 
 const treks = [
   {
@@ -32,7 +33,7 @@ const treks = [
   },
 ];
 
-const AUTO_INTERVAL = 4000;
+const AUTO_INTERVAL = 3000;
 
 export function KilimanjaroSection() {
   const scrollRef  = useRef<HTMLDivElement>(null);
