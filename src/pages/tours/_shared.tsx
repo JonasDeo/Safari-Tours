@@ -1,4 +1,5 @@
-// Shared across all category pages
+// src/pages/tours/_shared.tsx
+// Shared across all category pages — useTours hook, TourCard, PackagesGrid
 
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -9,40 +10,35 @@ import { FALLBACK_TOURS } from "@/data/toursData";
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 export interface Tour {
-  id:            number;
-  slug:          string;
-  title:         string;
-  destination:   string;
-  type:          string;
+  id:          number;
+  slug:        string;
+  title:       string;
+  destination: string;
+  type:        string;
   duration_days: number;
-  duration?:     string;
-  price:         number;
-  price_from?:   number;
-  currency:      string;
-  cover_image:   string | null;
-  hover_image?:  string | null;   // shown on card hover (route map for mountain tours)
-  images:        any[] | null;
-  excerpt:       string | null;
-  tags:          string[] | null;
-  published?:    boolean;
+  price:       number;
+  price_from?: number;
+  currency:    string;
+  cover_image?: string | null;
+  images:      any[] | null;
+  excerpt:     string | null;
+  tags:        string[] | null;
+  published?:  boolean;
 }
 
-// ─── Image helpers ────────────────────────────────────────────────────────────
+// ─── Helpers ──────────────────────────────────────────────────────────────────
 
-export const getImgUrl = (img: any): string => {
-  if (!img) return "";
-  if (typeof img === "string") return img;
-  if (typeof img === "object" && img.url) return String(img.url);
-  return "";
+export const getTourImg = (tour: Tour, fallback: string): string => {
+  const first = tour.images?.[0];
+  if (first) return typeof first === "string" ? first : (first?.url ?? fallback);
+  if (tour.cover_image) return tour.cover_image;
+  return fallback;
 };
-
-export const getTourImg = (tour: Tour, fallback: string): string =>
-  getImgUrl(tour.cover_image) || getImgUrl(tour.images?.[0]) || fallback;
 
 // ─── useTours ─────────────────────────────────────────────────────────────────
 
 export const useTours = (type: string) => {
-  const [tours,   setTours]   = useState<Tour[]>([]);
+  const [tours, setTours]     = useState<Tour[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -52,25 +48,17 @@ export const useTours = (type: string) => {
       .getTours()
       .then((data: any) => {
         const all      = data as Tour[];
-        const filtered = all.filter((t) => t.type === type);
+        const filtered = all.filter(t => t.type === type);
 
-        // Empty API response → fall back to static data
-        if (filtered.length === 0) {
-          setTours(
-            FALLBACK_TOURS.filter(
-              (t) => t.type === type && t.published !== false
-            ) as Tour[]
-          );
-        } else {
-          setTours(filtered);
-        }
+        setTours(
+          filtered.length > 0
+            ? filtered
+            : FALLBACK_TOURS.filter(t => t.type === type && t.published !== false) as Tour[]
+        );
       })
       .catch(() => {
-        // API unreachable → fall back
         setTours(
-          FALLBACK_TOURS.filter(
-            (t) => t.type === type && t.published !== false
-          ) as Tour[]
+          FALLBACK_TOURS.filter(t => t.type === type && t.published !== false) as Tour[]
         );
       })
       .finally(() => setLoading(false));
@@ -80,10 +68,6 @@ export const useTours = (type: string) => {
 };
 
 // ─── TourCard ─────────────────────────────────────────────────────────────────
-//
-// For MOUNTAIN tours that have a hover_image (route map), hovering the photo
-// area crossfades to the map — giving the client an instant route preview.
-// For all other tours the card behaves exactly as before.
 
 export const TourCard = ({
   tour,
@@ -91,134 +75,72 @@ export const TourCard = ({
   accentText  = "hsl(var(--dark))",
   fallbackImg = "https://images.unsplash.com/photo-1516426122078-c23e76319801?w=800",
 }: {
-  tour:        Tour;
-  accent?:     string;
-  accentText?: string;
+  tour:         Tour;
+  accent?:      string;
+  accentText?:  string;
   fallbackImg?: string;
-}) => {
-  const [hovered, setHovered] = useState(false);
-
-  const mainImg  = getTourImg(tour, fallbackImg);
-  const hoverImg = getImgUrl(tour.hover_image);
-  const hasHover = Boolean(hoverImg && hoverImg !== mainImg);
-
-  return (
-    <Link
-      to={`/tours/${tour.slug}`}
-      className="group flex flex-col rounded-xl overflow-hidden border transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5"
-      style={{ borderColor: "hsl(var(--border)/0.7)", background: "hsl(var(--background))" }}
-    >
-      {/* ── Image area ── */}
-      <div
-        className="relative overflow-hidden"
-        style={{ height: 210 }}
-        onMouseEnter={() => hasHover && setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
+}) => (
+  <Link
+    to={`/tours/${tour.slug}`}
+    className="group flex flex-col rounded-xl overflow-hidden border transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5"
+    style={{ borderColor: "hsl(var(--border)/0.7)", background: "hsl(var(--background))" }}
+  >
+    <div className="relative overflow-hidden" style={{ height: 210 }}>
+      <img
+        src={getTourImg(tour, fallbackImg)}
+        alt={tour.title}
+        loading="lazy"
+        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+      <span
+        className="absolute top-3 left-3 text-xs font-body px-2.5 py-1 rounded-full font-medium"
+        style={{ background: accent, color: accentText }}
       >
-        {/* Primary image */}
-        <img
-          src={mainImg}
-          alt={tour.title}
-          loading="lazy"
-          className="absolute inset-0 w-full h-full object-cover transition-all duration-700"
-          style={{
-            transform: hasHover && hovered ? "scale(1.03)" : "scale(1)",
-            opacity:   hasHover && hovered ? 0 : 1,
-          }}
-        />
+        {tour.type.replace(/_/g, " ")}
+      </span>
+    </div>
 
-        {/* Hover image (route map) — crossfades in */}
-        {hasHover && (
-          <img
-            src={hoverImg}
-            alt={`${tour.title} route map`}
-            loading="lazy"
-            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500"
-            style={{ opacity: hovered ? 1 : 0 }}
-          />
-        )}
+    <div className="flex flex-col flex-1 p-4 gap-2">
+      <div className="flex items-center gap-1 text-xs font-body" style={{ color: accent }}>
+        <MapPin className="w-3 h-3 flex-shrink-0" />
+        {tour.destination}
+      </div>
 
-        {/* Gradient overlay — only on primary image */}
-        <div
-          className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent transition-opacity duration-500"
-          style={{ opacity: hovered ? 0 : 1 }}
-        />
+      <h3
+        className="font-display text-base text-foreground leading-snug group-hover:underline"
+        style={{ fontFamily: '"Yeseva One", serif' }}
+      >
+        {tour.title}
+      </h3>
 
-        {/* "Route map" hint badge — appears on hover */}
-        {hasHover && (
+      <p className="font-body text-xs text-muted-foreground leading-relaxed line-clamp-2 flex-1">
+        {tour.duration_days} Days {tour.duration_days - 1} Nights &nbsp;·&nbsp; {tour.destination}
+      </p>
+
+      <div
+        className="flex items-center justify-between pt-3 mt-1"
+        style={{ borderTop: "1px solid hsl(var(--border)/0.5)" }}
+      >
+        <div>
+          <span className="font-body text-xs text-muted-foreground">From </span>
           <span
-            className="absolute top-3 right-3 text-[10px] font-body font-semibold px-2.5 py-1 rounded-full
-              transition-all duration-300 pointer-events-none"
-            style={{
-              background: "rgba(0,0,0,0.6)",
-              color:      "rgba(255,255,255,0.9)",
-              opacity:    hovered ? 1 : 0,
-              transform:  hovered ? "translateY(0)" : "translateY(-4px)",
-            }}
+            className="font-display text-lg font-bold text-foreground"
+            style={{ fontFamily: '"Yeseva One", serif' }}
           >
-            Route map
+            ${(tour.price_from ?? tour.price).toLocaleString()}
           </span>
-        )}
-
-        {/* Type badge */}
+        </div>
         <span
-          className="absolute top-3 left-3 text-xs font-body px-2.5 py-1 rounded-full font-medium
-            transition-opacity duration-300"
-          style={{
-            background: accent,
-            color:      accentText,
-            opacity:    hovered ? 0 : 1,
-          }}
+          className="flex items-center gap-1 text-xs font-body font-semibold"
+          style={{ color: accent }}
         >
-          {tour.type.replace(/_/g, " ")}
+          View Tour <ArrowRight className="w-3 h-3" />
         </span>
       </div>
-
-      {/* ── Card body ── */}
-      <div className="flex flex-col flex-1 p-4 gap-2">
-        <div className="flex items-center gap-1 text-xs font-body" style={{ color: accent }}>
-          <MapPin className="w-3 h-3 flex-shrink-0" />
-          {tour.destination}
-        </div>
-
-        <h3
-          className="font-display text-base text-foreground leading-snug group-hover:underline"
-          style={{ fontFamily: '"Yeseva One", serif' }}
-        >
-          {tour.title}
-        </h3>
-
-        <p className="font-body text-xs text-muted-foreground leading-relaxed line-clamp-2 flex-1">
-          {tour.duration
-            ? tour.duration
-            : `${tour.duration_days} Days ${tour.duration_days - 1} Nights`}
-          &nbsp;·&nbsp;{tour.destination}
-        </p>
-
-        <div
-          className="flex items-center justify-between pt-3 mt-1"
-          style={{ borderTop: "1px solid hsl(var(--border)/0.5)" }}
-        >
-          <div>
-            <span className="font-body text-xs text-muted-foreground">From </span>
-            <span
-              className="font-display text-lg font-bold text-foreground"
-              style={{ fontFamily: '"Yeseva One", serif' }}
-            >
-              ${(tour.price_from ?? tour.price).toLocaleString()}
-            </span>
-          </div>
-          <span
-            className="flex items-center gap-1 text-xs font-body font-semibold"
-            style={{ color: accent }}
-          >
-            View Tour <ArrowRight className="w-3 h-3" />
-          </span>
-        </div>
-      </div>
-    </Link>
-  );
-};
+    </div>
+  </Link>
+);
 
 // ─── PackagesGrid ─────────────────────────────────────────────────────────────
 
@@ -240,7 +162,7 @@ export const PackagesGrid = ({
   if (loading) {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {[1, 2, 3].map((i) => (
+        {[1, 2, 3].map(i => (
           <div
             key={i}
             className="h-72 rounded-xl animate-pulse"
@@ -257,7 +179,7 @@ export const PackagesGrid = ({
         className="text-center py-14 rounded-xl"
         style={{
           background: "hsl(var(--muted)/0.2)",
-          border:     "1px dashed hsl(var(--border)/0.6)",
+          border: "1px dashed hsl(var(--border)/0.6)",
         }}
       >
         <p className="font-body text-muted-foreground mb-5">
@@ -276,7 +198,7 @@ export const PackagesGrid = ({
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      {tours.map((tour) => (
+      {tours.map(tour => (
         <TourCard
           key={tour.id}
           tour={tour}
