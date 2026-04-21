@@ -4,33 +4,11 @@ import { Link } from "react-router-dom";
 import machameImg  from "@/assets/mount-trek.jpg";
 import lemoshoImg  from "@/assets/mount-trek.jpg";
 import maranguImg  from "@/assets/mount-trek.jpg";
+import { FALLBACK_TOURS } from "@/data/toursData";
 
-const treks = [
-  {
-    slug:  "kilimanjaro-marangu-route",
-    days:  6,
-    title: "Marangu Route",
-    label: "The Classic",
-    price: 2130,
-    image: maranguImg,
-  },
-  {
-    slug:  "kilimanjaro-machame-route",
-    days:  7,
-    title: "Machame Route",
-    label: "Most Popular",
-    price: 2470,
-    image: machameImg,
-  },
-  {
-    slug:  "kilimanjaro-lemosho-route",
-    days:  8,
-    title: "Lemosho Route",
-    label: "Best Scenery",
-    price: 2585,
-    image: lemoshoImg,
-  },
-];
+const treks = FALLBACK_TOURS.filter(
+  tour => tour.type === "MOUNTAIN"
+);
 
 const AUTO_INTERVAL = 4000;
 
@@ -200,7 +178,7 @@ export function KilimanjaroSection() {
                 >
                   {/* Photo */}
                   <div className="relative overflow-hidden flex-shrink-0" style={{ height: 240 }}>
-                    <img src={trek.image} alt={trek.title}
+                    <img src={trek.cover_image} alt={trek.title}
                       className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
                       loading="lazy" />
 
@@ -212,7 +190,7 @@ export function KilimanjaroSection() {
                         color:        "hsl(var(--foreground))",
                         borderRadius: "99px",
                       }}>
-                      {trek.label}
+                      {/* {trek.name} */}
                     </span>
 
                     {/* Days chip */}
@@ -223,7 +201,7 @@ export function KilimanjaroSection() {
                         color:        "rgba(255,255,255,0.9)",
                         borderRadius: "99px",
                       }}>
-                      {trek.days} Days
+                      {trek.duration} Days
                     </span>
                   </div>
 

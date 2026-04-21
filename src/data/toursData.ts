@@ -1,5 +1,9 @@
-// src/data/toursData.ts
 // Single source of truth for fallback tours — used by ToursSection, ToursPage, and TourDetail
+
+import maranguRouteImg from "@/assets/Marangu-Route-Map.jpg";
+import machameRouteImg from "@/assets/Machame-Route-Map.avif";
+import lemoshoRouteImg from "@/assets/Lemosho-Route-Map.avif";
+
 
 export interface ItineraryDay { day: number; title: string; desc: string; }
 
@@ -226,6 +230,183 @@ export const FALLBACK_TOURS: Tour[] = [
       { day: 5, title: "Departure",                  desc: "Leisurely breakfast before transfer to Zanzibar International Airport." },
     ],
     tags:      ["Beach Holiday", "Island Escape", "Relaxation"],
+    published: true,
+  },
+  {
+    id: 5,
+    slug: "kilimanjaro-marangu-route",
+    title: "6 Days Kilimanjaro Marangu Route",
+    destination: "Mount Kilimanjaro",
+    type: "MOUNTAIN",
+    duration_days: 6,
+    duration: "6 Days 5 Nights",
+    price: 2130,
+    price_from: 2130,
+    currency: "USD",
+    cover_image: maranguRouteImg,
+    images: [
+      // Route map
+      maranguRouteImg,
+      // Marangu Gate rainforest entry
+      "https://images.unsplash.com/photo-1621414050946-1b3bc24b2e92?w=800&auto=format&fit=crop&q=80",
+      // Kilimanjaro mountain aerial / snowcap
+      "https://images.unsplash.com/photo-1609198093458-f2c6a0e2e21f?w=800&auto=format&fit=crop&q=80",
+      // Trekkers hiking on Kilimanjaro trail
+      "https://images.unsplash.com/photo-1631515243349-e0cb75fb8d3a?w=800&auto=format&fit=crop&q=80",
+      // Uhuru Peak summit sign / crater rim
+      "https://images.unsplash.com/photo-1589553416260-f586c8f1514f?w=800&auto=format&fit=crop&q=80",
+    ],
+    excerpt: "The classic 'Coca-Cola' route — the only Kilimanjaro route with hut accommodation.",
+    description: "The Marangu Route is the oldest and most established route on Mount Kilimanjaro. It is the only route that offers sleeping huts instead of camping, making it ideal for trekkers seeking more comfort.",
+    departure_location: "Moshi",
+    return_location: "Moshi",
+    highlights: [
+      "Comfortable hut accommodation",
+      "Gradual ascent profile",
+      "Best for beginners",
+      "Scenic rainforest and alpine desert zones",
+    ],
+    included: [
+      "Park fees",
+      "Professional mountain guides and porters",
+      "All meals during trek",
+      "Hut accommodation",
+      "Airport transfers",
+    ],
+    excluded: [
+      "International flights",
+      "Visa fees",
+      "Travel insurance",
+      "Tips and gratuities",
+    ],
+    itinerary: [
+      { day: 1, title: "Marangu Gate to Mandara Hut", desc: "Hike through lush rainforest to Mandara Hut." },
+      { day: 2, title: "Mandara Hut to Horombo Hut",  desc: "Ascend to moorland zone with great views." },
+      { day: 3, title: "Acclimatization Day",          desc: "Short hikes around Horombo for acclimatization." },
+      { day: 4, title: "Horombo to Kibo Hut",          desc: "Cross alpine desert to Kibo base camp." },
+      { day: 5, title: "Summit & Descend",             desc: "Midnight summit attempt to Uhuru Peak, descend to Horombo." },
+      { day: 6, title: "Return to Gate",               desc: "Descend to Marangu Gate and transfer to Moshi." },
+    ],
+    tags: ["Kilimanjaro", "Beginner Friendly"],
+    published: true,
+  },
+  {
+    id: 6,
+    slug: "kilimanjaro-machame-route",
+    title: "7 Days Kilimanjaro Machame Route",
+    destination: "Mount Kilimanjaro",
+    type: "MOUNTAIN",
+    duration_days: 7,
+    duration: "7 Days 6 Nights",
+    price: 2470,
+    price_from: 2470,
+    currency: "USD",
+    cover_image: machameRouteImg,
+    images: [
+      // Route map
+      machameRouteImg,
+      // Kilimanjaro from afar / classic wide shot
+      "https://images.unsplash.com/photo-1568259547325-f08f48165cda?w=800&auto=format&fit=crop&q=80",
+      // Barranco Wall scramble / rocky ridge
+      "https://images.unsplash.com/photo-1631515243349-e0cb75fb8d3a?w=800&auto=format&fit=crop&q=80",
+      // Trekkers above cloud layer
+      "https://images.unsplash.com/photo-1609198093458-f2c6a0e2e21f?w=800&auto=format&fit=crop&q=80",
+      // Summit / Uhuru Peak crater rim
+      "https://images.unsplash.com/photo-1589553416260-f586c8f1514f?w=800&auto=format&fit=crop&q=80",
+    ],
+    excerpt: "The most popular route — scenic, challenging, and with high summit success rates.",
+    description: "The Machame Route, also known as the 'Whiskey Route', is the most popular Kilimanjaro route. It offers stunning scenery and excellent acclimatization through its climb-high, sleep-low profile.",
+    departure_location: "Moshi",
+    return_location: "Moshi",
+    highlights: [
+      "Most scenic Kilimanjaro route",
+      "High summit success rate",
+      "Barranco Wall adventure",
+      "Diverse landscapes",
+    ],
+    included: [
+      "Park fees",
+      "Professional guides and porters",
+      "Camping equipment",
+      "All meals",
+      "Airport transfers",
+    ],
+    excluded: [
+      "International flights",
+      "Visa fees",
+      "Travel insurance",
+      "Tips",
+    ],
+    itinerary: [
+      { day: 1, title: "Machame Gate to Camp", desc: "Trek through rainforest." },
+      { day: 2, title: "Shira Plateau",        desc: "Ascend into moorland zone." },
+      { day: 3, title: "Lava Tower",           desc: "Acclimatization hike." },
+      { day: 4, title: "Barranco Wall",        desc: "Climb the famous wall." },
+      { day: 5, title: "Karanga Camp",         desc: "Short acclimatization day." },
+      { day: 6, title: "Summit Attempt",       desc: "Climb to Uhuru Peak." },
+      { day: 7, title: "Descent",              desc: "Return to base." },
+    ],
+    tags: ["Kilimanjaro", "Popular"],
+    published: true,
+  },
+  {
+    id: 7,
+    slug: "kilimanjaro-lemosho-route",
+    title: "8 Days Kilimanjaro Lemosho Route",
+    destination: "Mount Kilimanjaro",
+    type: "MOUNTAIN",
+    duration_days: 8,
+    duration: "8 Days 7 Nights",
+    price: 2585,
+    price_from: 2585,
+    currency: "USD",
+    cover_image: lemoshoRouteImg,
+    images: [
+      // Route map
+      lemoshoRouteImg,
+      // Western rainforest / Londorossi Gate area
+      "https://images.unsplash.com/photo-1621414050946-1b3bc24b2e92?w=800&auto=format&fit=crop&q=80",
+      // Shira Plateau wide open moorland
+      "https://images.unsplash.com/photo-1568259547325-f08f48165cda?w=800&auto=format&fit=crop&q=80",
+      // Above the clouds on Kilimanjaro
+      "https://images.unsplash.com/photo-1609198093458-f2c6a0e2e21f?w=800&auto=format&fit=crop&q=80",
+      // Uhuru Peak / summit glacier
+      "https://images.unsplash.com/photo-1589553416260-f586c8f1514f?w=800&auto=format&fit=crop&q=80",
+    ],
+    excerpt: "The most scenic and least crowded route — best for acclimatization.",
+    description: "Tour Overview One of the newest routes on Kilimanjaro, Lemosho takes its start at Londorossi Gate on the western face of Mount Kilimanjaro. It was opened in the early 2000s to relieve Marangu and Machame routes from traffic and open the western parts of the Mountain to international tourists. Together with Rongai, Lemosho is one of the most remote routes on Kilimanjaro. It takes around 3-4 hours to get to the trailhead from Moshi and 5-6 if driving from Arusha. That is why the prices for Kilimanjaro trips through Lemosho route are usually slightly higher. Many professional climbers describe Lemosho as the most scenic route on Mount Kilimanjaro.",
+    departure_location: "Moshi",
+    return_location: "Moshi",
+    highlights: [
+      "Best scenery on Kilimanjaro",
+      "Low traffic at start",
+      "Excellent acclimatization",
+      "High summit success rate",
+    ],
+    included: [
+      "Park fees",
+      "Guides and porters",
+      "Camping gear",
+      "Meals",
+      "Transfers",
+    ],
+    excluded: [
+      "Flights",
+      "Visa",
+      "Insurance",
+      "Tips",
+    ],
+    itinerary: [
+      { day: 1, title: "Lemosho Gate",    desc: "Start through rainforest." },
+      { day: 2, title: "Shira Plateau",   desc: "Wide open views." },
+      { day: 3, title: "Mooreland Trek",  desc: "Gentle acclimatization." },
+      { day: 4, title: "Lava Tower",      desc: "Climb high sleep low." },
+      { day: 5, title: "Barranco Camp",   desc: "Great scenery." },
+      { day: 6, title: "Karanga Camp",    desc: "Prepare for summit." },
+      { day: 7, title: "Summit",          desc: "Reach Uhuru Peak." },
+      { day: 8, title: "Descent",         desc: "Return to gate." },
+    ],
+    tags: ["Kilimanjaro", "Premium"],
     published: true,
   },
 ];

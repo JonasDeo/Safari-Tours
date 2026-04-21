@@ -23,8 +23,8 @@ const Index = () => {
         <ServicesSection />
         {/* <SelfDriveSection /> */}
         <KilimanjaroSection />
-        <ToursSection />
         <WhyUsSection />
+        <ToursSection />
         <AccommodationSection />
         <TestimonialsSection />
       </main>
