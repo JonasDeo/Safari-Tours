@@ -48,7 +48,7 @@ const SettingsPage = () => {
 
   const [seo, setSeo] = useState({
     metaTitle:       "Native Kilimanjaro — East Africa Safari Tours",
-    metaDescription: "Luxury and custom safari tours across Tanzania, Kenya, Uganda, and Zanzibar. Guided safaris, self-drive, mountain treks, and beach holidays.",
+    metaDescription: "Luxury and custom safari tours across Tanzania, Kenya, Rwanda, and Zanzibar. Guided safaris, self-drive, mountain treks, and beach holidays.",
     googleAnalytics: "",
   });
 

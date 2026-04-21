@@ -20,8 +20,8 @@ const GuidedSafaris = () => {
     desc: "Iconic Big Five safaris in the Maasai Mara — the heart of African wildlife.",
   },
   {
-    name: "Uganda & Rwanda",
-    slug: "uganda", 
+    name: "Rwanda & Rwanda",
+    slug: "rwanda", 
     desc: "Gorilla and chimpanzee trekking through lush jungle — a truly life-changing encounter.",
   },
 ];

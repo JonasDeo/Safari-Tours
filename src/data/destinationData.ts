@@ -61,24 +61,47 @@ export const DESTINATIONS: Destination[] = [
     bestTime: "July – October · January – February",
     duration: "6 – 12 days recommended",
   },
-  {
-    slug:     "uganda",
-    name:     "Uganda Safari",
-    country:  "Uganda",
-    tagline:  "The Pearl of Africa",
-    desc:     "Track mountain gorillas in Bwindi and explore the pearl of Africa's incredible biodiversity.",
-    longDesc: "Uganda is Africa's most underrated destination — and its most rewarding. Bwindi Impenetrable Forest shelters half the world's remaining mountain gorillas; a permit to track them is one of the most profound wildlife encounters on earth. Chimpanzees swing through Kibale Forest, tree-climbing lions lounge in Queen Elizabeth National Park, and Murchison Falls sends the entire force of the Nile crashing through a seven-metre gap in the rock.",
-    image:    tour6,
-    parks:    ["Bwindi", "Queen Elizabeth", "Murchison Falls", "Kibale", "Kidepo Valley"],
-    highlights: [
-      { icon: "Binoculars", title: "Gorilla Trekking",   body: "Spend a life-changing hour with a mountain gorilla family in Bwindi Impenetrable Forest." },
-      { icon: "Search",     title: "Chimp Tracking",     body: "Kibale Forest has the highest density of primates in Africa." },
-      { icon: "Droplets",   title: "Murchison Falls",    body: "Watch the Nile explode through a narrow gorge — one of the most powerful waterfalls on earth." },
-      { icon: "SunMedium",  title: "Tree-Climbing Lions",body: "Queen Elizabeth's lions lounge in fig trees — a unique and rarely-seen behaviour." },
-    ],
-    bestTime: "June – September · December – February",
-    duration: "8 – 14 days recommended",
-  },
+ {
+  slug:     "rwanda",
+  name:     "Rwanda Safari",
+  country:  "Rwanda",
+  tagline:  "Land of a Thousand Hills",
+  desc:     "Track mountain gorillas in Volcanoes National Park and explore Rwanda’s breathtaking landscapes and wildlife.",
+  longDesc: "Rwanda is one of Africa’s most refined and remarkable safari destinations. In Volcanoes National Park, come face-to-face with endangered mountain gorillas in an intimate, once-in-a-lifetime encounter. Akagera National Park offers classic Big Five safaris across savannah plains, while Nyungwe Forest reveals ancient rainforest, chimpanzees, and one of Africa’s most spectacular canopy walks. Combined with Kigali’s clean, modern charm and a strong conservation story, Rwanda delivers a premium, deeply moving African experience.",
+  image:    tour6,
+
+  parks: [
+    "Volcanoes National Park",
+    "Akagera National Park",
+    "Nyungwe Forest National Park"
+  ],
+
+  highlights: [
+    {
+      icon: "Binoculars",
+      title: "Gorilla Trekking",
+      body: "Experience a rare and emotional encounter with mountain gorillas in Volcanoes National Park."
+    },
+    {
+      icon: "Search",
+      title: "Chimpanzee Tracking",
+      body: "Track playful chimpanzees deep within the ancient Nyungwe rainforest."
+    },
+    {
+      icon: "Mountain",
+      title: "Canopy Walk",
+      body: "Walk above the forest on East Africa’s highest canopy bridge with panoramic jungle views."
+    },
+    {
+      icon: "SunMedium",
+      title: "Big Five Safari",
+      body: "Explore Akagera National Park, home to lions, elephants, rhinos, buffalo, and leopards."
+    }
+  ],
+
+  bestTime: "June – September · December – February",
+  duration: "5 – 10 days recommended",
+},
   {
     slug:     "zanzibar",
     name:     "Zanzibar & Beaches",

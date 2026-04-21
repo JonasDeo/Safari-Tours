@@ -31,7 +31,7 @@ const calcReadTime = (text: string) =>
   Math.max(1, Math.ceil(text.trim().split(/\s+/).filter(Boolean).length / 200));
 
 
-const CATEGORIES = ["Tanzania", "Kenya", "Uganda", "Zanzibar", "Tips", "Wildlife", "Culture", "Food"];
+const CATEGORIES = ["Tanzania", "Kenya", "Rwanda", "Zanzibar", "Tips", "Wildlife", "Culture", "Food"];
 
 const slugify = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 

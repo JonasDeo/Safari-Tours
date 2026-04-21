@@ -39,7 +39,7 @@ const imgUrl = (img: TourImage | string | null | undefined): string => {
   return img.url ?? "";
 };
 
-const DESTINATIONS = ["Tanzania", "Kenya", "Uganda", "Zanzibar"];
+const DESTINATIONS = ["Tanzania", "Kenya", "Rwanda", "Zanzibar"];
 const TOUR_TYPES = [
   { value: "GUIDED",     label: "Guided Safari"  },
   { value: "SELF_DRIVE", label: "Self-Drive"      },

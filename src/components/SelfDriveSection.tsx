@@ -21,7 +21,7 @@ const SelfDriveSection = () => {
               Just Rent a Car and Camping Equipment
             </h2>
             <p className="font-body text-muted-foreground leading-relaxed mb-8">
-              Whether you're navigating the vast savannas of Tanzania, the lush landscapes of Uganda, or the scenic beauty of Kenya, Native Kilimanjaro puts you in the driver's seat of your adventure. Our self-drive safaris are designed for travelers seeking the thrill of the open road, with the confidence of knowing every detail has been meticulously planned.
+              Whether you're navigating the vast savannas of Tanzania, the lush landscapes of Rwanda, or the scenic beauty of Kenya, Native Kilimanjaro puts you in the driver's seat of your adventure. Our self-drive safaris are designed for travelers seeking the thrill of the open road, with the confidence of knowing every detail has been meticulously planned.
             </p>
             <a
               href="#"

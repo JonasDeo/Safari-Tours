@@ -9,7 +9,7 @@ interface BlogPost {
   tags: string[]; published: boolean; created_at: string; read_count: number;
 }
 
-const CATEGORIES = ["All", "Tanzania", "Kenya", "Uganda", "Zanzibar", "Tips"];
+const CATEGORIES = ["All", "Tanzania", "Kenya", "Rwanda", "Zanzibar", "Tips"];
 const Skeleton = ({ className }: { className: string }) => (
   <div className={`rounded animate-pulse ${className}`} style={{ background: "hsl(var(--muted)/0.6)" }} />
 );

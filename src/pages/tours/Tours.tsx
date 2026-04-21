@@ -15,7 +15,7 @@ const TYPE_LABELS: Record<string, string> = {
 };
 
 const TYPE_FILTERS = ["All", "GUIDED", "SELF_DRIVE", "MOUNTAIN", "BEACH"];
-const DEST_FILTERS = ["All", "Tanzania", "Kenya", "Uganda", "Zanzibar"];
+const DEST_FILTERS = ["All", "Tanzania", "Kenya", "Rwanda", "Zanzibar"];
 
 // ── Tour card ─────────────────────────────────────────────────────────────────
 
