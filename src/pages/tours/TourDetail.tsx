@@ -1,9 +1,8 @@
-
 import { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  MapPin, Clock, Users, ArrowRight, ArrowLeft,
+  MapPin, Clock, ArrowRight, ArrowLeft,
   Check, X, ChevronDown, ChevronUp, Camera,
 } from "lucide-react";
 import PageLayout from "@/components/PageLayout";
@@ -22,6 +21,7 @@ interface Tour {
   type: string;
   duration_days: number;
   price: number;
+  price_from?: number;
   currency: string;
   excerpt: string | null;
   description: string | null;
@@ -39,8 +39,36 @@ interface Tour {
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
-const getImgUrl = (img: any): string =>
-  typeof img === "string" ? img : img?.url ?? "";
+/**
+ * Resolve any image value to a URL string.
+ * Handles: plain string URLs, Vite-imported asset strings (start with / or blob),
+ * and Cloudinary { url, public_id } objects.
+ */
+const getImgUrl = (img: any): string => {
+  if (!img) return "";
+  if (typeof img === "string") return img;                          // URL or imported asset
+  if (typeof img === "object" && img.url) return String(img.url);  // Cloudinary object
+  return "";
+};
+
+/**
+ * Build a deduplicated ordered image list.
+ * cover_image goes first, then images[] entries.
+ */
+const buildImageList = (tour: Tour): string[] => {
+  const list: string[] = [];
+  const seen = new Set<string>();
+
+  const push = (raw: any) => {
+    const url = getImgUrl(raw);
+    if (url && !seen.has(url)) { seen.add(url); list.push(url); }
+  };
+
+  push(tour.cover_image);
+  for (const img of tour.images ?? []) push(img);
+
+  return list;
+};
 
 const TYPE_LABELS: Record<string, string> = {
   GUIDED:     "Guided Safari",
@@ -50,9 +78,8 @@ const TYPE_LABELS: Record<string, string> = {
   CAR_RENTAL: "Car Rental",
 };
 
-// ─── Sub-components ──────────────────────────────────────────────────────────
+// ─── BookBar ─────────────────────────────────────────────────────────────────
 
-// Sticky book bar that appears after scrolling past the hero
 const BookBar = ({ tour }: { tour: Tour }) => (
   <div className="fixed bottom-0 left-0 right-0 z-40 md:hidden"
     style={{ background: "hsl(var(--background))", borderTop: "1px solid hsl(var(--border)/0.5)" }}>
@@ -61,7 +88,7 @@ const BookBar = ({ tour }: { tour: Tour }) => (
         <p className="font-body text-xs text-muted-foreground">From</p>
         <p className="font-display text-xl font-bold text-foreground"
           style={{ fontFamily: '"Yeseva One", serif' }}>
-          {tour.currency} {tour.price.toLocaleString()}
+          {tour.currency} {(tour.price_from ?? tour.price).toLocaleString()}
           <span className="font-body text-xs font-normal text-muted-foreground ml-1">/ person</span>
         </p>
       </div>
@@ -74,7 +101,8 @@ const BookBar = ({ tour }: { tour: Tour }) => (
   </div>
 );
 
-// Itinerary day accordion
+// ─── ItineraryAccordion ───────────────────────────────────────────────────────
+
 const ItineraryAccordion = ({ days }: { days: ItineraryDay[] }) => {
   const [open, setOpen] = useState<number | null>(0);
   return (
@@ -82,8 +110,7 @@ const ItineraryAccordion = ({ days }: { days: ItineraryDay[] }) => {
       {days.map((day, i) => (
         <div key={day.day} className="rounded-xl overflow-hidden"
           style={{ border: "1px solid hsl(var(--border)/0.6)" }}>
-          <button
-            onClick={() => setOpen(open === i ? null : i)}
+          <button onClick={() => setOpen(open === i ? null : i)}
             className="w-full flex items-center justify-between px-5 py-4 text-left transition-colors"
             style={{ background: open === i ? "hsl(var(--primary)/0.06)" : "hsl(var(--background))" }}>
             <div className="flex items-center gap-3">
@@ -94,7 +121,7 @@ const ItineraryAccordion = ({ days }: { days: ItineraryDay[] }) => {
               <span className="font-body text-sm font-semibold text-foreground">{day.title || `Day ${day.day}`}</span>
             </div>
             {open === i
-              ? <ChevronUp className="w-4 h-4 flex-shrink-0" style={{ color: "hsl(var(--muted-foreground))" }} />
+              ? <ChevronUp  className="w-4 h-4 flex-shrink-0" style={{ color: "hsl(var(--muted-foreground))" }} />
               : <ChevronDown className="w-4 h-4 flex-shrink-0" style={{ color: "hsl(var(--muted-foreground))" }} />}
           </button>
           <AnimatePresence>
@@ -113,32 +140,32 @@ const ItineraryAccordion = ({ days }: { days: ItineraryDay[] }) => {
   );
 };
 
-// Photo gallery — main + thumbnails
-const Gallery = ({ images, title }: { images: any[]; title: string }) => {
+// ─── Gallery ─────────────────────────────────────────────────────────────────
+
+const Gallery = ({ images, title }: { images: string[]; title: string }) => {
   const [active, setActive] = useState(0);
   const [lightbox, setLightbox] = useState(false);
-  const urls = images.map(getImgUrl).filter(Boolean);
-  if (!urls.length) return null;
+  if (!images.length) return null;
 
   return (
     <div>
-      {/* Main image */}
+      {/* Main */}
       <div className="relative overflow-hidden rounded-2xl cursor-zoom-in mb-3"
         style={{ aspectRatio: "16/9" }}
         onClick={() => setLightbox(true)}>
-        <motion.img key={active} src={urls[active]} alt={title}
+        <motion.img key={active} src={images[active]} alt={title}
           initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}
           className="w-full h-full object-cover" />
         <div className="absolute bottom-3 right-3 flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-body text-white"
           style={{ background: "rgba(0,0,0,0.5)" }}>
-          <Camera className="w-3 h-3" /> {urls.length} photos
+          <Camera className="w-3 h-3" /> {images.length} photo{images.length !== 1 ? "s" : ""}
         </div>
       </div>
 
       {/* Thumbnails */}
-      {urls.length > 1 && (
+      {images.length > 1 && (
         <div className="flex gap-2 overflow-x-auto pb-1">
-          {urls.map((url, i) => (
+          {images.map((url, i) => (
             <button key={i} onClick={() => setActive(i)}
               className="flex-shrink-0 rounded-lg overflow-hidden transition-all"
               style={{
@@ -159,7 +186,7 @@ const Gallery = ({ images, title }: { images: any[]; title: string }) => {
             className="fixed inset-0 z-50 flex items-center justify-center p-4"
             style={{ background: "rgba(0,0,0,0.92)" }}
             onClick={() => setLightbox(false)}>
-            <img src={urls[active]} alt={title}
+            <img src={images[active]} alt={title}
               className="max-w-full max-h-full rounded-xl object-contain"
               onClick={e => e.stopPropagation()} />
             <button onClick={() => setLightbox(false)}
@@ -167,14 +194,14 @@ const Gallery = ({ images, title }: { images: any[]; title: string }) => {
               style={{ background: "rgba(255,255,255,0.12)" }}>
               <X className="w-5 h-5 text-white" />
             </button>
-            {urls.length > 1 && (
+            {images.length > 1 && (
               <>
-                <button onClick={e => { e.stopPropagation(); setActive(a => (a - 1 + urls.length) % urls.length); }}
+                <button onClick={e => { e.stopPropagation(); setActive(a => (a - 1 + images.length) % images.length); }}
                   className="absolute left-4 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full flex items-center justify-center"
                   style={{ background: "rgba(255,255,255,0.12)" }}>
                   <ArrowLeft className="w-5 h-5 text-white" />
                 </button>
-                <button onClick={e => { e.stopPropagation(); setActive(a => (a + 1) % urls.length); }}
+                <button onClick={e => { e.stopPropagation(); setActive(a => (a + 1) % images.length); }}
                   className="absolute right-4 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full flex items-center justify-center"
                   style={{ background: "rgba(255,255,255,0.12)" }}>
                   <ArrowRight className="w-5 h-5 text-white" />
@@ -198,16 +225,16 @@ const TourDetail = () => {
   const [notFound, setNotFound] = useState(false);
 
   useEffect(() => {
-  window.scrollTo(0, 0);
-  if (!slug) return;
-  publicApi.getTour(slug)
-    .then(data => setTour(data as Tour))
-    .catch(() => {
-      const fallback = FALLBACK_TOURS.find(t => t.slug === slug);
-      fallback ? setTour(fallback as unknown as Tour) : setNotFound(true);
-    })
-    .finally(() => setLoading(false));
-}, [slug]);
+    window.scrollTo(0, 0);
+    if (!slug) return;
+    publicApi.getTour(slug)
+      .then(data => setTour(data as Tour))
+      .catch(() => {
+        const fallback = FALLBACK_TOURS.find(t => t.slug === slug);
+        fallback ? setTour(fallback as unknown as Tour) : setNotFound(true);
+      })
+      .finally(() => setLoading(false));
+  }, [slug]);
 
   if (loading) {
     return (
@@ -242,17 +269,13 @@ const TourDetail = () => {
     );
   }
 
-  // Put cover image first, then remaining images
-  const rawImages = (tour.images ?? []).map(getImgUrl).filter(Boolean);
-  const coverUrl  = tour.cover_image ?? rawImages[0] ?? null;
-  const images    = coverUrl
-    ? [coverUrl, ...rawImages.filter(u => u !== coverUrl)]
-    : rawImages;
+  // ── Derive display data ────────────────────────────────────────────────────
+  const images    = buildImageList(tour);
   const highlights = (tour.highlights ?? []).filter(Boolean);
-  const included  = (tour.included  ?? []).filter(Boolean);
-  const excluded  = (tour.excluded  ?? []).filter(Boolean);
-  const itinerary = (tour.itinerary ?? []).filter(d => d.title || d.desc);
-  const tags      = (tour.tags      ?? []).filter(Boolean);
+  const included  = (tour.included   ?? []).filter(Boolean);
+  const excluded  = (tour.excluded   ?? []).filter(Boolean);
+  const itinerary = (tour.itinerary  ?? []).filter(d => d.title || d.desc);
+  const tags      = (tour.tags       ?? []).filter(Boolean);
 
   return (
     <PageLayout>
@@ -267,10 +290,9 @@ const TourDetail = () => {
           <span style={{ color: "hsl(var(--primary))" }}>{tour.title}</span>
         </div>
 
-        {/* ── Two-column layout ── */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
 
-          {/* ── Left: main content ── */}
+          {/* ── Left ── */}
           <div className="lg:col-span-2 space-y-10">
 
             {/* Title + meta */}
@@ -314,17 +336,13 @@ const TourDetail = () => {
             </div>
 
             {/* Gallery */}
-            {images.length > 0 && (
-              <Gallery images={images} title={tour.title} />
-            )}
+            {images.length > 0 && <Gallery images={images} title={tour.title} />}
 
             {/* Overview */}
             {tour.description && (
               <div>
                 <h2 className="font-display text-xl text-foreground mb-4"
-                  style={{ fontFamily: '"Yeseva One", serif' }}>
-                  Tour Overview
-                </h2>
+                  style={{ fontFamily: '"Yeseva One", serif' }}>Tour Overview</h2>
                 <p className="font-body text-muted-foreground leading-relaxed whitespace-pre-line">
                   {tour.description}
                 </p>
@@ -335,9 +353,7 @@ const TourDetail = () => {
             {highlights.length > 0 && (
               <div>
                 <h2 className="font-display text-xl text-foreground mb-4"
-                  style={{ fontFamily: '"Yeseva One", serif' }}>
-                  Highlights
-                </h2>
+                  style={{ fontFamily: '"Yeseva One", serif' }}>Highlights</h2>
                 <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   {highlights.map((h, i) => (
                     <motion.li key={i}
@@ -359,9 +375,7 @@ const TourDetail = () => {
             {itinerary.length > 0 && (
               <div>
                 <h2 className="font-display text-xl text-foreground mb-4"
-                  style={{ fontFamily: '"Yeseva One", serif' }}>
-                  Itinerary
-                </h2>
+                  style={{ fontFamily: '"Yeseva One", serif' }}>Itinerary</h2>
                 <ItineraryAccordion days={itinerary} />
               </div>
             )}
@@ -370,9 +384,7 @@ const TourDetail = () => {
             {(included.length > 0 || excluded.length > 0) && (
               <div>
                 <h2 className="font-display text-xl text-foreground mb-4"
-                  style={{ fontFamily: '"Yeseva One", serif' }}>
-                  Includes &amp; Excludes
-                </h2>
+                  style={{ fontFamily: '"Yeseva One", serif' }}>Includes &amp; Excludes</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   {included.length > 0 && (
                     <div>
@@ -417,30 +429,27 @@ const TourDetail = () => {
             )}
           </div>
 
-          {/* ── Right: sticky booking sidebar ── */}
+          {/* ── Right: sticky sidebar ── */}
           <div className="hidden lg:block">
             <div className="sticky top-24 rounded-2xl p-6 space-y-5"
               style={{ border: "1px solid hsl(var(--border)/0.6)", background: "hsl(var(--muted)/0.2)" }}>
-
-              {/* Price */}
               <div>
                 <p className="font-body text-xs text-muted-foreground mb-1">From</p>
                 <p className="font-display text-3xl font-bold text-foreground"
                   style={{ fontFamily: '"Yeseva One", serif' }}>
-                  {tour.currency} {tour.price.toLocaleString()}
+                  {tour.currency} {(tour.price_from ?? tour.price).toLocaleString()}
                 </p>
                 <p className="font-body text-xs text-muted-foreground">per person</p>
               </div>
 
-              {/* Quick facts */}
               <div className="space-y-2.5 py-4"
                 style={{ borderTop: "1px solid hsl(var(--border)/0.4)", borderBottom: "1px solid hsl(var(--border)/0.4)" }}>
                 {[
-                  { label: "Duration",   value: `${tour.duration_days} Days` },
+                  { label: "Duration",    value: `${tour.duration_days} Days` },
                   { label: "Destination", value: tour.destination },
                   ...(tour.departure_location ? [{ label: "Departs From", value: tour.departure_location }] : []),
                   ...(tour.return_location    ? [{ label: "Returns To",   value: tour.return_location   }] : []),
-                  { label: "Type",       value: TYPE_LABELS[tour.type] ?? tour.type },
+                  { label: "Type",        value: TYPE_LABELS[tour.type] ?? tour.type },
                 ].map(row => (
                   <div key={row.label} className="flex items-start justify-between gap-2">
                     <span className="font-body text-xs text-muted-foreground">{row.label}</span>
@@ -449,7 +458,6 @@ const TourDetail = () => {
                 ))}
               </div>
 
-              {/* Book button */}
               <Link to={`/quote?tour=${tour.slug}`}
                 className="flex items-center justify-center gap-2 w-full py-4 rounded-xl text-sm font-body
                   font-semibold uppercase tracking-widest transition-all duration-200"
@@ -462,7 +470,6 @@ const TourDetail = () => {
                 No payment required — we'll send a detailed quote within 24 hours.
               </p>
 
-              {/* Call us */}
               <a href="tel:+255623880844"
                 className="flex items-center justify-center gap-2 w-full py-3 rounded-xl text-sm font-body
                   font-semibold border transition-all duration-200"
@@ -472,10 +479,8 @@ const TourDetail = () => {
             </div>
           </div>
         </div>
-
       </div>
 
-      {/* Mobile sticky book bar */}
       <BookBar tour={tour} />
     </PageLayout>
   );

@@ -1,14 +1,36 @@
 import { useRef, useState, useEffect, useCallback } from "react";
-import { ArrowRight, ChevronRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import machameImg  from "@/assets/mount-trek.jpg";
-import lemoshoImg  from "@/assets/mount-trek.jpg";
-import maranguImg  from "@/assets/mount-trek.jpg";
-import { FALLBACK_TOURS } from "@/data/toursData";
+import machameImg  from "@/assets/Machame-Route-Map.avif";
+import lemoshoImg  from "@/assets/Lemosho-Route-Map.avif";
+import maranguImg  from "@/assets/Marangu-Route-Map.jpg";
 
-const treks = FALLBACK_TOURS.filter(
-  tour => tour.type === "MOUNTAIN"
-);
+const treks = [
+  {
+    slug:  "kilimanjaro-marangu-route",
+    days:  6,
+    title: "Marangu Route",
+    label: "The Classic",
+    price: 2130,
+    image: maranguImg,
+  },
+  {
+    slug:  "kilimanjaro-machame-route",
+    days:  7,
+    title: "Machame Route",
+    label: "Most Popular",
+    price: 2470,
+    image: machameImg,
+  },
+  {
+    slug:  "kilimanjaro-lemosho-route",
+    days:  8,
+    title: "Lemosho Route",
+    label: "Best Scenery",
+    price: 2585,
+    image: lemoshoImg,
+  },
+];
 
 const AUTO_INTERVAL = 4000;
 
@@ -22,7 +44,7 @@ export function KilimanjaroSection() {
     if (!el) return;
     const card = el.querySelector<HTMLElement>("[data-card]");
     if (!card) return;
-    const cardW = card.offsetWidth + 16; // gap-4 = 16px
+    const cardW = card.offsetWidth + 16;
     const idx   = Math.round(el.scrollLeft / cardW);
     setActiveIdx(Math.min(idx, treks.length - 1));
   }
@@ -64,19 +86,16 @@ export function KilimanjaroSection() {
       style={{ background: "hsl(var(--secondary))" }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        {/* ── Top label ── */}
         <p className="font-body text-xs tracking-[0.28em] uppercase mb-3"
           style={{ color: "hsl(var(--primary))" }}>
           Summit Africa
         </p>
 
-        {/* ── Two-column layout ── */}
         <div className="flex flex-col lg:flex-row gap-10 lg:gap-16 items-start">
 
           {/* LEFT */}
           <div className="lg:w-72 xl:w-80 flex-shrink-0 lg:sticky lg:top-24">
-            <h2 className="font-display text-4xl xl:text-5xl font-bold uppercase leading-[1.05]
-              text-foreground mb-5">
+            <h2 className="font-display text-4xl xl:text-5xl font-bold uppercase leading-[1.05] text-foreground mb-5">
               Kilimanjaro<br />Adventure
             </h2>
             <p className="font-body text-sm leading-relaxed mb-8"
@@ -85,10 +104,8 @@ export function KilimanjaroSection() {
               different pace, scenery, and summit style.
             </p>
 
-            <Link to="/tours/mountain"
-              className="inline-flex items-center gap-3 group mb-10">
-              <span className="w-10 h-10 rounded-full flex items-center justify-center
-                transition-colors duration-300"
+            <Link to="/tours/mountain" className="inline-flex items-center gap-3 group mb-10">
+              <span className="w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-300"
                 style={{ background: "hsl(var(--primary))" }}>
                 <ArrowRight className="w-4 h-4 text-white" />
               </span>
@@ -108,44 +125,10 @@ export function KilimanjaroSection() {
                   style={{
                     width:      i === activeIdx ? 28 : 8,
                     height:     8,
-                    background: i === activeIdx
-                      ? "hsl(var(--primary))"
-                      : "hsl(var(--border))",
+                    background: i === activeIdx ? "hsl(var(--primary))" : "hsl(var(--border))",
                   }} />
               ))}
             </div>
-
-            {/* Route index — desktop only
-            <div className="hidden lg:block mt-10 space-y-0"
-              style={{ borderTop: "1px solid hsl(var(--border)/0.5)" }}>
-              {treks.map((trek, i) => (
-                <button key={trek.slug}
-                  onClick={() => { stopAuto(); scrollTo(i); setActiveIdx(i); startAuto(); }}
-                  className="w-full flex items-center justify-between py-4 text-left
-                    transition-colors duration-200 group"
-                  style={{ borderBottom: "1px solid hsl(var(--border)/0.5)" }}>
-                  <div className="flex items-center gap-3">
-                    <span className="font-body text-xs tabular-nums"
-                      style={{ color: i === activeIdx
-                        ? "hsl(var(--primary))"
-                        : "hsl(var(--muted-foreground))" }}>
-                      0{i + 1}
-                    </span>
-                    <span className="font-body text-sm font-semibold"
-                      style={{ color: i === activeIdx
-                        ? "hsl(var(--foreground))"
-                        : "hsl(var(--muted-foreground))" }}>
-                      {trek.title}
-                    </span>
-                  </div>
-                  <ChevronRight className="w-3.5 h-3.5 transition-transform duration-200
-                    group-hover:translate-x-0.5"
-                    style={{ color: i === activeIdx
-                      ? "hsl(var(--primary))"
-                      : "hsl(var(--border))" }} />
-                </button>
-              ))}
-            </div> */}
           </div>
 
           {/* RIGHT — scrollable cards */}
@@ -158,31 +141,29 @@ export function KilimanjaroSection() {
               onTouchEnd={startAuto}
               className="flex gap-4 snap-x snap-mandatory"
               style={{
-                overflowX:                "scroll",
-                overflowY:                "visible",
-                scrollbarWidth:           "none",
-                msOverflowStyle:          "none",
-                WebkitOverflowScrolling:  "touch",
-                paddingBottom:            "4px",
+                overflowX:               "scroll",
+                overflowY:               "visible",
+                scrollbarWidth:          "none",
+                msOverflowStyle:         "none",
+                WebkitOverflowScrolling: "touch",
+                paddingBottom:           "4px",
               }}
             >
-              {treks.map((trek, i) => (
+              {treks.map((trek) => (
                 <div
-                  key={trek.title}
+                  key={trek.slug}
                   data-card
                   className="snap-start flex-shrink-0 flex flex-col overflow-hidden"
-                  style={{
-                    width:        "min(76vw, 320px)",
-                    borderRadius: "16px",
-                  }}
+                  style={{ width: "min(76vw, 320px)", borderRadius: "16px" }}
                 >
                   {/* Photo */}
                   <div className="relative overflow-hidden flex-shrink-0" style={{ height: 240 }}>
-                    <img src={trek.cover_image} alt={trek.title}
+                    <img
+                      src={trek.image}
+                      alt={trek.title}
                       className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
-                      loading="lazy" />
-
-                    {/* Label badge */}
+                      loading="lazy"
+                    />
                     <span className="absolute top-4 left-4 font-body text-[10px] tracking-[0.18em]
                       uppercase font-semibold px-3 py-1.5"
                       style={{
@@ -190,10 +171,8 @@ export function KilimanjaroSection() {
                         color:        "hsl(var(--foreground))",
                         borderRadius: "99px",
                       }}>
-                      {/* {trek.name} */}
+                      {trek.label}
                     </span>
-
-                    {/* Days chip */}
                     <span className="absolute bottom-4 right-4 font-body text-[10px]
                       tracking-[0.15em] uppercase font-semibold px-3 py-1.5"
                       style={{
@@ -201,20 +180,17 @@ export function KilimanjaroSection() {
                         color:        "rgba(255,255,255,0.9)",
                         borderRadius: "99px",
                       }}>
-                      {trek.duration} Days
+                      {trek.days} Days
                     </span>
                   </div>
 
                   {/* Info panel */}
                   <div className="flex flex-col gap-4 p-6 flex-1"
                     style={{ background: "hsl(var(--olive))" }}>
-
                     <h3 className="font-display text-2xl font-bold text-white uppercase leading-tight">
                       {trek.title}
                     </h3>
-
                     <div style={{ width: "100%", height: 1, background: "rgba(255,255,255,0.15)" }} />
-
                     <div className="flex items-end justify-between gap-3 mt-auto">
                       <div>
                         <p className="font-display text-2xl font-bold text-white">
@@ -225,8 +201,8 @@ export function KilimanjaroSection() {
                           Per Person
                         </p>
                       </div>
-
-                      <Link to={`/tours/mountain/${trek.slug}`}
+                      <Link
+                        to={`/tours/${trek.slug}`}
                         className="font-body text-[11px] tracking-[0.15em] uppercase
                           font-semibold px-5 py-3 transition-colors duration-300 whitespace-nowrap"
                         style={{
@@ -252,9 +228,7 @@ export function KilimanjaroSection() {
                   style={{
                     width:      i === activeIdx ? 28 : 8,
                     height:     8,
-                    background: i === activeIdx
-                      ? "hsl(var(--primary))"
-                      : "hsl(var(--border))",
+                    background: i === activeIdx ? "hsl(var(--primary))" : "hsl(var(--border))",
                   }} />
               ))}
             </div>
