@@ -1,9 +1,10 @@
-// Shared across all category pages 
+// Shared across all category pages
 
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { MapPin, Clock, ArrowRight } from "lucide-react";
+import { MapPin, ArrowRight } from "lucide-react";
 import { publicApi } from "@/lib/api";
+import { FALLBACK_TOURS } from "@/data/toursData";
 
 export interface Tour {
   id: number;
@@ -13,45 +14,70 @@ export interface Tour {
   type: string;
   duration_days: number;
   price: number;
+  price_from?: number;
   currency: string;
+  cover_image?: string | null;
   images: any[] | null;
   excerpt: string | null;
   tags: string[] | null;
+  published?: boolean;
 }
 
 export const getTourImg = (tour: Tour, fallback: string) => {
   const first = tour.images?.[0];
-  if (!first) return fallback;
-  return typeof first === "string" ? first : (first?.url ?? fallback);
+  if (first) return typeof first === "string" ? first : (first?.url ?? fallback);
+  if (tour.cover_image) return tour.cover_image;
+  return fallback;
 };
 
 export const useTours = (type: string) => {
-  const [tours, setTours]   = useState<Tour[]>([]);
+  const [tours, setTours]     = useState<Tour[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     window.scrollTo(0, 0);
+
     publicApi
       .getTours()
-      .then((data: any) =>
-        setTours((data as Tour[]).filter((t) => t.type === type))
-      )
-      .catch(() => {})
+      .then((data: any) => {
+        const all      = data as Tour[];
+        const filtered = all.filter((t) => t.type === type);
+
+        // API returned nothing for this type — use fallback data
+        if (filtered.length === 0) {
+          setTours(
+            FALLBACK_TOURS.filter(
+              (t) => t.type === type && t.published !== false
+            ) as Tour[]
+          );
+        } else {
+          setTours(filtered);
+        }
+      })
+      .catch(() => {
+        // API unreachable — load fallback tours filtered by type
+        setTours(
+          FALLBACK_TOURS.filter(
+            (t) => t.type === type && t.published !== false
+          ) as Tour[]
+        );
+      })
       .finally(() => setLoading(false));
   }, [type]);
 
   return { tours, loading };
 };
 
-// Simple tour card — matches the Private Explorers card style
+// ─── TourCard ────────────────────────────────────────────────────────────────
+
 export const TourCard = ({
   tour,
-  accent = "hsl(var(--primary))",
-  accentText = "hsl(var(--dark))",
+  accent      = "hsl(var(--primary))",
+  accentText  = "hsl(var(--dark))",
   fallbackImg = "https://images.unsplash.com/photo-1516426122078-c23e76319801?w=800",
 }: {
-  tour: Tour;
-  accent?: string;
+  tour:        Tour;
+  accent?:     string;
   accentText?: string;
   fallbackImg?: string;
 }) => (
@@ -68,7 +94,6 @@ export const TourCard = ({
         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
       />
       <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-      {/* Category badge */}
       <span
         className="absolute top-3 left-3 text-xs font-body px-2.5 py-1 rounded-full font-medium"
         style={{ background: accent, color: accentText }}
@@ -78,10 +103,7 @@ export const TourCard = ({
     </div>
 
     <div className="flex flex-col flex-1 p-4 gap-2">
-      <div
-        className="flex items-center gap-1 text-xs font-body"
-        style={{ color: accent }}
-      >
+      <div className="flex items-center gap-1 text-xs font-body" style={{ color: accent }}>
         <MapPin className="w-3 h-3 flex-shrink-0" />
         {tour.destination}
       </div>
@@ -107,7 +129,7 @@ export const TourCard = ({
             className="font-display text-lg font-bold text-foreground"
             style={{ fontFamily: '"Yeseva One", serif' }}
           >
-            ${tour.price.toLocaleString()}
+            ${(tour.price_from ?? tour.price).toLocaleString()}
           </span>
         </div>
         <span
@@ -121,21 +143,22 @@ export const TourCard = ({
   </Link>
 );
 
-// Grid of tour cards with loading + empty states
+// ─── PackagesGrid ─────────────────────────────────────────────────────────────
+
 export const PackagesGrid = ({
   tours,
   loading,
-  accent = "hsl(var(--primary))",
-  accentText = "hsl(var(--dark))",
+  accent      = "hsl(var(--primary))",
+  accentText  = "hsl(var(--dark))",
   fallbackImg,
-  emptyLabel = "packages",
+  emptyLabel  = "packages",
 }: {
-  tours: Tour[];
-  loading: boolean;
-  accent?: string;
-  accentText?: string;
+  tours:        Tour[];
+  loading:      boolean;
+  accent?:      string;
+  accentText?:  string;
   fallbackImg?: string;
-  emptyLabel?: string;
+  emptyLabel?:  string;
 }) => {
   if (loading) {
     return (
