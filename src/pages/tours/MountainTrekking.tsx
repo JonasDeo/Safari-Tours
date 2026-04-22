@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import PageLayout from "@/components/PageLayout";
 import { useTours, PackagesGrid } from "./_shared";
+import RouteSelector from "@/components/RouteSelector";
 import kilimanjaro from "@/assets/mount-trek.jpg"
 
 const accent = "hsl(var(--terracotta))";
@@ -53,28 +54,8 @@ const MountainTrekking = () => {
           style={{ height: 380 }}
         />
 
-        {/* Routes overview */}
-        <h2 className="font-display text-2xl text-foreground mb-4"
-          style={{ fontFamily: '"Yeseva One", serif' }}>
-          Mount Kilimanjaro — Trekking Routes Overview
-        </h2>
-        <p className="font-body text-muted-foreground leading-relaxed mb-5 max-w-3xl">
-          We offer treks across all the major routes up Mount Kilimanjaro, each with unique features,
-          landscapes, and challenges. Below is an overview, followed by detailed pricing:
-        </p>
-        <ol className="font-body text-muted-foreground space-y-2.5 mb-10 max-w-3xl list-none">
-          {[
-            ["Marangu Route (Coca-Cola Route)", "The only route with hut accommodation — the most comfortable option and a gentler gradient."],
-            ["Machame Route (Whiskey Route)",   "One of the most popular and scenic routes with an excellent acclimatisation profile."],
-            ["Rongai Route",                    "Approaches from the north — quieter, drier, and especially good during the rainy season."],
-            ["Lemosho Route",                   "One of the longest and most scenic routes, ideal for acclimatisation and the highest success rate."],
-          ].map(([title, desc], i) => (
-            <li key={title} className="flex items-start gap-3">
-              <span className="font-body font-bold text-sm flex-shrink-0 mt-0.5" style={{ color: accent }}>{i + 1}.</span>
-              <span><strong className="text-foreground">{title}</strong> — {desc}</span>
-            </li>
-          ))}
-        </ol>
+        {/* Routes Overview */}
+        <RouteSelector />
 
         {/* Package types */}
         <h2 className="font-display text-2xl text-foreground mb-5"
