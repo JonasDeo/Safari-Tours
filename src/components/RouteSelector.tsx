@@ -9,7 +9,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import maranguMap from "@/assets/Marangu-Route-Map.jpg";
 import machameMap from "@/assets/Machame-Route-Map.avif";
 import lemoshoMap from "@/assets/Lemosho-Route-Map.avif";
-import rongaiMap  from "@/assets/Rongai-Route-Map.jpg";
+import rongaiMap  from "@/assets/Rongai-Route-Map.png";
 import umbweMap  from "@/assets/Umbwe-Route-Map.png";
 import northernCircuit  from "@/assets/Northern-Circuit-Route-map.jpg";
 

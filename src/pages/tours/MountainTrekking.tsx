@@ -4,7 +4,8 @@ import { ArrowRight } from "lucide-react";
 import PageLayout from "@/components/PageLayout";
 import { useTours, PackagesGrid } from "./_shared";
 import RouteSelector from "@/components/RouteSelector";
-import kilimanjaro from "@/assets/mount-trek.jpg"
+import KilimanjaroFAQ from "@/components/KilimanjaroFAQ";
+import kilimanjaro from "@/assets/mount-trek.jpg";
 
 const accent = "hsl(var(--terracotta))";
 
@@ -28,7 +29,7 @@ const MountainTrekking = () => {
         style={{ paddingTop: "calc(var(--nav-total-h, 72px) + 2.5rem)", paddingBottom: "4rem" }}
       >
 
-        {/* Page title */}
+        {/* ── Page title ── */}
         <h1 className="font-display text-3xl md:text-4xl text-foreground mb-1"
           style={{ fontFamily: '"Yeseva One", serif' }}>
           Mountain Climbing in Africa
@@ -37,7 +38,7 @@ const MountainTrekking = () => {
           Kilimanjaro Trek Prices, Routes &amp; Packages
         </p>
 
-        {/* Intro */}
+        {/* ── Intro ── */}
         <p className="font-body text-muted-foreground leading-relaxed mb-4 max-w-3xl">
           At Native Kilimanjaro, we offer tailored packages to suit your adventure preferences and budget.
           Whether you're looking for a more economical <strong className="text-foreground">Budget Package</strong> or
@@ -46,7 +47,7 @@ const MountainTrekking = () => {
           dedicated porters ensure an unforgettable journey to Uhuru Peak — 5,895 metres above sea level.
         </p>
 
-        {/* Hero image */}
+        {/* ── Hero image ── */}
         <img
           src={kilimanjaro}
           alt="Mount Kilimanjaro summit above the clouds"
@@ -54,10 +55,10 @@ const MountainTrekking = () => {
           style={{ height: 380 }}
         />
 
-        {/* Routes Overview */}
+        {/* ── Routes Overview ── */}
         <RouteSelector />
 
-        {/* Package types */}
+        {/* ── Package types ── */}
         <h2 className="font-display text-2xl text-foreground mb-5"
           style={{ fontFamily: '"Yeseva One", serif' }}>
           Packages Overview
@@ -105,13 +106,13 @@ const MountainTrekking = () => {
           </div>
         </div>
 
-        {/* Price table */}
+        {/* ── Price table ── */}
         <h2 className="font-display text-2xl text-foreground mb-3"
           style={{ fontFamily: '"Yeseva One", serif' }}>
-          Kilimanjaro Trek Price
+          Kilimanjaro Trek Prices
         </h2>
         <p className="font-body text-sm text-muted-foreground mb-6">
-          Price rates per person in a group (USD). All park fees, guides, porters, meals, and accommodation included.
+          Price per person in a group (USD). All park fees, guides, porters, meals, and accommodation included.
         </p>
         <div className="overflow-x-auto rounded-xl mb-4"
           style={{ border: "1px solid hsl(var(--border)/0.6)" }}>
@@ -128,7 +129,10 @@ const MountainTrekking = () => {
               {routePrices.map((row, i) => (
                 <tr key={row.route}
                   className="transition-colors"
-                  style={{ borderBottom: "1px solid hsl(var(--border)/0.3)", background: i % 2 === 0 ? "transparent" : "hsl(var(--muted)/0.15)" }}>
+                  style={{
+                    borderBottom: "1px solid hsl(var(--border)/0.3)",
+                    background: i % 2 === 0 ? "transparent" : "hsl(var(--muted)/0.15)",
+                  }}>
                   <td className="px-4 py-3 font-semibold text-foreground">{row.route}</td>
                   <td className="px-4 py-3 text-foreground">${row.solo.toLocaleString()}</td>
                   <td className="px-4 py-3 text-foreground">${row.two.toLocaleString()}</td>
@@ -144,7 +148,7 @@ const MountainTrekking = () => {
           For the Marangu Route, huts are provided — camping gear does not apply.
         </p>
 
-        {/* Park fees */}
+        {/* ── Park fees ── */}
         <h2 className="font-display text-2xl text-foreground mb-4"
           style={{ fontFamily: '"Yeseva One", serif' }}>
           Kilimanjaro National Park Fees
@@ -166,15 +170,18 @@ const MountainTrekking = () => {
             </thead>
             <tbody>
               {[
-                { type: "Conservation Fee",   rate: "$70 / day",  note: "Per person per day on all routes" },
+                { type: "Conservation Fee",   rate: "$70 / day",   note: "Per person per day on all routes" },
                 { type: "Camping Fee",        rate: "$50 / night", note: "Marangu huts: $60/night instead" },
-                { type: "Rescue Fee",         rate: "$20 / day",  note: "Mandatory for all climbers" },
-                { type: "Guide Fee (KINAPA)", rate: "$25 / day",  note: "Per climbing day" },
-                { type: "Porter Fee",         rate: "$15 / day",  note: "Per porter per day" },
-                { type: "Summit Certificate", rate: "$100",       note: "One-time fee, collected at the summit" },
+                { type: "Rescue Fee",         rate: "$20 / day",   note: "Mandatory for all climbers" },
+                { type: "Guide Fee (KINAPA)", rate: "$25 / day",   note: "Per climbing day" },
+                { type: "Porter Fee",         rate: "$15 / day",   note: "Per porter per day" },
+                { type: "Summit Certificate", rate: "$100",        note: "One-time fee, collected at the summit" },
               ].map((row, i) => (
                 <tr key={row.type}
-                  style={{ borderBottom: "1px solid hsl(var(--border)/0.3)", background: i % 2 === 0 ? "transparent" : "hsl(var(--muted)/0.15)" }}>
+                  style={{
+                    borderBottom: "1px solid hsl(var(--border)/0.3)",
+                    background: i % 2 === 0 ? "transparent" : "hsl(var(--muted)/0.15)",
+                  }}>
                   <td className="px-4 py-3 font-semibold text-foreground">{row.type}</td>
                   <td className="px-4 py-3 font-semibold" style={{ color: accent }}>{row.rate}</td>
                   <td className="px-4 py-3 text-muted-foreground">{row.note}</td>
@@ -184,7 +191,7 @@ const MountainTrekking = () => {
           </table>
         </div>
 
-        {/* Trekking preparations */}
+        {/* ── Trekking preparations ── */}
         <h2 className="font-display text-2xl text-foreground mb-4"
           style={{ fontFamily: '"Yeseva One", serif' }}>
           Trekking Preparations
@@ -226,7 +233,7 @@ const MountainTrekking = () => {
         </ul>
 
         <h3 className="font-body font-semibold text-foreground mb-3">Medical &amp; Insurance</h3>
-        <ul className="font-body text-muted-foreground space-y-2 mb-12 max-w-3xl">
+        <ul className="font-body text-muted-foreground space-y-2 mb-14 max-w-3xl">
           {[
             "Get a full medical check-up before your climb",
             "Ensure your travel insurance covers high-altitude helicopter evacuation",
@@ -240,7 +247,10 @@ const MountainTrekking = () => {
           ))}
         </ul>
 
-        {/* Packages */}
+        {/* ── FAQ ── */}
+        <KilimanjaroFAQ />
+
+        {/* ── Packages ── */}
         <h2 className="font-display text-2xl text-foreground mb-2"
           style={{ fontFamily: '"Yeseva One", serif' }}>
           Mountain Trekking Packages
@@ -262,10 +272,11 @@ const MountainTrekking = () => {
           emptyLabel="mountain trekking packages"
         />
 
-        {/* CTA */}
+        {/* ── CTA ── */}
         <div className="mt-14 py-12 px-6 text-center rounded-xl"
           style={{ background: "hsl(var(--muted)/0.3)", border: "1px solid hsl(var(--border)/0.4)" }}>
-          <h3 className="font-display text-2xl text-foreground mb-3" style={{ fontFamily: '"Yeseva One", serif' }}>
+          <h3 className="font-display text-2xl text-foreground mb-3"
+            style={{ fontFamily: '"Yeseva One", serif' }}>
             Ready to Summit Kilimanjaro?
           </h3>
           <p className="font-body text-sm text-muted-foreground mb-6 max-w-md mx-auto">
