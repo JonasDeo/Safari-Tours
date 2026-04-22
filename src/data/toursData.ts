@@ -1,8 +1,52 @@
-// Single source of truth for fallback tours — used by ToursSection, ToursPage, and TourDetail
-
+// Route Maps
 import maranguRouteImg from "@/assets/Marangu-Route-Map.jpg";
 import machameRouteImg from "@/assets/Machame-Route-Map.avif";
 import lemoshoRouteImg from "@/assets/Lemosho-Route-Map.avif";
+
+// Safari & Wildlife Images
+import safariElephants from "@/assets/safari-elephants.jpg";
+import safariLions from "@/assets/safari-lions.jpg";
+import safariLandscape from "@/assets/safari-landscape.jpg";
+import safariDrive from "@/assets/safari-drive.jpg";
+import serengeriPlains from "@/assets/serengeri-plains.jpg";
+import zebras from "@/assets/zebras.jpg";
+import zebraSavanna from "@/assets/zebra-savanna.jpg";
+import lions from "@/assets/lions.jpg";
+import twoLions from "@/assets/two-lions.jpg";
+import elephant from "@/assets/elephant.jpg";
+import elephants1 from "@/assets/elephants_1.jpg";
+import lionTours from "@/assets/lion-tours.jpg";
+import giraffe from "@/assets/giraffe.jpg";
+import antelopes from "@/assets/antelopes-savanna.jpg";
+import gameDrive from "@/assets/game-drive.jpg";
+
+// Zanzibar & Beach Images
+import zanzibar from "@/assets/zanzibar.jpg";
+import zanzibarCoast from "@/assets/zanzibar-coast.jpg";
+import beach from "@/assets/beach.jpg";
+import clearBeach from "@/assets/clear-beach.jpg";
+import seaSunset from "@/assets/sea-sunset.jpg";
+import beach2 from "@/assets/beach (2).jpg";
+import stonetonCoast from "@/assets/stonetown-coast.jpg";
+
+// Kilimanjaro Trek Images
+import kili1 from "@/assets/kili-1.webp";
+import kili2 from "@/assets/kili-2.webp";
+import kili3 from "@/assets/kili-3.jpg";
+import kili4 from "@/assets/kili-4.jpg";
+import kili5avif from "@/assets/kili-5.avif";
+import kili5jpg from "@/assets/kili-5.jpg";
+import kiliTrek from "@/assets/kili-trek.webp";
+import kilimanjaro from "@/assets/kilimanjaro.jpg";
+import mountTrek from "@/assets/mount-trek.jpg";
+
+// Lodge & Accommodation Images
+import lodge1 from "@/assets/lodge-1.jpg";
+import lodge2 from "@/assets/lodge-2.jpg";
+
+// Guide & Activities
+import guidedSafari from "@/assets/guided-safari.jpg";
+import selfDrive from "@/assets/self-drive.png";
 
 export interface ItineraryDay { day: number; title: string; desc: string; }
 
@@ -47,9 +91,9 @@ export const FALLBACK_TOURS: Tour[] = [
     price:              3950,
     price_from:         3950,
     currency:           "USD",
-    cover_image:        "https://images.unsplash.com/photo-1516426122078-c23e76319801?w=800",
+    cover_image:        safariLandscape,
     hover_image:        null,
-    images:             [],
+    images:             [safariLandscape, safariElephants, zanzibar, zanzibarCoast, clearBeach, seaSunset, stonetonCoast],
     excerpt:            "World-class wildlife safaris in the Serengeti and Ngorongoro Crater, followed by a luxurious beach escape on Zanzibar.",
     description:        "This meticulously crafted 10-day journey offers the perfect balance of thrilling wildlife encounters and ultimate relaxation. Begin in Tanzania's northern safari circuit, exploring the iconic Serengeti National Park and the spectacular Ngorongoro Crater — a UNESCO World Heritage Site teeming with the Big Five. The journey culminates with a flight to Zanzibar, where you'll unwind on pristine white-sand beaches, explore the historic Stone Town, and snorkel in the crystal-clear Indian Ocean.",
     departure_location: "Arusha",
@@ -100,9 +144,9 @@ export const FALLBACK_TOURS: Tour[] = [
     price:              3350,
     price_from:         3350,
     currency:           "USD",
-    cover_image:        "https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=800",
+    cover_image:        zebraSavanna,
     hover_image:        null,
-    images:             [],
+    images:             [zebraSavanna, zebras, lions, twoLions, safariLions, serengeriPlains],
     excerpt:            "Witness the world's greatest wildlife spectacle and track Africa's iconic big cats across the Serengeti.",
     description:        "This premium safari is timed for the Great Migration's most dramatic river crossings. You'll traverse the Serengeti with over a million wildebeest and zebras, shadowed by lions, leopards, and cheetahs. Expert naturalist guides provide insightful commentary throughout. The itinerary also includes a full day in the Ngorongoro Crater.",
     departure_location: "Arusha",
@@ -149,9 +193,9 @@ export const FALLBACK_TOURS: Tour[] = [
     price:              2950,
     price_from:         2950,
     currency:           "USD",
-    cover_image:        "https://images.unsplash.com/photo-1523805009345-7448845a9e53?w=800",
+    cover_image:        safariElephants,
     hover_image:        null,
-    images:             [],
+    images:             [safariElephants, elephant, elephants1, lions, giraffe, antelopes, serengeriPlains],
     excerpt:            "Discover Tanzania's iconic Big Five alongside immersive cultural encounters with the Maasai people.",
     description:        "This balanced safari pairs big-five game viewing in Tarangire and Ngorongoro with an authentic Maasai boma visit and a vibrant Arusha market tour. All meals and transfers included.",
     departure_location: "Arusha",
@@ -198,9 +242,9 @@ export const FALLBACK_TOURS: Tour[] = [
     price:              1350,
     price_from:         1350,
     currency:           "USD",
-    cover_image:        "https://images.unsplash.com/photo-1549035092-33b2937b075a?w=600&auto=format&fit=crop&q=60",
+    cover_image:        zanzibar,
     hover_image:        null,
-    images:             [],
+    images:             [zanzibar, zanzibarCoast, beach, clearBeach, seaSunset, beach2, stonetonCoast],
     excerpt:            "White sand, turquoise water, and the spice-scented air of Stone Town — pure Indian Ocean bliss.",
     description:        "Five days of culture, adventure, and relaxation on Zanzibar. Explore the UNESCO-listed Stone Town, tour fragrant spice plantations, snorkel over vibrant coral reefs, and unwind on pristine white-sand beaches.",
     departure_location: "Zanzibar",
@@ -252,16 +296,16 @@ export const FALLBACK_TOURS: Tour[] = [
     price_from:         2250,
     currency:           "USD",
     // Real mountain photo as the default card image
-    cover_image:        "https://images.unsplash.com/photo-1609198093458-f2c6a0e2e21f?w=800&auto=format&fit=crop&q=80",
+    cover_image:        kilimanjaro,
     // Route map crossfades in on hover
     hover_image:        maranguRouteImg,
     // Detail page gallery: map first, then additional trek photos
     images: [
       maranguRouteImg,
-      "https://images.unsplash.com/photo-1609198093458-f2c6a0e2e21f?w=800&auto=format&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1621414050946-1b3bc24b2e92?w=800&auto=format&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1631515243349-e0cb75fb8d3a?w=800&auto=format&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1589553416260-f586c8f1514f?w=800&auto=format&fit=crop&q=80",
+      kilimanjaro,
+      kili5avif,
+      kiliTrek,
+      mountTrek,
     ],
     excerpt:            "The classic 'Coca-Cola' route — the only Kilimanjaro path with comfortable hut accommodation.",
     description:        "Often called the most accessible route, Marangu follows a direct path through lush montane rainforest, open moorlands, and alpine desert to Uhuru Peak (5,895m). It is the only route using permanent bunkhouse huts, providing a more comfortable experience. The 6-day itinerary includes an acclimatization day at Horombo Hut. Professional KINAPA-licensed guides, porters, and cooks ensure your safety throughout Tanzania's most iconic climb.",
@@ -311,14 +355,14 @@ export const FALLBACK_TOURS: Tour[] = [
     price:              2550,
     price_from:         2550,
     currency:           "USD",
-    cover_image:        "https://images.unsplash.com/photo-1568259547325-f08f48165cda?w=800&auto=format&fit=crop&q=80",
+    cover_image:        kili1,
     hover_image:        machameRouteImg,
     images: [
       machameRouteImg,
-      "https://images.unsplash.com/photo-1568259547325-f08f48165cda?w=800&auto=format&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1631515243349-e0cb75fb8d3a?w=800&auto=format&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1609198093458-f2c6a0e2e21f?w=800&auto=format&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1589553416260-f586c8f1514f?w=800&auto=format&fit=crop&q=80",
+      kili1,
+      kili2,
+      kiliTrek,
+      mountTrek,
     ],
     excerpt:            "The most popular and scenic 'Whiskey' route with excellent acclimatisation and a dramatic Barranco Wall scramble.",
     description:        "The Machame Route is beloved for its stunning scenery and strong 'climb high, sleep low' acclimatisation profile, producing higher summit success rates. Over seven days you'll cross the Shira Plateau, pass the dramatic Lava Tower, scale the Barranco Wall, and traverse the Southern Circuit before the final summit push. High-quality camping equipment and a full support team keep you comfortable throughout one of Kilimanjaro's most varied and photogenic routes.",
@@ -368,14 +412,14 @@ export const FALLBACK_TOURS: Tour[] = [
     price:              2750,
     price_from:         2750,
     currency:           "USD",
-    cover_image:        "https://images.unsplash.com/photo-1589553416260-f586c8f1514f?w=800&auto=format&fit=crop&q=80",
+    cover_image:        kili3,
     hover_image:        lemoshoRouteImg,
     images: [
       lemoshoRouteImg,
-      "https://images.unsplash.com/photo-1589553416260-f586c8f1514f?w=800&auto=format&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1621414050946-1b3bc24b2e92?w=800&auto=format&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1568259547325-f08f48165cda?w=800&auto=format&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1609198093458-f2c6a0e2e21f?w=800&auto=format&fit=crop&q=80",
+      kili3,
+      kili4,
+      kili5jpg,
+      mountTrek,
     ],
     excerpt:            "The most scenic and remote route with the highest summit success rates — a premium Kilimanjaro experience.",
     description:        "Widely considered the most beautiful route, the 8-day Lemosho approaches from the remote western slopes for unparalleled wilderness and 360° panoramic views. More days mean better acclimatisation and the highest summit success rate of any standard route. You'll cross the dramatic Shira Plateau, traverse the full Southern Circuit, and tackle the Barranco Wall before the final summit push. Perfect for those seeking a premium, uncrowded experience with time to fully absorb the mountain's majesty.",
