@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import machameImg from "@/assets/kili-3.jpg";
 import lemoshoImg from "@/assets/kili-1.webp";
 import maranguImg from "@/assets/kili-2.webp";
+import meruImg from "@/assets/meru.jpg";
 
 const treks = [
   {
@@ -31,9 +32,17 @@ const treks = [
     price: 2585,
     image: lemoshoImg,
   },
+  {
+    slug:  "kilimanjaro-meru-route",
+    days:  4,
+    title: "Meru Route",
+    label: "Best Warm-Up",
+    price: 1250,
+    image: meruImg,
+  },
 ];
 
-const AUTO_INTERVAL = 3000;
+const AUTO_INTERVAL = 2500;
 const GAP = 16; // gap-4 = 16px
 
 export function KilimanjaroSection() {

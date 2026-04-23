@@ -2,6 +2,7 @@
 import maranguRouteImg from "@/assets/Marangu-Route-Map.jpg";
 import machameRouteImg from "@/assets/Machame-Route-Map.avif";
 import lemoshoRouteImg from "@/assets/Lemosho-Route-Map.avif";
+import meruTrekking from "@/assets/meru-map.png";
 
 // Safari & Wildlife Images
 import safariElephants from "@/assets/safari-elephants.jpg";
@@ -39,6 +40,8 @@ import kili5jpg from "@/assets/kili-5.jpg";
 import kiliTrek from "@/assets/kili-trek.webp";
 import kilimanjaro from "@/assets/kilimanjaro.jpg";
 import mountTrek from "@/assets/mount-trek.jpg";
+import meru1 from "@/assets/meru-1.jpg"
+import meru2 from "@/assets/meru-2.jpg"
 
 // Lodge & Accommodation Images
 import lodge1 from "@/assets/lodge-1.jpg";
@@ -459,4 +462,53 @@ export const FALLBACK_TOURS: Tour[] = [
     tags:      ["Kilimanjaro", "Trekking", "Summit", "Premium", "Camping"],
     published: true,
   },
+  {
+  id:                 104,
+  slug:               "meru-route",
+  title:              "Mount Meru — 4 Days Crater Trek",
+  destination:        "Arusha, Tanzania",
+  type:               "MOUNTAIN",
+  duration_days:      4,
+  duration:           "4 Days 3 Nights",
+  price:              1250,
+  price_from:         1250,
+  currency:           "USD",
+  cover_image:        meru1,       
+  hover_image:        meruTrekking,
+  images:             [meru1, meru2, meruTrekking],
+  excerpt:            "Africa's second-highest volcano and the perfect Kilimanjaro warm-up — dramatic crater rim, diverse wildlife, and jaw-dropping Kili views.",
+  description:        "At 4,566m, Mount Meru is Tanzania's second-highest peak and one of Africa's most rewarding treks. Rising from Arusha National Park, the route winds through lush montane forest teeming with colobus monkeys and buffalo before opening onto a breathtaking inner crater and the iconic Little Meru ridge. The technical Socialist Peak summit rewards climbers with a sunrise panorama framing Kilimanjaro — an unforgettable sight. The shorter four-day itinerary makes this ideal as a standalone adventure or as acclimatisation for a Kilimanjaro attempt.",
+  departure_location: "Arusha",
+  return_location:    "Arusha",
+  highlights: [
+    "Summit Socialist Peak (4,566m) with Kilimanjaro sunrise panorama",
+    "Wildlife encounters — colobus monkeys, giraffe, and buffalo",
+    "Dramatic inner crater and ash cone views",
+    "Ideal acclimatisation trek before Kilimanjaro",
+    "TANAPA-licensed guides and full support crew",
+  ],
+  included: [
+    "All Arusha National Park and rescue fees",
+    "Hut accommodation (Miriakamba & Saddle Huts)",
+    "Licensed guide, armed ranger, porters, and cook",
+    "Full-board meals and drinking water",
+    "Emergency oxygen and first aid kit",
+    "Transfers to/from Arusha",
+  ],
+  excluded: [
+    "International flights and visa fees",
+    "Travel insurance (mandatory)",
+    "Personal trekking gear and sleeping bag",
+    "Tips and gratuities (~$150–200 pp recommended)",
+    "Pre/post-trek hotel in Arusha",
+  ],
+  itinerary: [
+    { day: 1, title: "Momella Gate → Miriakamba Hut (2,514m)",  desc: "Trek through fig forest with giraffe and buffalo sightings (~4 hours)." },
+    { day: 2, title: "Miriakamba Hut → Saddle Hut (3,566m)",    desc: "Ascend through hagenia woodland; optional afternoon climb to Little Meru (3,820m)." },
+    { day: 3, title: "Summit Night → Socialist Peak & Descent",  desc: "Pre-dawn push to Socialist Peak for sunrise over Kilimanjaro; descend to Miriakamba Hut." },
+    { day: 4, title: "Miriakamba Hut → Momella Gate",           desc: "Final forest descent, certificate presentation, and return to Arusha." },
+  ],
+  tags:      ["Mount Meru", "Trekking", "Summit", "Acclimatisation", "Wildlife"],
+  published: true,
+},
 ];
