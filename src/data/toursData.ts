@@ -40,7 +40,7 @@ import kili5jpg from "@/assets/kili-5.jpg";
 import kiliTrek from "@/assets/kili-trek.webp";
 import kilimanjaro from "@/assets/kilimanjaro.jpg";
 import mountTrek from "@/assets/mount-trek.jpg";
-import meru1 from "@/assets/meru-1.jpg"
+import meru3 from "@/assets/meru-3.jpg"
 import meru2 from "@/assets/meru-2.jpg"
 
 // Lodge & Accommodation Images
@@ -473,9 +473,9 @@ export const FALLBACK_TOURS: Tour[] = [
   price:              1250,
   price_from:         1250,
   currency:           "USD",
-  cover_image:        meru1,       
+  cover_image:        meruTrekking,       
   hover_image:        meruTrekking,
-  images:             [meru1, meru2, meruTrekking],
+  images:             [meru3, meru2, meruTrekking],
   excerpt:            "Africa's second-highest volcano and the perfect Kilimanjaro warm-up — dramatic crater rim, diverse wildlife, and jaw-dropping Kili views.",
   description:        "At 4,566m, Mount Meru is Tanzania's second-highest peak and one of Africa's most rewarding treks. Rising from Arusha National Park, the route winds through lush montane forest teeming with colobus monkeys and buffalo before opening onto a breathtaking inner crater and the iconic Little Meru ridge. The technical Socialist Peak summit rewards climbers with a sunrise panorama framing Kilimanjaro — an unforgettable sight. The shorter four-day itinerary makes this ideal as a standalone adventure or as acclimatisation for a Kilimanjaro attempt.",
   departure_location: "Arusha",

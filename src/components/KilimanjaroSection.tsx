@@ -33,13 +33,14 @@ const treks = [
     image: lemoshoImg,
   },
   {
-    slug:  "kilimanjaro-meru-route",
+    slug:  "meru-route",
     days:  4,
     title: "Meru Route",
     label: "Best Warm-Up",
     price: 1250,
     image: meruImg,
   },
+  
 ];
 
 const AUTO_INTERVAL = 2500;
