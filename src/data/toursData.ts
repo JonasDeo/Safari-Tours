@@ -20,6 +20,7 @@ import lionTours from "@/assets/lion-tours.jpg";
 import giraffe from "@/assets/giraffe.jpg";
 import antelopes from "@/assets/antelopes-savanna.jpg";
 import gameDrive from "@/assets/game-drive.jpg";
+import migration from "@/assets/tour-4.jpg";
 
 // Zanzibar & Beach Images
 import zanzibar from "@/assets/zanzibar.jpg";
@@ -147,7 +148,7 @@ export const FALLBACK_TOURS: Tour[] = [
     price:              3350,
     price_from:         3350,
     currency:           "USD",
-    cover_image:        zebraSavanna,
+    cover_image:        migration,
     hover_image:        null,
     images:             [zebraSavanna, zebras, lions, twoLions, safariLions, serengeriPlains],
     excerpt:            "Witness the world's greatest wildlife spectacle and track Africa's iconic big cats across the Serengeti.",
@@ -245,9 +246,9 @@ export const FALLBACK_TOURS: Tour[] = [
     price:              1350,
     price_from:         1350,
     currency:           "USD",
-    cover_image:        zanzibar,
+    cover_image:        zanzibarCoast,
     hover_image:        null,
-    images:             [zanzibar, zanzibarCoast, beach, clearBeach, seaSunset, beach2, stonetonCoast],
+    images:             [zanzibarCoast, seaSunset, beach,  beach2, stonetonCoast],
     excerpt:            "White sand, turquoise water, and the spice-scented air of Stone Town — pure Indian Ocean bliss.",
     description:        "Five days of culture, adventure, and relaxation on Zanzibar. Explore the UNESCO-listed Stone Town, tour fragrant spice plantations, snorkel over vibrant coral reefs, and unwind on pristine white-sand beaches.",
     departure_location: "Zanzibar",

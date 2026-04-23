@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Clock, MapPin, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { publicApi } from "@/lib/api";
+import { FALLBACK_TOURS } from "@/data/toursData"; 
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -11,49 +12,23 @@ interface Tour {
   title:         string;
   images:        string[];
   cover_image:   string | null;
-  duration_days: number | null;   // DB field
-  duration:      string | null;   // fallback string if present
+  duration_days: number | null;
+  duration:      string | null;
   destination:   string;
-  price:         number | null;   // DB field
-  price_from:    number | null;   // alias some APIs use
+  price:         number | null;
+  price_from:    number | null;
   currency:      string;
   type:          string;
   tags:          string[];
 }
 
-// ── Fallback — shown while loading or if API fails 
+// ── Default four from FALLBACK_TOURS ─────────────────────────────────────────
 
-import tour1 from "@/assets/guided-safari.jpg";
-import tour2 from "@/assets/beach.jpg";
-import tour3 from "@/assets/tour-4.jpg";
-import tour5 from "@/assets/tour-4.jpg";
-
-const FALLBACK: Tour[] = [
-  { id: 1, slug: "tanzania-safari-zanzibar",    title: "10 Days Best of Tanzania – Safari & Zanzibar Beach Escape",    images: [], cover_image: null, duration: "10 Days 9 Nights", duration_days: 10, destination: "Arusha", price: 3800, price_from: 3800, currency: "USD", type: "GUIDED", tags: ["Beach Holiday", "Wildlife Adventure"] },
-  { id: 2, slug: "great-migration-serengeti",   title: "7 Days Great Migration & Big Cats Safari",                      images: [], cover_image: null, duration: "7 Days 6 Nights",  duration_days: 7,  destination: "Arusha", price: 3200, price_from: 3200, currency: "USD", type: "GUIDED", tags: ["Wildlife Adventure"] },
-  { id: 3, slug: "big-five-cultural-safari",    title: "6 Days Tanzania Big Five & Cultural Experience Safari",         images: [], cover_image: null, duration: "6 Days 5 Nights",  duration_days: 6,  destination: "Arusha", price: 2900, price_from: 2900, currency: "USD", type: "GUIDED", tags: ["Wildlife Adventure"] },
-  {
-  id: 4,
-  slug: "zanzibar-beach-holiday",
-  title: "5 Days Zanzibar Beach Escape & Island Experience",
-  images: [],
-  cover_image: null,
-  duration: "5 Days 4 Nights",
-  duration_days: 5,
-  destination: "Zanzibar",
-  price: 1200,
-  price_from: 1200,
-  currency: "USD",
-  type: "GUIDED",
-  tags: ["Beach Holiday", "Island Escape", "Relaxation"]
-}
-];
-
-const FALLBACK_IMAGES: Record<number, string> = {
-  0: tour1,
-  1: tour3,
-  2: tour5,
-  3: tour2,
+const getDefaultFour = (): Tour[] => {
+  const priority = [1, 2, 4, 102]; // Safari+Zanzibar, Migration, Beach, Machame
+  return priority
+    .map(id => FALLBACK_TOURS.find(t => t.id === id))
+    .filter(Boolean) as Tour[];
 };
 
 // ── Skeleton card ─────────────────────────────────────────────────────────────
@@ -71,18 +46,17 @@ const SkeletonCard = () => (
 
 // ── Tour card ─────────────────────────────────────────────────────────────────
 
-// Extract URL from either a plain string or a {url, public_id} object
 const extractUrl = (img: unknown): string | null => {
   if (!img) return null;
   if (typeof img === "string" && (img.startsWith("http") || img.startsWith("/"))) return img;
   if (typeof img === "object" && img !== null && "url" in img) return (img as any).url ?? null;
+  // imported asset (Vite resolves these to strings at build time)
+  if (typeof img === "string") return img;
   return null;
 };
 
 const TourCard = ({ tour, idx }: { tour: Tour; idx: number }) => {
-  const image = extractUrl(tour.cover_image)
-    ?? extractUrl(tour.images?.[0])
-    ?? FALLBACK_IMAGES[idx % Object.keys(FALLBACK_IMAGES).length];
+  const image = extractUrl(tour.cover_image) ?? extractUrl(tour.images?.[0]) ?? "";
 
   return (
     <Link
@@ -158,9 +132,9 @@ const ToursSection = () => {
     publicApi.getTours()
       .then((data: any) => {
         const list = Array.isArray(data) ? data : (data?.data ?? []);
-        setTours(list.length > 0 ? list.slice(0, 4) : FALLBACK);
+        setTours(list.length > 0 ? list.slice(0, 4) : getDefaultFour());
       })
-      .catch(() => setTours(FALLBACK))
+      .catch(() => setTours(getDefaultFour()))
       .finally(() => setLoading(false));
   }, []);
 
