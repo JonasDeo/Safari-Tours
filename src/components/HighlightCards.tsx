@@ -21,36 +21,56 @@ const highlights = [
 
 export function HighlightCards() {
   return (
-    <section className="bg-accent py-16 lg:py-20">
+    <section className="py-16 lg:py-20" style={{ background: "hsl(var(--secondary))" }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {highlights.map((h) => (
             <article
               key={h.title}
-              className="flex flex-col md:flex-row rounded-xl overflow-hidden"
-              style={{ background: "hsl(var(--earth)/0.82)", border: "1px solid hsl(var(--border)/0.25)" }}
+              className="flex flex-col md:flex-row overflow-hidden"
+              style={{ borderRadius: "16px" }}
             >
-              <div className="md:w-2/5 h-56 md:h-auto">
+              {/* Photo — same proportions as kili cards */}
+              <div className="md:w-2/5 h-56 md:h-auto overflow-hidden flex-shrink-0">
                 <img
                   src={h.image}
                   alt={h.title}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
                   loading="lazy"
                   width={800}
                   height={600}
                 />
               </div>
-              <div className="md:w-3/5 p-6 md:p-8 flex flex-col justify-center">
+
+              {/* Info panel — olive, matching kili card info panel exactly */}
+              <div
+                className="md:w-3/5 p-6 md:p-8 flex flex-col justify-center gap-3"
+                style={{ background: "hsl(var(--olive))" }}
+              >
+                {/* Divider rule above title, like kili cards */}
+                <div style={{ width: "2rem", height: 1, background: "rgba(255,255,255,0.35)" }} />
+
                 <h2
-                  className="text-xl md:text-2xl font-bold text-accent-foreground mb-3"
-                  style={{ fontFamily: "var(--font-display)" }}
+                  className="text-xl md:text-2xl font-bold uppercase leading-tight"
+                  style={{ fontFamily: "var(--font-display)", color: "white" }}
                 >
                   {h.title}
                 </h2>
-                <p className="text-sm text-accent-foreground/80 leading-relaxed mb-5">{h.desc}</p>
+
+                <p className="text-sm leading-relaxed" style={{ color: "rgba(255,255,255,0.65)" }}>
+                  {h.desc}
+                </p>
+
+                <div style={{ width: "100%", height: 1, background: "rgba(255,255,255,0.15)" }} />
+
                 <Link
                   to={h.href}
-                  className="inline-flex items-center px-5 py-2.5 bg-primary text-primary-foreground text-sm font-semibold rounded-md hover:bg-terracotta-light transition-colors w-fit"
+                  className="inline-flex items-center text-[11px] tracking-[0.15em] uppercase font-semibold px-5 py-2.5 transition-colors duration-300 w-fit mt-1"
+                  style={{
+                    background:   "hsl(var(--primary))",
+                    color:        "white",
+                    borderRadius: "6px",
+                  }}
                 >
                   {h.cta}
                 </Link>
@@ -62,4 +82,3 @@ export function HighlightCards() {
     </section>
   );
 }
-
