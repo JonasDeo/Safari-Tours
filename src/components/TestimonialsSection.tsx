@@ -46,11 +46,15 @@ const getInitials = (name: string) =>
 // ── Stars ─────────────────────────────────────────────────────────────────────
 
 const Stars = ({ n, small }: { n: number; small?: boolean }) => (
-  <div className="flex gap-0.5 flex-shrink-0">
-    {Array.from({ length: n }).map((_, i) => (
+  <div className="flex gap-[3px] flex-shrink-0">
+    {Array.from({ length: 5 }).map((_, i) => (
       <Star key={i}
-        className={small ? "w-2.5 h-2.5" : "w-3.5 h-3.5"}
-        style={{ fill: "hsl(var(--foreground)/0.7)", color: "hsl(var(--foreground)/0.7)" }} />
+        className={small ? "w-3 h-3" : "w-3.5 h-3.5"}
+        style={{
+          fill:   i < n ? "hsl(var(--primary))" : "transparent",
+          color:  i < n ? "hsl(var(--primary))" : "hsl(var(--border))",
+          filter: i < n ? "drop-shadow(0 0 3px hsl(var(--primary)/0.45))" : "none",
+        }} />
     ))}
   </div>
 );
@@ -66,7 +70,7 @@ const Avatar = ({ t, size }: { t: Testimonial; size: number }) => {
         ? <img src={t.avatar} alt={t.name} className="w-full h-full object-cover" />
         : <div className="w-full h-full flex items-center justify-center text-white font-medium"
             style={{ background: color, fontSize: size * 0.33,
-              fontFamily: '"Playfair Display", serif' }}>
+              fontFamily: "'Cormorant', serif" }}>
             {getInitials(t.name)}
           </div>
       }
