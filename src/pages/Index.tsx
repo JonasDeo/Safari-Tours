@@ -25,7 +25,7 @@ const Index = () => {
         <KilimanjaroSection />
         <WhyUsSection />
         <ToursSection />
-        <AccommodationSection />
+        {/* <AccommodationSection /> */}
         <TestimonialsSection />
       </main>
       <FooterSection />

@@ -32,8 +32,8 @@ const FieldRow = ({ icon: Icon, label, children }: { icon: any; label: string; c
 
 const SettingsPage = () => {
   const [contact, setContact] = useState({
-    phone:     "+255 623 880844",
-    whatsapp:  "+255 685 808332",
+    phone:     "+255 624 307 997",
+    whatsapp:  "+255 624 307 997",
     email:     "info@nativekilimanjaro.com",
     address:   "Moshi, Tanzania",
     website:   "https://nativekilimanjaro.com",

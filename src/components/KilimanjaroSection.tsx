@@ -13,7 +13,7 @@ const treks = [
     days:  6,
     title: "Marangu Route",
     label: "The Classic",
-    price: 2130,
+    price: 1870,        
     image: maranguImg,
   },
   {
@@ -21,7 +21,7 @@ const treks = [
     days:  7,
     title: "Machame Route",
     label: "Most Popular",
-    price: 2470,
+    price: 1900,        
     image: machameImg,
   },
   {
@@ -29,7 +29,7 @@ const treks = [
     days:  8,
     title: "Lemosho Route",
     label: "Best Scenery",
-    price: 2585,
+    price: 2200,        
     image: lemoshoImg,
   },
   {
@@ -37,10 +37,9 @@ const treks = [
     days:  4,
     title: "Meru Route",
     label: "Best Warm-Up",
-    price: 1250,
+    price: 1650,       
     image: meruImg,
   },
-  
 ];
 
 const AUTO_INTERVAL = 2500;

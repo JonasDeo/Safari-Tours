@@ -1,4 +1,3 @@
-// src/pages/tours/MountainTrekking.tsx
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import PageLayout from "@/components/PageLayout";
@@ -12,14 +11,16 @@ const accent = "hsl(var(--terracotta))";
 const MountainTrekking = () => {
   const { tours, loading } = useTours("MOUNTAIN");
 
+// The solo prices come directly from FALLBACK_TOURS price_from fields.
+// Group discounts are typically ~5–10% off — adjust to your actual business rates.
   const routePrices = [
-    { route: "Marangu 5 Days",  solo: 1320, two: 1200, three: 1180, five: 1140 },
-    { route: "Marangu 6 Days",  solo: 1524, two: 1404, three: 1374, five: 1349 },
-    { route: "Machame 6 Days",  solo: 1615, two: 1420, three: 1375, five: 1363 },
-    { route: "Machame 7 Days",  solo: 1821, two: 1616, three: 1596, five: 1536 },
-    { route: "Rongai 6 Days",   solo: 1670, two: 1465, three: 1445, five: 1385 },
-    { route: "Lemosho 7 Days",  solo: 1906, two: 1838, three: 1666, five: 1596 },
-    { route: "Lemosho 8 Days",  solo: 2070, two: 1998, three: 1847, five: 1783 },
+    { route: "Marangu 6 Days",          solo: 1870, two: 1650, three: 1590, five: 1520 },
+    { route: "Machame 7 Days",          solo: 1900, two: 1680, three: 1620, five: 1550 },
+    { route: "Rongai 6 Days",           solo: 1840, two: 1620, three: 1560, five: 1490 },
+    { route: "Lemosho 8 Days",          solo: 2200, two: 1980, three: 1900, five: 1820 },
+    { route: "Umbwe 6 Days",            solo: 1800, two: 1580, three: 1520, five: 1450 },
+    { route: "Northern Circuit 9 Days", solo: 3200, two: 2900, three: 2780, five: 2650 },
+    { route: "Mount Meru 4 Days",       solo: 1650, two: 1450, three: 1390, five: 1320 },
   ];
 
   return (

@@ -38,30 +38,29 @@ export const getTourImg = (tour: Tour, fallback: string): string => {
 // ─── useTours ─────────────────────────────────────────────────────────────────
 
 export const useTours = (type: string) => {
-  const [tours, setTours]     = useState<Tour[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [tours, setTours] = useState<Tour[]>(
+    () => FALLBACK_TOURS.filter(t => t.type === type && t.published !== false) as Tour[]
+  );
+  const [loading, setLoading] = useState(false); 
 
   useEffect(() => {
     window.scrollTo(0, 0);
 
+    const controller = new AbortController();
+
     publicApi
       .getTours()
       .then((data: any) => {
-        const all      = data as Tour[];
-        const filtered = all.filter(t => t.type === type);
-
-        setTours(
-          filtered.length > 0
-            ? filtered
-            : FALLBACK_TOURS.filter(t => t.type === type && t.published !== false) as Tour[]
-        );
+        if (controller.signal.aborted) return;
+        const filtered = (data as Tour[]).filter(t => t.type === type);
+        // Only replace if the API actually returned something useful
+        if (filtered.length > 0) setTours(filtered);
       })
       .catch(() => {
-        setTours(
-          FALLBACK_TOURS.filter(t => t.type === type && t.published !== false) as Tour[]
-        );
-      })
-      .finally(() => setLoading(false));
+        // Already showing fallback — nothing to do
+      });
+
+    return () => controller.abort();
   }, [type]);
 
   return { tours, loading };
